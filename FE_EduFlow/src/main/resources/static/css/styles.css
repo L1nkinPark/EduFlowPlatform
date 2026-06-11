@@ -1,0 +1,107 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    height: 20vh;
+}
+
+.content {
+    flex: 1;
+    height: auto;
+}
+
+footer {
+    height: 10vh;
+    background-color: #343a40;
+}
+
+header, footer {
+    background-color: #f8f9fa;
+}
+
+header .logo, .sidebar, footer .footer-left {
+    background-color: #e9eaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sidebar {
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #e9eaea;
+    padding-top: 10px;
+}
+
+.content {
+    flex: 1;
+    height: auto;
+    padding-left: 220px;
+}
+
+footer .footer-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.course-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    position: relative;
+    left: 110px;
+
+}
+
+.course-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.course-info {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.course-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+.custom-pagination {
+    position: relative;
+    right: -111px;
+}
+.icon{
+    position: relative;
+    bottom: -270px;
+    left: 34px;
+}
+.logo-teacher{
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    z-index: 2;
+}
+.footer-content{
+    justify-content: center;
+    text-align: center;
+}

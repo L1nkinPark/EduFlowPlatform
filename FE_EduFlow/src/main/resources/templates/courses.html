@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from askbootstrap.com/preview/edutree/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:18 GMT -->
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" th:href="@{/img/icon.}">
+    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <meta name="description" content="Edutree" />
+    <meta name="keywords" content="Edutree" />
+
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <link th:href="@{/vendor/slick/slick/slick.css}" rel="stylesheet">
+    <link th:href="@{/vendor/slick/slick/slick-theme.css}" rel="stylesheet">
+
+    <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
+</head>
+
+<body class="bg-light">
+    <div th:replace="~{/layouts/layout :: header_2}"></div>
+    <div class="py-3">
+        <div class="container">
+            <nav>
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/}">
+                            <i class="bi bi-house"></i> Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" aria-current="page">Courses</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <hr class="m-0">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <aside class="sidebar-fixed">
+                    <nav
+                        class="navbar sidebar-courses navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 sidenav navbar navbar-expand-lg navbar-light">
+                        <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold fs-5 float-start py-1"
+                            th:href="@{/instructor/profile}">Menu</a>
+                        <button data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                            aria-expanded="false" aria-label="Toggle navigation"
+                            class="p-0 focus-none border-0 navbar-toggler collapsed">
+                            <span
+                                class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary p-0 text-white float-end">
+                                <span class="fe fe-menu"></span>
+                            </span>
+                        </button>
+                        <div class="navbar-collapse collapse" id="navbarNav">
+                            <div class="side-nav me-auto flex-column navbar-nav">
+                                <p class="navbar-header nav-item mb-2 p-0 text-danger"><i class="bi bi-gift"></i> OFFERS
+                                </p>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="gi">
+                                    <label class="form-check-label ps-1" for="gi">
+                                        Gift ideas
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="gc">
+                                    <label class="form-check-label ps-1" for="gc">
+                                        Gift cards
+                                    </label>
+                                </div>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4">Courses</p>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault1">
+                                    <label class="form-check-label ps-1" for="flexRadioDefault1">
+                                        Course Bundles
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault2" checked>
+                                    <label class="form-check-label ps-1" for="flexRadioDefault2">
+                                        Edutree Basics <small><span class="badge bg-primary">NEW</span></small>
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault3">
+                                    <label class="form-check-label ps-1" for="flexRadioDefault3">
+                                        New courses
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault4">
+                                    <label class="form-check-label ps-1" for="flexRadioDefault4">
+                                        Top rated
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault5">
+                                    <label class="form-check-label ps-1" for="flexRadioDefault5">
+                                        Popular courses
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault6">
+                                    <label class="form-check-label ps-1" for="flexRadioDefault6">
+                                        Open courses <small><span class="badge bg-danger">PRO</span></small>
+                                    </label>
+                                </div>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark  mt-4">CATEGORIES</p>
+                                <div class="form-check my-1">
+<!--                                    <input class="form-check-input" type="checkbox" value id="Illustration">-->
+                                    <label class="form-check-label ps-1" for="Illustration">
+                                        Illustration
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Craft" checked>
+                                    <label class="form-check-label ps-1" for="Craft">
+                                        Craft
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Marketing">
+                                    <label class="form-check-label ps-1" for="Marketing">
+                                        Marketing & Business
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Photography">
+                                    <label class="form-check-label ps-1" for="Photography">
+                                        Photography & Video
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Design">
+                                    <label class="form-check-label ps-1" for="Design">
+                                        Design
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Animation">
+                                    <label class="form-check-label ps-1" for="Animation">
+                                        3D & Animation
+                                    </label>
+                                </div>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4">SOFTWARE</p>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Wordpress">
+                                    <label class="form-check-label ps-1" for="Wordpress">
+                                        Wordpress
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="Adobe">
+                                    <label class="form-check-label ps-1" for="Adobe">
+                                        Adobe Photoshop
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="SketchUp">
+                                    <label class="form-check-label ps-1" for="SketchUp">
+                                        SketchUp
+                                    </label>
+                                </div>
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value id="illustration">
+                                    <label class="form-check-label ps-1" for="illustration">
+                                        Adobe illustration
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </aside>
+            </div>
+            <div class="col-lg-9 col-sm-12">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <h3 class="pb-0 fw-bold text-dark m-0">Featured</h3>
+                    <a href="#" class="text-decoration-none text-danger ms-auto">See More <i
+                            class="bi bi-arrow-right-circle"></i></a>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5" >
+                    <div class="col" th:each="course : ${courses}">
+                        <div
+                            class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
+                            <img th:src="${course?.image}" class="img-fluid"  loading="lazy">
+                            <div class="card-body">
+                                <h6 class="card-title pb-3 text-black mb-0">
+                                    <span class="bg-warning badge text-black me-2">BEST SELLER</span>
+                                    <span th:text="${course?.courseName}"></span>
+                                </h6>
+                                <span class="card-text mb-0">A course by <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
+                                <div class="card-text text-muted small" th:text="${course?.description}"></div>
+                                <div class="text-muted gap-2 pt-2 small d-flex">
+                                    <span><i class="bi bi-person"></i> 23643</span>
+                                    <span><i class="bi bi-hand-thumbs-up"></i> 80% (2.2k)</span>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 bg-white border-top p-3">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <span class="badge bg-danger text-white">SALE</span>
+                                    <div class="card-price text-danger">78% Disc. <del class="text-black">$1,800</del>
+                                    </div>
+                                </div>
+                                <div class="d-grid"><button class="btn btn-primary">
+                                        <i class="bi bi-cart-fill"></i> $399
+                                    </button>
+                                </div>
+                                <a th:href="@{/course/detail}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+<!--               Đoạn này cần làm cho chức năng gì? -->
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <h3 class="pb-0 fw-bold text-dark m-0">Course Bundle</h3>
+                    <span class="badge bg-primary">NEW</span>
+                    <a href="#" class="text-decoration-none text-danger ms-auto">See More <i
+                            class="bi bi-arrow-right-circle"></i></a>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+                    <div class="col">
+                        <div
+                            class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
+                            <img th:src="@{/img/globel/b1.jpg}" class="img-fluid">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold text-dark">
+                                    Bring Your Creations to Life
+                                </h6>
+                                <p class="card-text text-muted small">Experience the feeling of watching your creations
+                                    come to life through animation. Choose any 3 courses from this selection and add
+                                    some movement to your work. Thi</p>
+                            </div>
+                            <div class="card-footer border-0 bg-white border-top p-3">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <span class="badge bg-info text-white">HOT</span>
+                                    <div class="card-price text-danger">78% Disc. <span class="text-black">$1,800</span>
+                                    </div>
+                                </div>
+                                <div class="d-grid"><button class="btn btn-primary">
+                                        Create your own bundle <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="text-center pt-2 pb-2">
+                    <button type="button" class="btn btn-danger">See more Edutree course <i
+                            class="bi bi-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white border-top border-bottom cities-footer">
+        <div>
+            <div class="container">
+                <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
+                    href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center py-1">
+                        <h6 class="m-0 h5 text-dark fw-bold">POPULAR CATEGORIES</h6>
+                        <small>SEE ALL CATEGORIES <i class="icofont-rounded-down border p-1 ms-2 rounded-3"></i></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="collapse border-top" id="collapseExample">
+            <div class="container py-4">
+                <div class="row">
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">llustration courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Craft courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Marketing & Business courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Photography & Video courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Design courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">3D & Animation courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Architecture & Spaces courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Web & App Design courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">llustration courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Craft courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Marketing & Business courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Photography & Video courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Design courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">3D & Animation courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Architecture & Spaces courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Web & App Design courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Writing courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Calligraphy & Typography courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Fashion courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Music & Audio courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Writing courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Calligraphy & Typography courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Fashion courses</a></div>
+                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Music & Audio courses</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-5 footer bg-white">
+        <div>
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-md-12 col-lg-2 col-6 order-1 order-md-0">
+                        <a th:href="@{/}"
+                            class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h5 text-black">
+                            <img th:src="@{/img/logo.png}"
+                                class="img-fluid d-inline-block align-text-center me-2 rounded-pill">
+                            Edutree
+                        </a>
+                        <div class="text-muted my-3 py-1">
+                            <small>All rights recerved</small>
+                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
+                                skills.”</span>
+                        </div>
+                        <div class="d-flex gap-3 h5 m-0">
+                            <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="link-dark"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="link-dark"><i class="bi bi-github"></i></a>
+                            <a href="#" class="link-dark"><i class="bi bi-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2 col-6 offset-lg-1 mb-lg-0 mb-3">
+                        <h6 class="pb-2">Company</h6>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/about}">About</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">All
+                            Courses</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/career}">Careers</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/student/edit}">Account</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/testimonial}">Testimonials</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/contact}">Contact
+                            Us</a>
+                    </div>
+                    <div class="col-md-6 col-lg-2 col-6">
+                        <h6 class="pb-2">Categories</h6>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Illustration courses</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Craft
+                            courses</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Marketing
+                            & Business</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Photography & Video</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Design
+                            courses</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">3D &
+                            Animation</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
+                            th:href="@{/course/all}">Architecture & Spaces</a>
+                    </div>
+                    <div class="col-md-12 col-lg-2 col-12 mb-lg-0 mb-3">
+                        <h6 class="pb-2">Software</h6>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
+                            Photoshop</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
+                            Illustrator</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
+                            After Effects</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Procreate
+                            courses</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Cinema 4D
+                            courses</a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
+                            Lightroom </a>
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
+                            InDesign </a>
+                    </div>
+                    <div class="col-md-12 col-lg-3 col-6 order-1 order-md-0">
+                        <h6 class="pb-2">Fancy a cool newsletter?</h6>
+                        <small class="text-muted">Be the first to get Edutree's latest news</small>
+                        <form>
+                            <div class="input-group my-3 shadow-sm border rounded-3 overflow-hidden p-1">
+                                <input type="text" class="form-control shadow-none border-0"
+                                    placeholder="Enter your email">
+                                <a href class="input-group-text bg-white shadow-none border-0 text-primary btn"
+                                    id="basic-addon2">
+                                    Sign up
+                                </a>
+                            </div>
+                        </form>
+                        <p><i class="bi bi-envelope"></i> Get new clients, grow your business.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{/layouts/layout :: footer}"></div>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+        data-cf-beacon='{"rayId":"8d693ae0084fdd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
+        crossorigin="anonymous"></script>
+</body>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}" type="82b9482d5eda45b361c26d37-text/javascript"></script>
+
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}" type="82b9482d5eda45b361c26d37-text/javascript">
+</script>
+
+<script th:src="@{/vendor/slick/slick/slick.min.js}" type="82b9482d5eda45b361c26d37-text/javascript"></script>
+
+<script th:src="@{/js/custom.js}" type="82b9482d5eda45b361c26d37-text/javascript"></script>
+<script th:src="@{/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js}"
+    data-cf-settings="82b9482d5eda45b361c26d37-|49" defer></script>
+<!-- Mirrored from askbootstrap.com/preview/edutree/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:19 GMT -->
+
+</html>

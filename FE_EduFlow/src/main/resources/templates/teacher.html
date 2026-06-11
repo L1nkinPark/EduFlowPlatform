@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e1443c04a9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div th:replace="~{/layouts/layout :: header_2}"></div>
+    <div class="container-fluid">
+
+
+        <header class="row">
+            <div class="col-md-2 logo text-center">
+                <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" class="logo-teacher">
+            </div>
+            <div class="col-md-10 search-bar bg-light">
+                <form class="w-75 d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search courses..." aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </header>
+
+
+        <div class="row content">
+
+
+            <nav class="col-md-2 sidebar py-4">
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-black" href="#">Home</a>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-black" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-black" href="#">Students</a>
+                    </li>
+                    <li  class="nav-item mb-3">
+                        <i class="fa-solid fa-right-from-bracket fa-2xl icon"  href="#"></i>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="col-md-10 p-4">
+            </div>
+
+
+
+            <div class="col-md-10 p-4">
+                <div class="row">
+
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="course-container">
+                            <img src="https://freemockup.vn/wp-content/uploads/2024/10/freemockup-vn-uhfiV0s05X.webp" alt="Course Image" class="course-img">
+                            <div class="course-info">
+                                <h3>Course 1</h3>
+                                <p>Description: Advanced Programming.</p>
+                                <p>Price: $200</p>
+                            </div>
+                            <div class="course-buttons mt-4">
+                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation example" class="text-right mt-2  custom-pagination">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+        <footer class="row">
+            <div class="col-md-2 footer-left text-center">
+            </div>
+            <div class="col-md-10 search-bar bg-light">
+                <p class="footer-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora, nemo. Vitae eaque ullam, ut dolorem consectetur eveniet reiciendis numquam facilis placeat id. Culpa neque praesentium unde consequatur ex dolorem voluptatem.</p>
+
+            </div>
+
+        </footer>
+    </div>
+</body>
+</html>

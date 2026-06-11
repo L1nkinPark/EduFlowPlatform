@@ -1,0 +1,38 @@
+/* Đảm bảo các phần tử reset password có kích thước đồng nhất */
+#newPasswordForm {
+    display: none; /* Ẩn form ban đầu */
+    width: 100%; /* Đảm bảo form chiếm toàn bộ chiều rộng */
+}
+
+/* Các input cho mật khẩu */
+#newPasswordForm input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    box-sizing: border-box; /* Đảm bảo padding không làm phần tử bị lệch */
+}
+
+/* Nút reset password */
+#newPasswordForm button {
+    width: 100%;
+    background-color: #007bff; /* Màu nền nút */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-sizing: border-box; /* Đảm bảo nút chiếm chiều rộng hoàn toàn */
+}
+
+/* Hiệu ứng hover cho nút reset password */
+#newPasswordForm button:hover {
+    background-color: #0056b3;
+}
+
+/* Điều chỉnh khi người dùng tương tác với ô nhập mật khẩu */
+#newPasswordForm input:focus {
+    outline: none;
+    border-color: #007bff; /* Đổi màu khi focus vào input */
+}
