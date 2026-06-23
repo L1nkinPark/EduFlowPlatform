@@ -7,3 +7,11 @@
 # OS files
 .DS_Store
 Thumbs.db
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+.terraform.lock.hcl
+terraform/environments/*.auto.tfvars
