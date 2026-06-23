@@ -236,10 +236,12 @@
         crossorigin="anonymous"></script>
 </body>
 
-<script>
+<script th:inline="javascript">
+    const backendUrl = /*[[${backendUrl}]]*/ 'http://localhost:8888';
+
     function sendOtp() {
         const email = document.getElementById("email").value;
-        fetch(`http://localhost:8888/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
+        fetch(`${backendUrl}/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
             method: "POST"
         })
         .then(response => response.text())
@@ -250,7 +252,7 @@
     function verifyOtp() {
         const email = document.getElementById("email").value;
         const otp = document.getElementById("otp").value;
-        fetch(`http://localhost:8888/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${otp}`, {
+        fetch(`${backendUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${otp}`, {
             method: "POST"
         })
         .then(response => response.text())

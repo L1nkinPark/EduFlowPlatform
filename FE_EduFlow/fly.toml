@@ -1,0 +1,41 @@
+# ==============================================================================
+# EduFlow Frontend – Fly.io Configuration
+# ==============================================================================
+# Deploy: cd FE_EduFlow && fly deploy
+# ==============================================================================
+
+app = 'eduflow-fe-dev'
+primary_region = 'sin'
+
+[build]
+
+[env]
+  SPRING_PROFILES_ACTIVE = 'flyio'
+  SERVER_PORT = '8080'
+  BACKEND_URL = 'https://eduflow-be-dev.fly.dev'
+  TZ = 'Asia/Ho_Chi_Minh'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 250
+    soft_limit = 200
+
+[[http_service.checks]]
+  grace_period = '60s'
+  interval = '30s'
+  method = 'GET'
+  timeout = '10s'
+  path = '/'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

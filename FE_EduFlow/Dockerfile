@@ -1,5 +1,5 @@
 # ==============================================================================
-# EduFlow Backend – Multi-stage Dockerfile
+# EduFlow Frontend – Multi-stage Dockerfile
 # ==============================================================================
 
 # Stage 1: Build
@@ -18,15 +18,15 @@ WORKDIR /app
 RUN addgroup -S eduflow && adduser -S eduflow -G eduflow
 
 # Copy JAR from build stage
-COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
 RUN chown eduflow:eduflow app.jar
 
 USER eduflow
 
-EXPOSE 8888
+EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8888/actuator/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
 
 ENTRYPOINT ["java", \
   "-Xms256m", "-Xmx512m", \

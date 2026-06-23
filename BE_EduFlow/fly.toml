@@ -1,0 +1,40 @@
+# ==============================================================================
+# EduFlow Backend – Fly.io Configuration
+# ==============================================================================
+# Deploy: cd BE_EduFlow && fly deploy
+# ==============================================================================
+
+app = 'eduflow-be-dev'
+primary_region = 'sin'
+
+[build]
+
+[env]
+  SPRING_PROFILES_ACTIVE = 'flyio'
+  SERVER_PORT = '8888'
+  TZ = 'Asia/Ho_Chi_Minh'
+
+[http_service]
+  internal_port = 8888
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 250
+    soft_limit = 200
+
+[[http_service.checks]]
+  grace_period = '60s'
+  interval = '30s'
+  method = 'GET'
+  timeout = '10s'
+  path = '/actuator/health'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

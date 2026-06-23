@@ -237,7 +237,8 @@
         crossorigin="anonymous"></script>
 </body>
 
-<script>
+<script th:inline="javascript">
+    const backendUrl = /*[[${backendUrl}]]*/ 'http://localhost:8888';
 
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -254,7 +255,7 @@
         }
 
         // Gửi yêu cầu kiểm tra email từ phía server
-        fetch("http://localhost:8888/api/otp/validate-email?email=" + encodeURIComponent(email), {
+        fetch(`${backendUrl}/api/otp/validate-email?email=` + encodeURIComponent(email), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -277,7 +278,7 @@
 
     // Gửi OTP tới email đã xác thực
     function sendOtpToEmail(email) {
-        fetch(`http://localhost:8888/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
+        fetch(`${backendUrl}/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -303,7 +304,7 @@
         const email = document.getElementById("email").value;
         const otp = document.getElementById("otp").value;
 
-        fetch(`http://localhost:8888/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
+        fetch(`${backendUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -331,7 +332,7 @@
         const email = document.getElementById("email").value;
         const newPassword = document.getElementById("newPassword").value;
 
-        fetch(`http://localhost:8888/api/password/reset`, {
+        fetch(`${backendUrl}/api/password/reset`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
