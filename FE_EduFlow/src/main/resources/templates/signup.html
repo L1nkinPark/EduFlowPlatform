@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:42 GMT -->
@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <title>Edutree â€“ Online Course & Education HTML5 Template</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -22,7 +22,7 @@
 </head>
 
 <body class="bg-light">
-    <div th:replace="~{/layouts/layout :: header_2}"></div>
+    <div th:replace="~{layouts/layout :: header_2}"></div>
     <section class="my-4">
         <div class="container py-5">
             <div class="row justify-content-center align-items-center">
@@ -36,16 +36,16 @@
                 <div class="col-lg-5">
                     <div class="text-center rounded-3 bg-white shadow-sm p-5">
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
-                            <!-- Trường nhập email -->
+                            <!-- TrÆ°á»ng nháº­p email -->
                             <div class="input-group">
-                                <input type="email" id="email" class="form-control" placeholder="Nhập Email" required>
-                                <button type="button" onclick="sendOtp()" class="btn btn-primary">Gửi OTP</button>
+                                <input type="email" id="email" class="form-control" placeholder="Nháº­p Email" required>
+                                <button type="button" onclick="sendOtp()" class="btn btn-primary">Gá»­i OTP</button>
                             </div>
 
-                            <!-- Trường nhập OTP -->
+                            <!-- TrÆ°á»ng nháº­p OTP -->
                             <div class="input-group mt-3">
-                                <input type="text" id="otp" class="form-control" placeholder="Nhập OTP" required>
-                                <button type="button" onclick="verifyOtp()" class="btn btn-success">Xác thực OTP</button>
+                                <input type="text" id="otp" class="form-control" placeholder="Nháº­p OTP" required>
+                                <button type="button" onclick="verifyOtp()" class="btn btn-success">XÃ¡c thá»±c OTP</button>
                             </div>
                         </form>
                         <form action="#" th:action="@{/register/process}" th:object="${userRegister}" method="POST" class="d-grid gap-3 mb-2">
@@ -152,8 +152,8 @@
                         </a>
                         <div class="text-muted my-3 py-1">
                             <small>All rights recerved</small>
-                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
-                                skills.”</span>
+                            <span class="small">â€œBe open to new ideas and approaches. Develop your problem-solving
+                                skills.â€</span>
                         </div>
                         <div class="d-flex gap-3 h5 m-0">
                             <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
@@ -228,7 +228,7 @@
             </div>
         </div>
     </div>
-    <div th:replace="~{/layouts/layout :: footer}"></div>
+    <div th:replace="~{layouts/layout :: footer}"></div>
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
