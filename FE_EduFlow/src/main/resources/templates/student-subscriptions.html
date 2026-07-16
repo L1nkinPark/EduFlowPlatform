@@ -261,6 +261,18 @@
                                                 <span class="text-primary fw-bold" th:text="${'$' + course.price}">$49.00</span>
                                                 <span class="badge bg-success" th:text="#{sub.connected}">Connected</span>
                                             </div>
+                                            <div class="mt-3 pt-2 border-top">
+                                                <div class="d-flex justify-content-between mb-1 small text-muted">
+                                                    <span>Tiến độ học tập</span>
+                                                    <span th:text="${courseProgressMap.containsKey(course.courseId) ? courseProgressMap.get(course.courseId) + '%' : '0%'}">0%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" 
+                                                         th:style="'width: ' + ${courseProgressMap.containsKey(course.courseId) ? courseProgressMap.get(course.courseId) : 0} + '%'" 
+                                                         th:aria-valuenow="${courseProgressMap.containsKey(course.courseId) ? courseProgressMap.get(course.courseId) : 0}" 
+                                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-footer bg-light border-0 p-3">
                                             <a th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="btn btn-primary btn-sm w-100">

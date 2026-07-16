@@ -456,6 +456,15 @@
                                                                             <h5 class="fw-bold text-primary mb-3">
                                                                                 <i class="bi bg-primary text-white p-1 rounded bi-journal-text me-2"></i> Bài học: <span th:text="${lesson.title}">Lesson Title</span>
                                                                             </h5>
+                                                                            <div class="form-check form-switch mb-3 p-0 ps-5 fs-6 border rounded-3 p-3 bg-white shadow-sm border-success d-flex align-items-center">
+                                                                                <input class="form-check-input progress-checkbox me-3 fs-5 cursor-pointer" type="checkbox" role="switch"
+                                                                                       th:checked="${#lists.contains(completedLessonIds, lesson.lessonId)}" 
+                                                                                       th:data-lesson-id="${lesson.lessonId}"
+                                                                                       th:id="'checkLesson' + ${lesson.lessonId}">
+                                                                                <label class="form-check-label fw-bold text-success cursor-pointer" th:for="'checkLesson' + ${lesson.lessonId}">
+                                                                                    <span th:text="${#lists.contains(completedLessonIds, lesson.lessonId) ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này'}">Đánh dấu hoàn thành bài học này</span>
+                                                                                </label>
+                                                                            </div>
                                                                             <div class="row align-items-center g-4">
                                                                                 <div class="col-md-7">
                                                                                     <p class="text-dark mb-3 lh-lg" style="text-align: justify;">
@@ -981,6 +990,51 @@
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
         data-cf-beacon='{"rayId":"8d693ae26855dd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
         crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.progress-checkbox').forEach(function(chk) {
+                chk.addEventListener('change', function() {
+                    const lessonId = this.getAttribute('data-lesson-id');
+                    const label = document.querySelector('label[for="checkLesson' + lessonId + '"]');
+                    
+                    if (label) {
+                        label.innerHTML = 'Đang đồng bộ tiến độ... <span class="spinner-border spinner-border-sm" role="status"></span>';
+                    }
+                    
+                    const formData = new FormData();
+                    formData.append('lessonId', lessonId);
+                    
+                    fetch('/student/progress/toggle', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.status === 'SUCCESS') {
+                            const isCompleted = data.payload;
+                            if (isCompleted) {
+                                if (label) label.textContent = 'Bài học đã hoàn thành!';
+                                this.checked = true;
+                            } else {
+                                if (label) label.textContent = 'Đánh dấu hoàn thành bài học này';
+                                this.checked = false;
+                            }
+                        } else {
+                            alert('Không thể lưu tiến độ học tập. Vui lòng thử lại!');
+                            this.checked = !this.checked;
+                            if (label) label.textContent = this.checked ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error toggling progress:', error);
+                        alert('Lỗi kết nối server. Vui lòng thử lại!');
+                        this.checked = !this.checked;
+                        if (label) label.textContent = this.checked ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này';
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 
 <script th:src="@{/vendor/jquery/jquery.min.js}" type="243a40fc2cdb518988195319-text/javascript"></script>
