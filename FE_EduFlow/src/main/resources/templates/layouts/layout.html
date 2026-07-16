@@ -96,8 +96,44 @@
                         </li>
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
-                        <a th:href="@{/signin}" class="btn text-decoration-none text-white rounded-pill border-0">Log In</a>
-                        <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill">Sign up</a>
+                        <!-- If NOT logged in -->
+                        <div th:if="${session.userLogin == null}">
+                            <a th:href="@{/signin}" class="btn text-decoration-none text-white rounded-pill border-0">Log In</a>
+                            <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill">Sign up</a>
+                        </div>
+                        
+                        <!-- If logged in -->
+                        <div class="dropdown" th:if="${session.userLogin != null}">
+                            <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="@{/img/globel/avatar.png}" class="img-fluid rounded-circle border shadow-sm me-2" width="35" height="35" />
+                                <span class="fw-semibold text-white" th:text="${session.userLogin.fullName}">User Name</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-2 mt-2">
+                                <li>
+                                    <div class="px-3 py-2 border-bottom">
+                                        <div class="fw-bold text-dark" th:text="${session.userLogin.fullName}">Full Name</div>
+                                        <small class="text-muted" th:text="${session.userLogin.role}">Role</small>
+                                    </div>
+                                </li>
+                                <!-- Student links -->
+                                <li th:if="${session.userLogin.role == 'STUDENT'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}">My Courses</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'STUDENT'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a>
+                                </li>
+                                <!-- Instructor links -->
+                                <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}">Manage Courses</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}">Earnings</a>
+                                </li>
+                                
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}">Log Out</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,8 +221,44 @@
                         </li>
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
-                        <a th:href="@{/signin}" class="btn text-decoration-none text-white rounded-pill border-0">Log In</a>
-                        <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill">Sign up</a>
+                        <!-- If NOT logged in -->
+                        <div th:if="${session.userLogin == null}">
+                            <a th:href="@{/signin}" class="btn text-decoration-none text-dark rounded-pill border-0">Log In</a>
+                            <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill">Sign up</a>
+                        </div>
+                        
+                        <!-- If logged in -->
+                        <div class="dropdown" th:if="${session.userLogin != null}">
+                            <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="@{/img/globel/avatar.png}" class="img-fluid rounded-circle border shadow-sm me-2" width="35" height="35" />
+                                <span class="fw-semibold text-dark" th:text="${session.userLogin.fullName}">User Name</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-2 mt-2">
+                                <li>
+                                    <div class="px-3 py-2 border-bottom">
+                                        <div class="fw-bold text-dark" th:text="${session.userLogin.fullName}">Full Name</div>
+                                        <small class="text-muted" th:text="${session.userLogin.role}">Role</small>
+                                    </div>
+                                </li>
+                                <!-- Student links -->
+                                <li th:if="${session.userLogin.role == 'STUDENT'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}">My Courses</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'STUDENT'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a>
+                                </li>
+                                <!-- Instructor links -->
+                                <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}">Manage Courses</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}">Earnings</a>
+                                </li>
+                                
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}">Log Out</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

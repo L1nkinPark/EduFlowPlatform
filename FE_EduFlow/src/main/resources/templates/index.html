@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -84,10 +84,11 @@
                                 <span class="badge bg-danger text-white">SALE</span>
                                 <div class="card-price text-danger">78% Disc. <del class="text-black">$1,800</del></div>
                             </div>
-                            <div class="d-grid"><button class="btn btn-primary">
-                                <i class="bi bi-cart-fill"></i> $399
-                            </button>
-                            </div>
+                             <div class="d-grid">
+                                 <button class="btn btn-primary">
+                                     <i class="bi bi-cart-fill"></i> <span th:text="${'$' + course.price}"></span>
+                                 </button>
+                             </div>
                         </div>
                         <a th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="stretched-link"></a>
                     </div>

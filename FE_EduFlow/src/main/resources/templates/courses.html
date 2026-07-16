@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:18 GMT -->
@@ -210,11 +210,12 @@
                                     <div class="card-price text-danger">78% Disc. <del class="text-black">$1,800</del>
                                     </div>
                                 </div>
-                                <div class="d-grid"><button class="btn btn-primary">
-                                        <i class="bi bi-cart-fill"></i> $399
+                                <div class="d-grid">
+                                    <button class="btn btn-primary">
+                                        <i class="bi bi-cart-fill"></i> <span th:text="${'$' + course.price}"></span>
                                     </button>
                                 </div>
-                                <a th:href="@{/course/detail}" class="stretched-link"></a>
+                                <a th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>

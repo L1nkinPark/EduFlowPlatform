@@ -29,7 +29,9 @@ public class HomeController {
         return "index";
     }
 
-
-
-
+    @GetMapping("/logout")
+    public String logout(jakarta.servlet.http.HttpSession session) {
+        session.invalidate();
+        return "redirect:/signin";
+    }
 }

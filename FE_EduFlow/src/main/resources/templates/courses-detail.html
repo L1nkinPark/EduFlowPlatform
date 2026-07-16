@@ -33,7 +33,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item" aria-current="page">Courses</li>
-                    <li class="breadcrumb-item active" aria-current="page">Professional Photography for Instagram</li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${courses.courseName}">Professional Photography for Instagram</li>
                 </ol>
             </nav>
         </div>
@@ -42,10 +42,10 @@
     <div class="py-5">
         <div class="container">
             <div class="row" >
-                <div class="col-lg-8 col-md-12" th:each="coList : ${courses}">
+                <div class="col-lg-8 col-md-12">
                     <div >
-                        <h1 class="text-black fw-bold" th:text="${coList?.courseName}">Professional Photography for Instagram</h1>
-                        <p class="fs-4">A course by<strong> Abhay Rai</strong> </p>
+                        <h1 class="text-black fw-bold" th:text="${courses?.courseName}">Professional Photography for Instagram</h1>
+                        <p class="fs-4">A course by <strong th:text="${courses?.teacher?.fullName}">Abhay Rai</strong> </p>
                     </div>
                     <small class="bg-light pt-3 gap-2 d-block d-md-flex">
                         <div><span class="badge bg-warning pills text-black">BEST SELLER</span></div>
@@ -123,7 +123,7 @@
                                             </div>
                                             <div class="mb-4">
                                                 <h5 class="mb-4 text-dark" >Why you need this course</h5>
-                                                <p th:text="${coList.description}">description</p>
+                                                <p th:text="${courses.description}">description</p>
 
                                             </div>
                                             <img th:src="@{/img/globel/cd1.jpg}" class="img-fluid rounded-3">
@@ -732,9 +732,9 @@
                                 </ul>
                                 <hr>
                                 <div class="d-flex mb-4 justify-content-between align-items-center">
-                                    <small class="text-muted">A course by<a
-                                            class="text-decoration-none link-dark fw-bold"> Sudhindra Sujan</a><br>
-                                        Product photographer.<br>Sevilla, Spain.</small>
+                                    <small class="text-muted">A course by <a
+                                            class="text-decoration-none link-dark fw-bold" th:text="${courses?.teacher?.fullName}">Sudhindra Sujan</a><br>
+                                        Instructor</small>
                                     <div>
                                         <img th:src="@{/img/globel/avatar.png}" class="img fluid rounded-circle"
                                             width="50px">
