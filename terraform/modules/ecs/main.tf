@@ -212,7 +212,7 @@ resource "aws_ecs_task_definition" "backend" {
       secrets = [
         {
           name      = "SPRING_DATASOURCE_PASSWORD"
-          valueFrom = var.db_password_arn
+          valueFrom = "${var.db_password_arn}:password::"
         }
       ]
       logConfiguration = {
