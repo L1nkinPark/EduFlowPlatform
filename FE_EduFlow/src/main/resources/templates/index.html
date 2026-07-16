@@ -461,57 +461,13 @@
                 </a>
             </div>
         </div>
-        <div class="collapse border-top" id="collapseExample" th:each="category : ${categories}">
+        <div class="collapse border-top" id="collapseExample">
             <div class="container py-4">
                 <div class="row">
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                                                            th:href="@{/course/all}" th:text="${category.categoryName}"></a></div>
+                    <div class="col-6 col-lg-3 col-md-3 mb-2" th:each="category : ${categories}">
+                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
+                           th:href="@{'/course/all'}" th:text="${category.categoryName}">Category Name</a>
+                    </div>
                 </div>
             </div>
         </div>
