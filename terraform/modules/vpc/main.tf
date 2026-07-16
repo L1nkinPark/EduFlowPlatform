@@ -6,6 +6,7 @@
 #   - Private subnets for RDS MySQL database
 #   - Internet Gateway for public subnet traffic
 #   - No NAT Gateways to minimize costs
+#   - No VPC Flow Logs to keep resource footprint minimal
 # ==============================================================================
 
 # ------------------------------------------------------------------------------

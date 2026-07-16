@@ -43,7 +43,7 @@ module "security_groups" {
 }
 
 # ==============================================================================
-# 3. SECRETS MANAGER – DB & App Secrets
+# 3. SECRETS MANAGER – DB Secret
 # ==============================================================================
 module "secrets_manager" {
   source = "./modules/secrets-manager"
@@ -58,16 +58,14 @@ module "secrets_manager" {
 }
 
 # ==============================================================================
-# 4. S3 – Backup & Static Asset Bucket
+# 4. S3 – Storage Bucket (Static Assets & Backups)
 # ==============================================================================
 module "s3" {
   source = "./modules/s3"
 
-  content_bucket_name         = local.content_bucket_name
-  artifact_bucket_name        = local.artifact_bucket_name
-  domain_name                 = var.domain_name
-  cloudfront_distribution_arn = "" # No CloudFront in this architecture
-  tags                        = local.common_tags
+  bucket_name = local.bucket_name
+  domain_name = var.domain_name
+  tags        = local.common_tags
 }
 
 # ==============================================================================
@@ -130,21 +128,4 @@ module "ecs" {
   fe_desired_count     = var.fe_desired_count
   be_desired_count     = var.be_desired_count
   tags                 = local.common_tags
-}
-
-# ==============================================================================
-# 8. MONITORING – CloudWatch Alarms & Dashboard
-# ==============================================================================
-module "monitoring" {
-  source = "./modules/monitoring"
-
-  name_prefix      = local.name_prefix
-  environment      = var.environment
-  aws_region       = var.aws_region
-  alarm_email      = var.alarm_email
-  ecs_cluster_name = module.ecs.cluster_name
-  fe_service_name  = "${local.name_prefix}-frontend"
-  be_service_name  = "${local.name_prefix}-backend"
-  rds_instance_id  = module.rds.db_instance_id
-  tags             = local.common_tags
 }

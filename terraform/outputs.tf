@@ -42,11 +42,11 @@ output "rds_address" {
 }
 
 # ------------------------------------------------------------------------------
-# S3 Buckets
+# S3 Bucket
 # ------------------------------------------------------------------------------
-output "s3_content_bucket" {
-  description = "Name of the S3 content/backup bucket"
-  value       = module.s3.content_bucket_id
+output "s3_bucket" {
+  description = "Name of the S3 bucket"
+  value       = module.s3.bucket_id
 }
 
 # ------------------------------------------------------------------------------
@@ -65,12 +65,4 @@ output "frontend_ecr_url" {
 output "backend_ecr_url" {
   description = "ECR Repository URL for Backend container"
   value       = module.ecs.backend_ecr_url
-}
-
-# ------------------------------------------------------------------------------
-# Monitoring
-# ------------------------------------------------------------------------------
-output "cloudwatch_dashboard_url" {
-  description = "CloudWatch dashboard URL"
-  value       = "https://${var.aws_region}.console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#dashboards:name=${local.name_prefix}-dashboard"
 }
