@@ -456,33 +456,36 @@
                                                                             <h5 class="fw-bold text-primary mb-3">
                                                                                 <i class="bi bg-primary text-white p-1 rounded bi-journal-text me-2"></i> Bài học: <span th:text="${lesson.title}">Lesson Title</span>
                                                                             </h5>
-                                                                            <div class="form-check form-switch mb-3 p-0 ps-5 fs-6 border rounded-3 p-3 bg-white shadow-sm border-success d-flex align-items-center">
-                                                                                <input class="form-check-input progress-checkbox me-3 fs-5 cursor-pointer" type="checkbox" role="switch"
-                                                                                       th:checked="${#lists.contains(completedLessonIds, lesson.lessonId)}" 
-                                                                                       th:data-lesson-id="${lesson.lessonId}"
-                                                                                       th:id="'checkLesson' + ${lesson.lessonId}">
-                                                                                <label class="form-check-label fw-bold text-success cursor-pointer" th:for="'checkLesson' + ${lesson.lessonId}">
-                                                                                    <span th:text="${#lists.contains(completedLessonIds, lesson.lessonId) ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này'}">Đánh dấu hoàn thành bài học này</span>
-                                                                                </label>
-                                                                            </div>
-                                                                            <div class="row align-items-center g-4">
-                                                                                <div class="col-md-7">
-                                                                                    <p class="text-dark mb-3 lh-lg" style="text-align: justify;">
-                                                                                        Chào mừng bạn đến với bài học <strong><span th:text="${lesson.title}">Lesson Title</span></strong>. 
-                                                                                        Trong nội dung này, chúng ta sẽ học lý thuyết kết hợp sơ đồ tư duy thực chiến và các bước tự luyện tập tại nhà. 
-                                                                                        Hãy nghiên cứu kỹ tài liệu học tập, thực hành theo mẫu và gửi kết quả lên hệ thống để nhận đánh giá trực tiếp từ Giảng viên.
-                                                                                    </p>
-                                                                                    <ul class="list-unstyled mb-0 text-muted small">
-                                                                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Thời lượng tự học: <strong th:text="${lesson.duration}">10</strong> phút.</li>
-                                                                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Tài liệu: Bài đọc lý thuyết + Hình ảnh trực quan.</li>
-                                                                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Giáo trình được kiểm duyệt chất lượng cao.</li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                                <div class="col-md-5 text-center">
-                                                                                    <img th:src="@{'/img/globel/' + (${lesson.lessonId % 3 == 0 ? 'b3.jpg' : (lesson.lessonId % 3 == 1 ? 'b1.jpg' : 'b2.jpg')})}" 
-                                                                                         class="img-fluid rounded border shadow-sm w-100" style="max-height: 180px; object-fit: cover;" alt="Lesson Image" />
-                                                                                </div>
-                                                                            </div>
+                                                                            <div class="border rounded-3 p-3 bg-white shadow-sm border-success mb-3">
+                                                                                 <div class="form-check form-switch m-0 d-flex align-items-center">
+                                                                                     <input class="form-check-input progress-checkbox me-3 fs-5 cursor-pointer" type="checkbox" role="switch"
+                                                                                            th:checked="${#lists.contains(completedLessonIds, lesson.lessonId)}" 
+                                                                                            th:data-lesson-id="${lesson.lessonId}"
+                                                                                            th:id="'checkLesson' + ${lesson.lessonId}"
+                                                                                            style="margin-left: 0;">
+                                                                                     <label class="form-check-label fw-bold text-success cursor-pointer" th:for="'checkLesson' + ${lesson.lessonId}">
+                                                                                         <span th:text="${#lists.contains(completedLessonIds, lesson.lessonId) ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này'}">Đánh dấu hoàn thành bài học này</span>
+                                                                                     </label>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <div class="row align-items-center g-4">
+                                                                                 <div class="col-md-7">
+                                                                                     <p class="text-dark mb-3 lh-lg" style="text-align: justify;">
+                                                                                         Chào mừng bạn đến với bài học <strong><span th:text="${lesson.title}">Lesson Title</span></strong>. 
+                                                                                         Trong nội dung này, chúng ta sẽ học lý thuyết kết hợp sơ đồ tư duy thực chiến và các bước tự luyện tập tại nhà. 
+                                                                                         Hãy nghiên cứu kỹ tài liệu học tập, thực hành theo mẫu và gửi kết quả lên hệ thống để nhận đánh giá trực tiếp từ Giảng viên.
+                                                                                     </p>
+                                                                                     <ul class="list-unstyled mb-0 text-muted small">
+                                                                                         <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Thời lượng tự học: <strong th:text="${lesson.duration}">10</strong> phút.</li>
+                                                                                         <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Tài liệu: Bài đọc lý thuyết + Hình ảnh trực quan.</li>
+                                                                                         <li><i class="bi bi-check-circle-fill text-success me-2"></i> Giáo trình được kiểm duyệt chất lượng cao.</li>
+                                                                                     </ul>
+                                                                                 </div>
+                                                                                 <div class="col-md-5 text-center">
+                                                                                     <img th:src="@{/img/globel/{file}(file=${lesson.lessonId % 3 == 0 ? 'b3.jpg' : (lesson.lessonId % 3 == 1 ? 'b1.jpg' : 'b2.jpg')})}" 
+                                                                                          class="img-fluid rounded border shadow-sm w-100" style="max-height: 180px; object-fit: cover;" alt="Lesson Image" />
+                                                                                 </div>
+                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
