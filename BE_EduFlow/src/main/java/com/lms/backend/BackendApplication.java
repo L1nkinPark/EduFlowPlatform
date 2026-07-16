@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@org.springframework.cache.annotation.EnableCaching
 public class BackendApplication  implements CommandLineRunner {
 //
 //    @Autowired

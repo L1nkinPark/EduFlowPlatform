@@ -12,7 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "chapters")
+@Table(name = "chapters", indexes = {
+    @Index(name = "idx_chapters_course", columnList = "course_id")
+})
 public class Chapter implements Serializable {
 
     @Id

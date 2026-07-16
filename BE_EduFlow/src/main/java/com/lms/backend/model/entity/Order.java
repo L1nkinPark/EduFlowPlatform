@@ -9,13 +9,16 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = {
+    @Index(name = "idx_orders_user", columnList = "account_id")
+})
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "account_id")
     private Account user;
 
     private double totalAmount;

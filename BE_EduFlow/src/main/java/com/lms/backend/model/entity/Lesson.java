@@ -9,7 +9,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "lessons")
+@Table(name = "lessons", indexes = {
+    @Index(name = "idx_lessons_chapter", columnList = "chapter_id")
+})
 public class Lesson implements Serializable {
 
     @Id

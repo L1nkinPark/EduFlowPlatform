@@ -25,16 +25,19 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     private CategoryService categoryService;
 
     @Override
+    @org.springframework.cache.annotation.Cacheable("subcategories")
     public List<SubCategory> findAllSubCategory() {
         return subCategoryRepository.findAll();
     }
 
     @Override
+    @org.springframework.cache.annotation.Cacheable(value = "subcategories", key = "#pageable")
     public Page<SubCategory> getAllSubCategory(Pageable pageable) {
         return subCategoryRepository.findAll(pageable);
     }
 
     @Override
+    @org.springframework.cache.annotation.CacheEvict(value = "subcategories", allEntries = true)
     public SubCategory saveSubCategory(SubCategoryRequest subCategoryRequest) {
         SubCategory subCategory = null;
         if (subCategoryRequest == null || subCategoryRequest.getSubCategoryId() == 0) {
@@ -57,6 +60,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
+    @org.springframework.cache.annotation.Cacheable(value = "subcategories", key = "#subCategory")
     public SubCategory findById(Long subCategory) {
         Optional<SubCategory> optionalSubCategory = subCategoryRepository.findById(subCategory);
         if (optionalSubCategory.isPresent()) {
@@ -66,6 +70,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
+    @org.springframework.cache.annotation.CacheEvict(value = "subcategories", allEntries = true)
     public boolean deleteById(Long subCategoryId) {
         SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElse(null);
         if (subCategory != null) {
@@ -77,6 +82,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
+    @org.springframework.cache.annotation.Cacheable(value = "subcategories", key = "#name")
     public SubCategory findBySubCategoryName(String name) {
         return subCategoryRepository.findBySubCategoryName(name).orElse(null);
     }

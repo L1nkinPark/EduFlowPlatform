@@ -7,7 +7,10 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "order_items")
+@Table(name = "order_items", indexes = {
+    @Index(name = "idx_order_items_order", columnList = "order_id"),
+    @Index(name = "idx_order_items_course", columnList = "course_id")
+})
 public class OrderItem implements Serializable {
 
     @Id

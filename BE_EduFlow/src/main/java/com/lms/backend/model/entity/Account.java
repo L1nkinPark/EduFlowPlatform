@@ -8,7 +8,10 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "account")
+@Table(name = "account", indexes = {
+    @Index(name = "idx_account_username", columnList = "username"),
+    @Index(name = "idx_account_email", columnList = "email")
+})
 public class Account implements Serializable {
 
     @Id

@@ -20,12 +20,14 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Override
+	@org.springframework.cache.annotation.Cacheable("categories")
 	public List<Category> findAllCategory() {
 		// TODO Auto-generated method stub
 		return categoryRepository.findAll();
 	}
 
 	@Override
+	@org.springframework.cache.annotation.Cacheable(value = "categories", key = "#pageable")
 	public Page<Category> getAllCategory(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return categoryRepository.findAll(pageable);
@@ -34,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
 	@Override
+	@org.springframework.cache.annotation.CacheEvict(value = "categories", allEntries = true)
 	public Category saveCategory(CategoryRequest categoryRequest) {
 		Category category = null;
 		if (categoryRequest == null || categoryRequest.getCategoryId() == 0) {
@@ -52,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@org.springframework.cache.annotation.Cacheable(value = "categories", key = "#categoryId")
 	public Category findById(Long categoryId) {
 		// TODO Auto-generated method stub
 		Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
@@ -63,6 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@org.springframework.cache.annotation.CacheEvict(value = "categories", allEntries = true)
 	public boolean deleteById(Long categoryId) {
 		// TODO Auto-generated method stub
 		Category category = categoryRepository.findById(categoryId).orElse(null);
@@ -75,6 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@org.springframework.cache.annotation.Cacheable(value = "categories", key = "#name")
 	public Category findByCategoryName(String name) {
 		return categoryRepository.findByCategoryName(name).orElse(null);
 	}
