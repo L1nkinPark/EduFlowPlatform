@@ -36,13 +36,19 @@ public class AppConfig implements WebMvcConfigurer {
         return authProvider;
     }
 
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+    private String mailUsername;
+
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.password}")
+    private String mailPassword;
+
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("voduchieu42@gmail.com");
-        mailSender.setPassword("oesr rsnh nall cxyh");
+        mailSender.setUsername(mailUsername);
+        mailSender.setPassword(mailPassword);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
