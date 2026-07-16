@@ -97,7 +97,7 @@ public class OrderController {
             vnp_Params.put("vnp_Version", "2.1.0");
             vnp_Params.put("vnp_Command", "pay");
             vnp_Params.put("vnp_TmnCode", com.lms.backend.util.VnPayUtil.TMN_CODE);
-            vnp_Params.put("vnp_Amount", String.valueOf(Math.round(course.getPrice() * 25000.0 * 100.0)));
+            vnp_Params.put("vnp_Amount", "10000000"); // 100,000 VND for testing
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", txnRef);
             vnp_Params.put("vnp_OrderInfo", "Thanh toan khoa hoc: " + course.getCourseName());
