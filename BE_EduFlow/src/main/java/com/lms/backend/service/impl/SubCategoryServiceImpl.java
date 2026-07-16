@@ -37,7 +37,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Override
     public SubCategory saveSubCategory(SubCategoryRequest subCategoryRequest) {
         SubCategory subCategory = null;
-        if (subCategory == null || subCategoryRequest.getSubCategoryId() == 0) {
+        if (subCategoryRequest == null || subCategoryRequest.getSubCategoryId() == 0) {
             subCategory = new SubCategory();
         } else {
             subCategory = findById(subCategoryRequest.getSubCategoryId());
