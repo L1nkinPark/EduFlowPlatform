@@ -103,4 +103,40 @@ public class OrderServiceImpl implements OrderService {
             return false;
         }
     }
+
+    @Override
+    public ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin) {
+        try {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl + "/vnpay-url")
+                    .queryParam("courseId", courseId)
+                    .queryParam("redirectOrigin", redirectOrigin);
+
+            ResponseEntity<ApiResponse<String>> responseEntity = restTemplate.exchange(
+                    builder.toUriString(),
+                    HttpMethod.GET,
+                    getAuthorizedEntity(),
+                    new ParameterizedTypeReference<ApiResponse<String>>() {}
+            );
+            return responseEntity.getBody();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public ApiResponse<String> verifyVnPayCallback(Map<String, String> params) {
+        try {
+            ResponseEntity<ApiResponse<String>> responseEntity = restTemplate.exchange(
+                    apiUrl + "/vnpay-callback",
+                    HttpMethod.POST,
+                    new HttpEntity<>(params, getAuthorizedEntity().getHeaders()),
+                    new ParameterizedTypeReference<ApiResponse<String>>() {}
+            );
+            return responseEntity.getBody();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
