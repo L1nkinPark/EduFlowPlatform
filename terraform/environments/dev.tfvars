@@ -15,9 +15,9 @@ availability_zones        = ["ap-southeast-1a", "ap-southeast-1b"]
 # Domain
 domain_name = "dev.eduflow.local"
 
-# ECS Fargate Tasks
-fe_image         = "nginx:alpine"
-be_image         = "nginx:alpine"
+# ECS Fargate Tasks (ECR Repositories)
+fe_image         = "379098698141.dkr.ecr.ap-southeast-1.amazonaws.com/eduflow-dev-frontend:latest"
+be_image         = "379098698141.dkr.ecr.ap-southeast-1.amazonaws.com/eduflow-dev-backend:latest"
 fe_desired_count = 1
 be_desired_count = 1
 

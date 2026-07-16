@@ -1,0 +1,61 @@
+name: Deploy to Amazon ECS Fargate
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-southeast-1
+  ECS_CLUSTER: eduflow-dev-cluster
+  FE_SERVICE: eduflow-dev-frontend
+  BE_SERVICE: eduflow-dev-backend
+  FE_ECR_REPO: eduflow-dev-frontend
+  BE_ECR_REPO: eduflow-dev-backend
+
+jobs:
+  deploy:
+    name: Build, Push, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    # --- Build & Push Frontend ---
+    - name: Build, Tag, and Push Frontend Image to ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG ./FE_EduFlow
+        docker push $ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG
+
+    # --- Build & Push Backend ---
+    - name: Build, Tag, and Push Backend Image to ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG ./BE_EduFlow
+        docker push $ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG
+
+    # --- Trigger ECS Deployments (Force New Deployment) ---
+    - name: Deploy Frontend Task to Amazon ECS
+      run: |
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.FE_SERVICE }} --force-new-deployment
+
+    - name: Deploy Backend Task to Amazon ECS
+      run: |
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.BE_SERVICE }} --force-new-deployment
