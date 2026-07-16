@@ -33,5 +33,5 @@ public class CourseResponse {
 
     private AccountResponse teacher;
 
-
+    private java.util.List<ChapterResponse> chapters;
 }

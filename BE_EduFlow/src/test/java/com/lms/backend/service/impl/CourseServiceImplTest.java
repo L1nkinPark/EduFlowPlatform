@@ -98,7 +98,7 @@ public class CourseServiceImplTest {
 
         when(courseRepository.save(any(Course.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Course result = courseService.saveCourse(request);
+        Course result = courseService.saveCourse(request, null);
 
         assertNotNull(result);
         assertEquals("New Course", result.getCourseName());
@@ -117,7 +117,7 @@ public class CourseServiceImplTest {
         when(courseRepository.findById("course1")).thenReturn(Optional.of(course));
         when(courseRepository.save(any(Course.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Course result = courseService.saveCourse(request);
+        Course result = courseService.saveCourse(request, null);
 
         assertNotNull(result);
         assertEquals("course1", result.getCourseId());

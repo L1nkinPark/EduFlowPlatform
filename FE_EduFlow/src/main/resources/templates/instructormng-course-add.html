@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/instructor-my-courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:28 GMT -->
@@ -57,7 +57,7 @@
         <div class="col-md-8 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <form action="/instructor/course/add" method="POST" th:object="${course}">
+                    <form th:action="@{/instructor/courses/add}" method="POST" th:object="${course}">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">

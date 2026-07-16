@@ -27,7 +27,7 @@ public class CourseResponse {
 
     private String thumbnail;
 
-//    private List<Chapter> chapters = new ArrayList<>();
+    private java.util.List<ChapterResponse> chapters;
 
     private AccountResponse teacher;
 

@@ -15,9 +15,5 @@ public interface CourseService {
 
 //    Page<Course> searchCourse(Pageable pageable, String keyword);
 //
-//    Course
-//
-//    Course saveCourse(CourseRequest courseRequest);
-//
-//    boolean deleteById(String courseId);
+    ApiResponse<CourseResponse> saveCourse(CourseResponse courseResponse);
 }

@@ -7,6 +7,7 @@ import com.lms.backend.model.mapper.CourseMapper;
 import com.lms.backend.model.request.CourseRequest;
 import com.lms.backend.model.response.ApiResponse;
 import com.lms.backend.repository.CourseRepository;
+import com.lms.backend.security.CustomUserDetails;
 import com.lms.backend.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,9 +65,11 @@ public class CourseController {
 
     //Add new Course
     @PostMapping
-    public ResponseEntity<ApiResponse> saveCourse(@RequestBody CourseRequest courseRequest){
+    public ResponseEntity<ApiResponse> saveCourse(@RequestBody CourseRequest courseRequest,
+                                                   @AuthenticationPrincipal CustomUserDetails userDetails){
 
-        Course course = courseSevice.saveCourse(courseRequest);
+        com.lms.backend.model.entity.Account instructor = userDetails != null ? userDetails.getAccount() : null;
+        Course course = courseSevice.saveCourse(courseRequest, instructor);
 
         ApiResponse response = new ApiResponse();
 
@@ -77,11 +81,13 @@ public class CourseController {
 
     //Update
     @PutMapping("/{courseId}")
-    public ResponseEntity<ApiResponse> updateCourse(@RequestBody CourseRequest courseRequest, @PathVariable String courseId){
+    public ResponseEntity<ApiResponse> updateCourse(@RequestBody CourseRequest courseRequest, @PathVariable String courseId,
+                                                   @AuthenticationPrincipal CustomUserDetails userDetails){
 
         ApiResponse response = new ApiResponse();
 
-        Course course = courseSevice.saveCourse(courseRequest);
+        com.lms.backend.model.entity.Account instructor = userDetails != null ? userDetails.getAccount() : null;
+        Course course = courseSevice.saveCourse(courseRequest, instructor);
 
         response.ok("OK", courseMapper.convertToDTO(course));
 

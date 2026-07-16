@@ -38,12 +38,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course saveCourse(CourseRequest courseRequest) {
+    public Course saveCourse(CourseRequest courseRequest, com.lms.backend.model.entity.Account instructor) {
         Course course = null;
 
-        if (courseRequest.getCourseId() == null) {
+        if (courseRequest.getCourseId() == null || courseRequest.getCourseId().trim().isEmpty()) {
             course = new Course();
-
         } else {
             course = getCourseById(courseRequest.getCourseId());
         }
@@ -56,7 +55,13 @@ public class CourseServiceImpl implements CourseService {
         course.setDescription(courseRequest.getDescription());
         course.setPrice(courseRequest.getPrice());
         course.setStatus(courseRequest.getStatus());
-//        course.setSubCategory(courseRequest.getSubCategory());
+        course.setImage(courseRequest.getImage());
+        course.setThumbnail(courseRequest.getThumbnail());
+        course.setStartDate(courseRequest.getStartDate());
+        course.setEndDate(courseRequest.getEndDate());
+        if (instructor != null) {
+            course.setAccount(instructor);
+        }
 
         return courseRepository.save(course);
     }

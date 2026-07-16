@@ -66,11 +66,11 @@
                                     data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
                                     aria-selected="true">Information</button>
                             </li>
-<!--                            <li class="nav-item me-3" role="presentation">-->
-<!--                                <button class="nav-link px-0 py-3" id="pills-profile-tab" data-bs-toggle="pill"-->
-<!--                                    data-bs-target="#pills-profile" type="button" role="tab"-->
-<!--                                    aria-controls="pills-profile" aria-selected="false">Content</button>-->
-<!--                            </li>-->
+                            <li class="nav-item me-3" role="presentation">
+                                <button class="nav-link px-0 py-3" id="pills-profile-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-profile" type="button" role="tab"
+                                    aria-controls="pills-profile" aria-selected="false">Content</button>
+                            </li>
                             <li class="nav-item me-3" role="presentation">
                                 <button class="nav-link text-muted px-0 py-3" id="pills-Community-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-Community" type="button" role="tab"
@@ -390,214 +390,89 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            <!-- Content -->
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <section>
+                                            <h4 class="pb-2 text-dark">Course Curriculum</h4>
+                                            
+                                            <!-- If chapters are empty -->
+                                            <div class="text-center py-5 bg-white rounded-3 shadow-sm mb-4" th:if="${courses.chapters == null || #lists.isEmpty(courses.chapters)}">
+                                                <i class="bi bi-journal-x fs-1 text-muted"></i>
+                                                <p class="text-muted mt-2 mb-0">No chapters or lessons available for this course yet.</p>
+                                            </div>
 
-<!--                            Content-->
-<!--                            <div class="tab-pane fade" id="pills-profile" role="tabpanel"-->
-<!--                                aria-labelledby="pills-profile-tab">-->
-<!--                                <div class="row">-->
-<!--                                    <div class="col-lg-12">-->
-<!--                                        <section>-->
-<!--                                            <h4 class="pb-2 text-dark">Course overview</h4>-->
-<!--                                            <div class="bg-white rounded-3 shadow-sm overflow-hidden px-4 py-2 mb-5">-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col">-->
-<!--                                                        <div class="d-flex align-items-center my-3">-->
-<!--                                                            <div class="w-40 bg-light rounded-circle p-2 border me-3">-->
-<!--                                                                <i class="bi bi-film"></i>-->
-<!--                                                            </div>-->
-<!--                                                            <span class="small text-dark">16 lessons <span-->
-<!--                                                                    class="small text-muted">(1h 57m)</span></span>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="d-flex align-items-center my-3">-->
-<!--                                                            <div class="w-40 bg-light rounded-circle p-2 border me-3">-->
-<!--                                                                <i class="bi bi-alt"></i>-->
-<!--                                                            </div>-->
-<!--                                                            <span class="small text-dark">9 exercises</span>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="col">-->
-<!--                                                        <div class="d-flex align-items-center my-3">-->
-<!--                                                            <div class="w-40 bg-light rounded-circle p-2 border me-3">-->
-<!--                                                                <i class="bi bi-file-earmark-arrow-down"></i>-->
-<!--                                                            </div>-->
-<!--                                                            <span class="small text-dark">11 Download <span-->
-<!--                                                                    class="small text-muted">(6 files)</span></span>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="d-flex align-items-center my-3">-->
-<!--                                                            <div class="w-40 bg-light rounded-circle p-2 border me-3">-->
-<!--                                                                <i class="bi bi-clipboard"></i>-->
-<!--                                                            </div>-->
-<!--                                                            <span class="small text-dark">Course Final Project</span>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-5">-->
-<!--                                                <h5 class="text-dark">C1: Introduction</h5>-->
-<!--                                                <hr>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Presentation</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Great Instagrammers</p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-5">-->
-<!--                                                <h5 class="text-dark">C2: Before the photo</h5>-->
-<!--                                                <hr>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>materials</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Achieve the best quality</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Composition</p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-5">-->
-<!--                                                <h5 class="text-dark">C3: The shot</h5>-->
-<!--                                                <hr>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>The brand</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Create an environment</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Compose a Flatlay</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Interior photography</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Creative ideas</p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-5">-->
-<!--                                                <h5 class="text-dark">C4: Editing a photo</h5>-->
-<!--                                                <hr>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Editing photos with Snapseed</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Editing photos with VSCO</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Editing photos with Instagram</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>How to get on Instagram and schedule your posts</p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-5">-->
-<!--                                                <h5 class="text-dark">C5: Instagram Stories</h5>-->
-<!--                                                <hr>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Make the photos</p>-->
-<!--                                                </div>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Use the Instagram Stories tools</p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-5">-->
-<!--                                                <h5 class="text-dark">Final Project</h5>-->
-<!--                                                <hr>-->
-<!--                                                <div class="d-flex">-->
-<!--                                                    <i class="bi bi-shield-lock text-muted me-2"></i>-->
-<!--                                                    <p>Professional photography for Instagram</p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="my-5">-->
-<!--                                                <h5 class="pb-3 text-dark">Latest projects</h5>-->
-<!--                                                <div-->
-<!--                                                    class="row gy-3 row-cols-xl-4 row-cols-lg-4 row-cols-md-2 row-cols-2">-->
-<!--                                                    <div class="col">-->
-<!--                                                        <div-->
-<!--                                                            class="card border-0 rounded-3 overflow-hidden shadow-sm oneline-text position-relative">-->
-<!--                                                            <img th:src="@{/img/category/category1.jpg}"-->
-<!--                                                                class="img-fluid">-->
-<!--                                                            <div class="card-body m-0 p-3">-->
-<!--                                                                <p class="card-text mb-0 text-dark">Mon projet du cours-->
-<!--                                                                    :</p>-->
-<!--                                                                <small class="text-muted">Iamosahan</small>-->
-<!--                                                            </div>-->
-<!--                                                            <a href="projects.html" class="stretched-link"></a>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="col">-->
-<!--                                                        <div-->
-<!--                                                            class="card border-0 rounded-3 overflow-hidden shadow-sm oneline-text position-relative">-->
-<!--                                                            <img th:src="@{/img/category/category2.jpg}"-->
-<!--                                                                class="img-fluid">-->
-<!--                                                            <div class="card-body m-0 p-3">-->
-<!--                                                                <p class="card-text mb-0 text-dark">Meu projeto do-->
-<!--                                                                    curso:</p>-->
-<!--                                                                <small class="text-muted">Sirlanefreitas.ac</small>-->
-<!--                                                            </div>-->
-<!--                                                            <a href="projects.html" class="stretched-link"></a>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="col">-->
-<!--                                                        <div-->
-<!--                                                            class="card border-0 rounded-3 overflow-hidden shadow-sm oneline-text position-relative">-->
-<!--                                                            <img th:src="@{/img/category/category3.jpg}"-->
-<!--                                                                class="img-fluid">-->
-<!--                                                            <div class="card-body m-0 p-3">-->
-<!--                                                                <p class="card-text mb-0 text-dark">Mon projet du cours-->
-<!--                                                                    :</p>-->
-<!--                                                                <small class="text-muted">Arsenaultnicole</small>-->
-<!--                                                            </div>-->
-<!--                                                            <a href="projects.html" class="stretched-link"></a>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="col">-->
-<!--                                                        <div-->
-<!--                                                            class="card border-0 rounded-3 overflow-hidden shadow-sm oneline-text position-relative">-->
-<!--                                                            <img th:src="@{/img/category/category4.jpg}"-->
-<!--                                                                class="img-fluid">-->
-<!--                                                            <div class="card-body m-0 p-3">-->
-<!--                                                                <p class="card-text mb-0 text-dark">Mi Proyecto del-->
-<!--                                                                    curso:</p>-->
-<!--                                                                <small class="text-muted">Karytrindade</small>-->
-<!--                                                            </div>-->
-<!--                                                            <a href="projects.html" class="stretched-link"></a>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <hr>-->
-<!--                                            <div class="mt-4">-->
-<!--                                                <p class="py-2">Abhay Rai is a product photographer for Melon Blanc, a-->
-<!--                                                    multidisciplinary studio that is responsible for developing all-->
-<!--                                                    visual aspects of a brand.</p>-->
-<!--                                                <p class="pb-0 mb-0">Mina's mission is to create visual content for all-->
-<!--                                                    types of successful brands, such as Charuca, Lucia Be, The Singular-->
-<!--                                                    Olivia or La CompaÃ±Ã­a FantÃ¡stica, and many others. Taking and-->
-<!--                                                    editing photographs for Instagram means taking care of every detail,-->
-<!--                                                    even those that seem imperfect.</p>-->
-<!--                                            </div>-->
-<!--                                        </section>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                            <!-- If chapters exist -->
+                                            <div class="accordion mb-5" id="curriculumAccordion" th:if="${courses.chapters != null && !#lists.isEmpty(courses.chapters)}">
+                                                <div class="accordion-item border-0 shadow-sm rounded-3 overflow-hidden mb-3" th:each="chapter, iterStat : ${courses.chapters}">
+                                                    <h2 class="accordion-header" th:id="'heading' + ${chapter.chapterId}">
+                                                        <button class="accordion-button bg-white text-dark fw-bold" type="button" 
+                                                                data-bs-toggle="collapse" 
+                                                                th:data-bs-target="'#collapse' + ${chapter.chapterId}" 
+                                                                aria-expanded="true" 
+                                                                th:aria-controls="'collapse' + ${chapter.chapterId}">
+                                                            <div class="d-flex flex-column align-items-start">
+                                                                <span th:text="${'Chapter ' + (iterStat.index + 1) + ': ' + chapter.title}">Chapter 1: Intro</span>
+                                                                <small class="text-muted fw-normal mt-1" th:text="${chapter.description}">Description</small>
+                                                            </div>
+                                                        </button>
+                                                    </h2>
+                                                    <div th:id="'collapse' + ${chapter.chapterId}" class="accordion-collapse collapse show" 
+                                                         th:aria-labelledby="'heading' + ${chapter.chapterId}">
+                                                        <div class="accordion-body bg-light p-0">
+                                                            <!-- If lessons are empty -->
+                                                            <div class="p-3 text-center text-muted" th:if="${chapter.lessons == null || #lists.isEmpty(chapter.lessons)}">
+                                                                No lessons in this chapter.
+                                                            </div>
+                                                            <!-- If lessons exist -->
+                                                            <div class="list-group list-group-flush" th:if="${chapter.lessons != null && !#lists.isEmpty(chapter.lessons)}">
+                                                                <div class="list-group-item d-flex flex-column align-items-stretch border-0 py-3 px-4 bg-white border-bottom" th:each="lesson : ${chapter.lessons}">
+                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <i th:class="${isPurchased ? 'bi bi-play-circle-fill text-primary me-3 fs-5' : 'bi bi-lock-fill text-muted me-3 fs-5'}"></i>
+                                                                            <div>
+                                                                                <span class="fw-semibold text-dark" th:text="${lesson.title}">Lesson Title</span>
+                                                                                <div class="small text-muted mt-1" th:text="${lesson.duration + ' mins'}">10 mins</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div th:if="${isPurchased && lesson.video != null && !#strings.isEmpty(lesson.video)}">
+                                                                            <button class="btn btn-sm btn-outline-primary" type="button" 
+                                                                                    data-bs-toggle="collapse" 
+                                                                                    th:data-bs-target="'#videoPlayer' + ${lesson.lessonId}">
+                                                                                Watch Lesson
+                                                                            </button>
+                                                                        </div>
+                                                                        <div th:if="${!isPurchased}">
+                                                                            <span class="badge bg-secondary">Locked</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!-- Video player for purchased lesson -->
+                                                                    <div th:if="${isPurchased && lesson.video != null && !#strings.isEmpty(lesson.video)}" 
+                                                                         th:id="'videoPlayer' + ${lesson.lessonId}" 
+                                                                         class="collapse mt-3">
+                                                                        <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden bg-black">
+                                                                            <!-- If youtube video -->
+                                                                            <iframe th:if="${#strings.contains(lesson.video, 'youtube.com') || #strings.contains(lesson.video, 'youtu.be')}" 
+                                                                                    th:src="${lesson.video}" 
+                                                                                    allowfullscreen></iframe>
+                                                                            <!-- Standard video -->
+                                                                            <video th:if="${!#strings.contains(lesson.video, 'youtube.com') && !#strings.contains(lesson.video, 'youtu.be')}" 
+                                                                                   th:src="${lesson.video}" 
+                                                                                   controls></video>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="tab-pane fade" id="pills-Projects" role="tabpanel"
                                 aria-labelledby="pills-Projects-tab">

@@ -15,7 +15,7 @@ public interface CourseService {
 
     Course getCourseById(String courseId);
 
-    Course saveCourse(CourseRequest courseRequest);
+    Course saveCourse(CourseRequest courseRequest, com.lms.backend.model.entity.Account instructor);
 
     boolean deleteById(String courseId);
 }

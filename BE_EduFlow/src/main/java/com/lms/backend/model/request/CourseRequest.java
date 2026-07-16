@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,6 +14,10 @@ public class CourseRequest implements Serializable {
     private String description;
     private double price;
     private String status;
+    private String image;
+    private String thumbnail;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     //Category
 //    private String subCategoryName;

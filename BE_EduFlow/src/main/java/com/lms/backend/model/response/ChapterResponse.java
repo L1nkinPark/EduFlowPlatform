@@ -1,4 +1,4 @@
-package com.lms.frontend.model.response;
+package com.lms.backend.model.response;
 
 import lombok.Getter;
 import lombok.Setter;

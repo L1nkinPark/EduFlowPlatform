@@ -123,4 +123,31 @@ public class CourseServiceImplTest {
                 any(ParameterizedTypeReference.class)
         );
     }
+
+    @Test
+    void testSaveCourse_Success() {
+        ApiResponse<CourseResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setStatus("SUCCESS");
+        apiResponse.setPayload(courseResponse);
+        ResponseEntity<ApiResponse<CourseResponse>> responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        when(restTemplate.exchange(
+                anyString(),
+                eq(HttpMethod.POST),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class)
+        )).thenReturn(responseEntity);
+
+        ApiResponse<CourseResponse> result = courseService.saveCourse(courseResponse);
+
+        assertNotNull(result);
+        assertEquals("SUCCESS", result.getStatus());
+        assertEquals("course123", result.getPayload().getCourseId());
+        verify(restTemplate, times(1)).exchange(
+                anyString(),
+                eq(HttpMethod.POST),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class)
+        );
+    }
 }
