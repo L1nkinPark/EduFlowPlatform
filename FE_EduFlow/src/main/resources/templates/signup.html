@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <title>Edutree â€“ Online Course & Education HTML5 Template</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -22,7 +22,7 @@
 </head>
 
 <body class="bg-light">
-    <div th:replace="~{/layouts/layout :: header_2}"></div>
+    <div th:replace="~{layouts/layout :: header_2}"></div>
     <section class="my-4">
         <div class="container py-5">
             <div class="row justify-content-center align-items-center">
@@ -32,9 +32,9 @@
                     <p class="lead text-dark-50 mb-0">Learn from expert professionals and<br> join
                         the largest online community for creatives.
                     </p>
-                </div>
                 <div class="col-lg-5">
                     <div class="text-center rounded-3 bg-white shadow-sm p-5">
+                        <div th:if="${error}" class="alert alert-danger mb-3" role="alert" th:text="${error}"></div>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
                             <!-- Trường nhập email -->
                             <div class="input-group">
@@ -49,19 +49,20 @@
                             </div>
                         </form>
                         <form action="#" th:action="@{/register/process}" th:object="${userRegister}" method="POST" class="d-grid gap-3 mb-2">
+                            <input type="hidden" th:field="*{email}" id="hiddenEmail">
                             <div class="d-grid d-md-flex gap-3">
-                                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Enter First Name">
-                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Enter Last Name">
+                                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Enter First Name" required>
+                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Enter Last Name" required>
                             </div>
                             
-                            <input type="password" th:field="*{password}" class="form-control" placeholder="Enter Password">
+                            <input type="password" th:field="*{password}" class="form-control" placeholder="Enter Password" required>
                             <div class="form-check text-start">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                                 <label class="form-check-label small text-muted" for="exampleCheck1">I agree to the <a
                                         th:href="@{/term-condition}" class="text-mdinfo">Terms &amp;
                                         Conditions</a></label>
                             </div>
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                            <button type="submit" id="signUpBtn" class="btn btn-primary" disabled>Sign Up</button>
                         </form>
                         <p class="text-muted mt-3 mb-0">Already have an account? <a th:href="@{/signin}"
                                 class="text-mdinfo">Sign In</a></p>
@@ -152,8 +153,8 @@
                         </a>
                         <div class="text-muted my-3 py-1">
                             <small>All rights recerved</small>
-                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
-                                skills.”</span>
+                            <span class="small">â€œBe open to new ideas and approaches. Develop your problem-solving
+                                skills.â€</span>
                         </div>
                         <div class="d-flex gap-3 h5 m-0">
                             <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
@@ -228,7 +229,7 @@
             </div>
         </div>
     </div>
-    <div th:replace="~{/layouts/layout :: footer}"></div>
+    <div th:replace="~{layouts/layout :: footer}"></div>
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
@@ -241,23 +242,53 @@
 
     function sendOtp() {
         const email = document.getElementById("email").value;
-        fetch(`${backendUrl}/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
+        if (!email) {
+            alert("Vui lòng nhập email trước!");
+            return;
+        }
+        fetch(`${backendUrl}/api/otp/send-otp-signup?email=${encodeURIComponent(email)}`, {
             method: "POST"
         })
-        .then(response => response.text())
-        .then(data => alert(data))
-        .catch(error => console.error("Error sending OTP:", error));
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.text();
+        })
+        .then(data => alert("OTP đã được gửi: " + data))
+        .catch(error => {
+            console.error("Error sending OTP:", error);
+            alert("Lỗi gửi OTP: " + error.message);
+        });
     }
 
     function verifyOtp() {
         const email = document.getElementById("email").value;
         const otp = document.getElementById("otp").value;
+        if (!email || !otp) {
+            alert("Vui lòng nhập đầy đủ email và OTP!");
+            return;
+        }
         fetch(`${backendUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${otp}`, {
             method: "POST"
         })
-        .then(response => response.text())
-        .then(data => alert(data))
-        .catch(error => console.error("Error verifying OTP:", error));
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.text();
+        })
+        .then(data => {
+            alert(data);
+            if (data === "OTP verified successfully.") {
+                document.getElementById("hiddenEmail").value = email;
+                document.getElementById("signUpBtn").removeAttribute("disabled");
+            }
+        })
+        .catch(error => {
+            console.error("Error verifying OTP:", error);
+            alert("Xác thực OTP thất bại: " + error.message);
+        });
     }
 </script>
 

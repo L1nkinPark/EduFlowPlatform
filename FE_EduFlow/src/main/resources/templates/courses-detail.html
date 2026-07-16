@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="img/icon.png">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <title>Edutree â€“ Online Course & Education HTML5 Template</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -22,7 +22,7 @@
 </head>
 
 <body class="bg-light">
-    <div th:replace="~{/layouts/layout :: header_2}"></div>
+    <div th:replace="~{layouts/layout :: header_2}"></div>
     <div class="py-3">
         <div class="container">
             <nav>
@@ -590,7 +590,7 @@
 <!--                                                    visual aspects of a brand.</p>-->
 <!--                                                <p class="pb-0 mb-0">Mina's mission is to create visual content for all-->
 <!--                                                    types of successful brands, such as Charuca, Lucia Be, The Singular-->
-<!--                                                    Olivia or La Compañía Fantástica, and many others. Taking and-->
+<!--                                                    Olivia or La CompaÃ±Ã­a FantÃ¡stica, and many others. Taking and-->
 <!--                                                    editing photographs for Instagram means taking care of every detail,-->
 <!--                                                    even those that seem imperfect.</p>-->
 <!--                                            </div>-->
@@ -808,12 +808,19 @@
                                     <a href> <span class="badge bg-danger">CYBER MONDAY</span></a>
                                 </div>
                                 <div class="mb-3">
-                                    <span class="fs-1 text-black fw-bold">$439</span>
+                                    <span class="fs-1 text-black fw-bold" th:text="${'$' + courses.price}">$439</span>
                                     &nbsp;
                                     <span class="text-danger">76% Disc <del>$1800</del></span>
                                 </div>
-                                <div class="d-grid my-2"><a th:href="@{/course/success}" class="btn btn-primary py-3">
-                                        <i class="bi bi-cart-fill"></i> BUY</a>
+                                <div class="d-grid my-2" th:if="${isPurchased}">
+                                    <a th:href="@{/student/subscription}" class="btn btn-success py-3">
+                                        <i class="bi bi-play-circle-fill"></i> START LEARNING
+                                    </a>
+                                </div>
+                                <div class="d-grid my-2" th:if="${!isPurchased}">
+                                    <a th:href="@{/course/checkout(courseId=${courses.courseId})}" class="btn btn-primary py-3">
+                                        <i class="bi bi-cart-fill"></i> BUY
+                                    </a>
                                 </div>
                                 <div class="mb-4"><span class="text-danger">
                                         <i class="bi bi-clock"></i> This offer end in <strong>4d</strong> </span>
@@ -1004,8 +1011,8 @@
                         </a>
                         <div class="text-muted my-3 py-1">
                             <small>All rights recerved</small>
-                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
-                                skills.”</span>
+                            <span class="small">â€œBe open to new ideas and approaches. Develop your problem-solving
+                                skills.â€</span>
                         </div>
                         <div class="d-flex gap-3 h5 m-0">
                             <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
@@ -1080,7 +1087,7 @@
             </div>
         </div>
     </div>
-    <div th:replace="~{/layouts/layout :: footer}"></div>
+    <div th:replace="~{layouts/layout :: footer}"></div>
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="

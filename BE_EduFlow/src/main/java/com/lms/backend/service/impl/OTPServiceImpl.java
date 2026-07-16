@@ -25,12 +25,8 @@ public class OTPServiceImpl {
     @Autowired
     private EmailService emailService;
 
-    private final BCryptPasswordEncoder passwordEncoder;
-
     @Autowired
-    public OTPServiceImpl(BCryptPasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+    private BCryptPasswordEncoder passwordEncoder;
 
 
     // Phương thức để kiểm tra email tồn tại trong cơ sở dữ liệu

@@ -3,6 +3,7 @@ package com.lms.frontend.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.lms.frontend.model.request.LoginRequest;
+import com.lms.frontend.model.request.SignUpRequest;
 import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.model.response.AuthResponse;
 import com.lms.frontend.service.AccountService;
@@ -22,6 +23,34 @@ public class AccountServiceImpl implements AccountService {
 
     private String apiUrl = ConstantUtil.HOST_URL + "/api/auth/login";
 
+    @Override
+    public ApiResponse register(SignUpRequest signUpRequest) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<SignUpRequest> httpEntity = new HttpEntity<>(signUpRequest, headers);
+
+            ResponseEntity<ApiResponse> responseEntity = restTemplate.exchange(
+                    ConstantUtil.HOST_URL + "/api/auth/register",
+                    HttpMethod.POST,
+                    httpEntity,
+                    ApiResponse.class
+            );
+
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException ex) {
+            try {
+                if (ex.getStatusCode() != HttpStatus.OK) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    return objectMapper.readValue(ex.getResponseBodyAsString(), ApiResponse.class);
+                }
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
 
     @Override
     public ApiResponse login(LoginRequest loginRequest) {

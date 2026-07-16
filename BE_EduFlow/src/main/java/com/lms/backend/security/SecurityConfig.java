@@ -29,7 +29,8 @@ public class SecurityConfig {
             "/css/**",
             "/js/**",
             "/images/**",
-            "/api/**"
+            "/api/**",
+            "/actuator/**"
     };
 
     @Bean

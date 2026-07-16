@@ -2,7 +2,10 @@ package com.lms.frontend.controller;
 
 import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.model.response.CourseResponse;
+import com.lms.frontend.model.response.AuthResponse;
 import com.lms.frontend.service.CourseService;
+import com.lms.frontend.service.OrderService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,17 +18,23 @@ public class CoursesDetailController {
     @Autowired
     CourseService courseService;
 
+    @Autowired
+    OrderService orderService;
+
     @GetMapping(value = "/detail")
-    public String showDetailCourse(Model model, @RequestParam String courseId) {
+    public String showDetailCourse(Model model, @RequestParam String courseId, HttpSession session) {
         ApiResponse<CourseResponse> apiResponse = courseService.getCourseById(courseId);
 
-//        if (apiResponse == null || apiResponse.getPayload() == null) {
-//            // Trả về trang lỗi nếu không nhận được phản hồi từ API hoặc payload là null
-//            return "error"; // Tên của trang lỗi (bạn cần tạo trang này)
-//        }
-
         model.addAttribute("courses", apiResponse.getPayload());
-        return "courses-detail"; // Tên của trang chi tiết khóa học
+
+        boolean isPurchased = false;
+        AuthResponse userLogin = (AuthResponse) session.getAttribute("userLogin");
+        if (userLogin != null) {
+            isPurchased = orderService.hasPurchased(courseId);
+        }
+        model.addAttribute("isPurchased", isPurchased);
+
+        return "courses-detail";
     }
 
 }
