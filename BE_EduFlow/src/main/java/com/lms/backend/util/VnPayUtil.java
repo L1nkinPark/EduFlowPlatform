@@ -16,17 +16,15 @@ public class VnPayUtil {
         List<String> fieldNames = new ArrayList<>(fields.keySet());
         Collections.sort(fieldNames);
         StringBuilder sb = new StringBuilder();
-        Iterator<String> itr = fieldNames.iterator();
-        while (itr.hasNext()) {
-            String fieldName = itr.next();
+        for (String fieldName : fieldNames) {
             String fieldValue = fields.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                sb.append(fieldName);
-                sb.append("=");
-                sb.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
-                if (itr.hasNext()) {
+            if (fieldValue != null && fieldValue.length() > 0) {
+                if (sb.length() > 0) {
                     sb.append("&");
                 }
+                sb.append(fieldName);
+                sb.append("=");
+                sb.append(URLEncoder.encode(fieldValue, StandardCharsets.UTF_8).replace("+", "%20"));
             }
         }
         return hmacSHA512(HASH_SECRET, sb.toString());

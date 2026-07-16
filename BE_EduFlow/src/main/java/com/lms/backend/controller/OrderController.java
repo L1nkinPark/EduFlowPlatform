@@ -120,9 +120,9 @@ public class OrderController {
             for (String fieldName : fieldNames) {
                 String fieldValue = vnp_Params.get(fieldName);
                 if (fieldValue != null && fieldValue.length() > 0) {
-                    query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                    query.append(URLEncoder.encode(fieldName, StandardCharsets.UTF_8.toString()));
                     query.append("=");
-                    query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    query.append(URLEncoder.encode(fieldValue, StandardCharsets.UTF_8.toString()).replace("+", "%20"));
                     query.append("&");
                 }
             }
