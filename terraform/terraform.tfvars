@@ -33,3 +33,7 @@ rds_deletion_protection     = false
 
 # Monitoring
 alarm_email = ""
+
+# SMTP Credentials
+smtp_username = "voduchieu42@gmail.com"
+smtp_password = "nguv iwqw fnit auea"

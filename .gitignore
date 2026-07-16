@@ -13,5 +13,6 @@ Thumbs.db
 *.tfstate
 *.tfstate.backup
 *.tfplan
-.terraform.lock.hcl
 terraform/environments/*.auto.tfvars
+*.tfvars
+terraform.tfvars

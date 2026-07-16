@@ -168,3 +168,19 @@ variable "additional_tags" {
   type        = map(string)
   default     = {}
 }
+
+# ==============================================================================
+# SMTP Credentials
+# ==============================================================================
+
+variable "smtp_username" {
+  description = "SMTP username (email)"
+  type        = string
+  default     = "voduchieu42@gmail.com"
+}
+
+variable "smtp_password" {
+  description = "SMTP App Password"
+  type        = string
+  sensitive   = true
+}

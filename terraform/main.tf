@@ -48,13 +48,15 @@ module "security_groups" {
 module "secrets_manager" {
   source = "./modules/secrets-manager"
 
-  name_prefix = local.name_prefix
-  environment = var.environment
-  db_host     = module.rds.db_instance_address
-  db_port     = 3306
-  db_username = "admin"
-  db_name     = var.rds_db_name
-  tags        = local.common_tags
+  name_prefix   = local.name_prefix
+  environment   = var.environment
+  db_host       = module.rds.db_instance_address
+  db_port       = 3306
+  db_username   = "admin"
+  db_name       = var.rds_db_name
+  smtp_username = var.smtp_username
+  smtp_password = var.smtp_password
+  tags          = local.common_tags
 }
 
 # ==============================================================================

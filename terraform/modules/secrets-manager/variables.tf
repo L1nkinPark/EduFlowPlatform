@@ -37,3 +37,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "smtp_username" {
+  description = "SMTP username"
+  type        = string
+  default     = ""
+}
+
+variable "smtp_password" {
+  description = "SMTP App Password"
+  type        = string
+  default     = ""
+}

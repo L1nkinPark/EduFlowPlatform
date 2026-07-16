@@ -213,6 +213,14 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name      = "SPRING_DATASOURCE_PASSWORD"
           valueFrom = "${var.db_password_arn}:password::"
+        },
+        {
+          name      = "SPRING_MAIL_USERNAME"
+          valueFrom = "${var.db_password_arn}:smtp_username::"
+        },
+        {
+          name      = "SPRING_MAIL_PASSWORD"
+          valueFrom = "${var.db_password_arn}:smtp_password::"
         }
       ]
       logConfiguration = {
@@ -253,6 +261,8 @@ resource "aws_ecs_service" "frontend" {
     container_port   = 8080
   }
 
+  health_check_grace_period_seconds = 180
+
   depends_on = [
     aws_iam_role_policy_attachment.ecs_execution_standard
   ]
@@ -277,6 +287,8 @@ resource "aws_ecs_service" "backend" {
     container_name   = "backend"
     container_port   = 8888
   }
+
+  health_check_grace_period_seconds = 180
 
   depends_on = [
     aws_iam_role_policy_attachment.ecs_execution_standard
