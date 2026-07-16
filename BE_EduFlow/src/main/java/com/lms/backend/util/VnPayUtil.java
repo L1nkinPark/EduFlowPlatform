@@ -24,7 +24,7 @@ public class VnPayUtil {
                 }
                 sb.append(fieldName);
                 sb.append("=");
-                sb.append(URLEncoder.encode(fieldValue, StandardCharsets.UTF_8).replace("+", "%20"));
+                sb.append(URLEncoder.encode(fieldValue, StandardCharsets.UTF_8));
             }
         }
         return hmacSHA512(HASH_SECRET, sb.toString());
