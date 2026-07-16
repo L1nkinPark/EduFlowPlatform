@@ -10,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class BackendApplicationTests {
-//
-    public static void main(String[] args) {
-        SpringApplication.run(BackendApplication.class, args);
+
+    @Test
+    void contextLoads() {
     }
 }

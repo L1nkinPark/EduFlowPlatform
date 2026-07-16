@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/courses-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:19 GMT -->
@@ -808,12 +808,19 @@
                                     <a href> <span class="badge bg-danger">CYBER MONDAY</span></a>
                                 </div>
                                 <div class="mb-3">
-                                    <span class="fs-1 text-black fw-bold">$439</span>
+                                    <span class="fs-1 text-black fw-bold" th:text="${'$' + courses.price}">$439</span>
                                     &nbsp;
                                     <span class="text-danger">76% Disc <del>$1800</del></span>
                                 </div>
-                                <div class="d-grid my-2"><a th:href="@{/course/success}" class="btn btn-primary py-3">
-                                        <i class="bi bi-cart-fill"></i> BUY</a>
+                                <div class="d-grid my-2" th:if="${isPurchased}">
+                                    <a th:href="@{/student/subscription}" class="btn btn-success py-3">
+                                        <i class="bi bi-play-circle-fill"></i> START LEARNING
+                                    </a>
+                                </div>
+                                <div class="d-grid my-2" th:if="${!isPurchased}">
+                                    <a th:href="@{/course/checkout(courseId=${courses.courseId})}" class="btn btn-primary py-3">
+                                        <i class="bi bi-cart-fill"></i> BUY
+                                    </a>
                                 </div>
                                 <div class="mb-4"><span class="text-danger">
                                         <i class="bi bi-clock"></i> This offer end in <strong>4d</strong> </span>

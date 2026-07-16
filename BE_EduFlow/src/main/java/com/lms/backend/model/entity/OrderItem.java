@@ -18,8 +18,11 @@ public class OrderItem implements Serializable {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     private int quantity;
 
     private double price;
-
 }

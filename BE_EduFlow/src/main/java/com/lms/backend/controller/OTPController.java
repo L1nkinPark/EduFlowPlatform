@@ -24,6 +24,20 @@ public class OTPController {
         return ResponseEntity.status(400).body("Email not found.");
     }
 
+    // Gửi OTP Đăng ký
+    @PostMapping("/send-otp-signup")
+    public ResponseEntity<String> sendOtpSignup(@RequestParam String email) {
+        if (otpService.validateEmail(email)) {
+            return ResponseEntity.status(400).body("Email already registered.");
+        }
+        try {
+            otpService.generateAndSendOtp(email);
+            return ResponseEntity.ok("OTP has been sent to your email.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to send OTP email.");
+        }
+    }
+
     // Kiểm tra email hợp lệ
     @PostMapping("/validate-email")  // Kiểm tra email qua POST
     public ResponseEntity<Boolean> validateEmail(@RequestParam String email) {
