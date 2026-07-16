@@ -51,52 +51,8 @@
                         <li class="nav-item mx-2">
                             <a class="nav-link px-0 py-4" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false" th:text="#{nav.courses}">
-                                Courses
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/all}" th:text="#{courses.title}">All Courses</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/detail}">Courses Detail</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/success}">Order Successful</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                Student
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/bill}">Billing Info</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/delete}">Delete Profile</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Invoice</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/linked}">Linked Accounts</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/notify}">Notifications</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/payment}">Payment</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/privacy}">Profile Privacy</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/security}">Security</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/social}">Social Profiles</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">Subscriptions</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                Extra Pages
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/signin}">Login</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/signup}">Signup</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/forgot}">Forgot</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/faq}">FAQ</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/career}">Careers</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/testimonial}">Testimonials</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/term-condition}">Terms & Conditions</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/privacy/policy}">Privacy Policy</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/error/404}">Not Found 404</a></li>
-                            </ul>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link px-0 py-4" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
@@ -206,63 +162,8 @@
                         <li class="nav-item mx-2">
                             <a class="nav-link px-0 py-4" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.courses}">
-                                Courses
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/all}" th:text="#{courses.title}">All Courses</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/detail}">Courses Detail</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/success}">Order Successful</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Instructor
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/profile}">Profile</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}">Earnings</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/mycourse}">My Courses</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/order}">Orders</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/payout}">Payouts</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/reviews}">Reviews</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/student}">Students</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Student
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/bill}">Billing Info</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/delete}">Delete Profile</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Invoice</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/linked}">Linked Accounts</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/notify}">Notifications</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/payment}">Payment</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/privacy}">Profile Privacy</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/security}">Security</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/social}">Social Profiles</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">Subscriptions</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Extra Pages
-                            </a>
-                            <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/signin}">Login</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/signup}">Signup</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/forgot}">Forgot</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/faq}">FAQ</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/career}">Careers</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/testimonial}">Testimonials</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/term-condition}">Terms & Conditions</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/privacy/policy}">Privacy Policy</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/error/404}">Not Found 404</a></li>
-                            </ul>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link px-0 py-4" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
