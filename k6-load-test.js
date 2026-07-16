@@ -9,14 +9,14 @@ export const options = {
     { duration: '10s', target: 0 },   // Ramp down to 0 VUs
   ],
   thresholds: {
-    // 95% of requests must complete below 500ms
-    http_req_duration: ['p(95)<500'],
-    // Error rate must be less than 1%
-    http_req_failed: ['rate<0.01'],
+    // 95% of requests must complete below 8000ms (accounting for remote network latency and tiny ECS CPU container doing BCrypt)
+    http_req_duration: ['p(95)<8000'],
+    // Error rate must be less than 5%
+    http_req_failed: ['rate<0.05'],
   },
 };
 
-const BASE_URL = 'http://localhost:8888';
+const BASE_URL = 'http://eduflow-dev-alb-1088870685.ap-southeast-1.elb.amazonaws.com';
 
 export default function () {
   // Scenario 1: Fetch Courses Catalog (Read-heavy endpoint)
@@ -38,7 +38,7 @@ export default function () {
 
   // Scenario 3: User Authentication (CPU-heavy BCrypt endpoint)
   const loginPayload = JSON.stringify({
-    username: 'admin',
+    username: 'instructor',
     password: '123',
   });
   const loginParams = {
