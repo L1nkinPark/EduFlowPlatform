@@ -70,7 +70,7 @@
                                         Gift cards
                                     </label>
                                 </div>
-                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4">Courses</p>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4" th:text="#{nav.courses}">Courses</p>
                                 <div class="form-check my-1">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
                                         id="flexRadioDefault1">
@@ -113,7 +113,7 @@
                                         Open courses <small><span class="badge bg-danger">PRO</span></small>
                                     </label>
                                 </div>
-                                <p class="navbar-header nav-item mb-2 p-0 text-dark  mt-4">CATEGORIES</p>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark  mt-4" th:text="#{courses.filter.categories}">CATEGORIES</p>
                                 <div class="form-check my-1">
 <!--                                    <input class="form-check-input" type="checkbox" value id="Illustration">-->
                                     <label class="form-check-label ps-1" for="Illustration">
@@ -150,7 +150,7 @@
                                         3D & Animation
                                     </label>
                                 </div>
-                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4">SOFTWARE</p>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4" th:text="#{courses.filter.software}">SOFTWARE</p>
                                 <div class="form-check my-1">
                                     <input class="form-check-input" type="checkbox" value id="Wordpress">
                                     <label class="form-check-label ps-1" for="Wordpress">
@@ -182,7 +182,7 @@
             </div>
             <div class="col-lg-9 col-sm-12">
                 <div class="d-flex align-items-center gap-2 mb-3">
-                    <h3 class="pb-0 fw-bold text-dark m-0">Featured</h3>
+                    <h3 class="pb-0 fw-bold text-dark m-0" th:text="#{home.featured_courses}">Featured</h3>
                     <a href="#" class="text-decoration-none text-danger ms-auto">See More <i
                             class="bi bi-arrow-right-circle"></i></a>
                 </div>
@@ -197,7 +197,7 @@
                                     <span class="bg-warning badge text-black me-2">BEST SELLER</span>
                                     <span th:text="${course?.courseName}"></span>
                                 </h6>
-                                <span class="card-text mb-0">A course by <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
+                                <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                                 <div class="card-text text-muted small" th:text="${course?.description}"></div>
                                 <div class="text-muted gap-2 pt-2 small d-flex">
                                     <span><i class="bi bi-person"></i> 23643</span>

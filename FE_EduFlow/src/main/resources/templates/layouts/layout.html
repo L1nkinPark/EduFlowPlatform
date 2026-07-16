@@ -22,22 +22,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4 active" th:href="@{/}">Home</a>
+                            <a class="nav-link px-0 py-4 active" th:href="@{/}" th:text="#{nav.home}">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:href="@{/about}">About</a>
+                            <a class="nav-link px-0 py-4" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
                         <li class="nav-item mx-2 dropdown">
                             <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false">
+                               aria-expanded="false" th:text="#{nav.courses}">
                                 Courses
                             </a>
                             <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/all}">All Courses</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/detail}">Courses
-                                    Detail</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/success}">Order
-                                    Successful</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/all}" th:text="#{courses.title}">All Courses</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/detail}">Courses Detail</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/success}">Order Successful</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-2 dropdown">
@@ -46,28 +44,17 @@
                                 Student
                             </a>
                             <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/bill}">Billing Info</a>
-                                </li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/delete}">Delete
-                                    Profile</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a>
-                                </li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Invoice</a>
-                                </li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/linked}">Linked
-                                    Accounts</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded"
-                                       th:href="@{/student/notify}">Notifications</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/payment}">Payment</a>
-                                </li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/privacy}">Profile
-                                    Privacy</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/security}">Security</a>
-                                </li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/social}">Social
-                                    Profiles</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded"
-                                       th:href="@{/student/subscription}">Subscriptions</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/bill}">Billing Info</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/delete}">Delete Profile</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Invoice</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/linked}">Linked Accounts</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/notify}">Notifications</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/payment}">Payment</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/privacy}">Profile Privacy</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/security}">Security</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/social}">Social Profiles</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">Subscriptions</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-2 dropdown">
@@ -81,25 +68,39 @@
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/forgot}">Forgot</a></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/faq}">FAQ</a></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/career}">Careers</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/testimonial}">Testimonials</a>
-                                </li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/term-condition}">Terms &
-                                    Conditions</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/privacy/policy}">Privacy
-                                    Policy</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/error/404}">Not Found 404</a>
-                                </li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/testimonial}">Testimonials</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/term-condition}">Terms & Conditions</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/privacy/policy}">Privacy Policy</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/error/404}">Not Found 404</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:href="@{/contact}">Contact</a>
+                            <a class="nav-link px-0 py-4" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
+                        <!-- Language Switcher -->
+                        <div class="dropdown me-2">
+                            <a class="btn btn-outline-light dropdown-toggle rounded-pill px-3 py-1 border-white text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span th:text="${#locale.language == 'vi' ? 'VI' : 'EN'}">EN</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-1 mt-2">
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')">English</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')">Tiếng Việt</a></li>
+                            </ul>
+                        </div>
+                        <script>
+                            function changeLang(lang) {
+                                const url = new URL(window.location.href);
+                                url.searchParams.set('lang', lang);
+                                window.location.href = url.toString();
+                            }
+                        </script>
+
                         <!-- If NOT logged in -->
                         <div th:if="${session.userLogin == null}">
-                            <a th:href="@{/signin}" class="btn text-decoration-none text-white rounded-pill border-0">Log In</a>
-                            <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill">Sign up</a>
+                            <a th:href="@{/signin}" class="btn text-decoration-none text-white rounded-pill border-0" th:text="#{nav.login}">Log In</a>
+                            <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill" th:text="#{nav.signup}">Sign up</a>
                         </div>
                         
                         <!-- If logged in -->
@@ -117,21 +118,21 @@
                                 </li>
                                 <!-- Student links -->
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}">My Courses</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">My Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}" th:text="#{nav.edit_profile}">Edit Profile</a>
                                 </li>
                                 <!-- Instructor links -->
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}">Manage Courses</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}" th:text="#{nav.manage_courses}">Manage Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}">Earnings</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
                                 </li>
                                 
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}">Log Out</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}" th:text="#{nav.logout}">Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -140,7 +141,6 @@
         </nav>
     </div>
     <div th:fragment="header_2">
-
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-0 main-header-nav" id="nav-bar">
             <div class="container">
                 <a th:href="@{/}" class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h4 text-white">
@@ -153,17 +153,17 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4 active" th:href="@{/}">Home</a>
+                            <a class="nav-link px-0 py-4 active" th:href="@{/}" th:text="#{nav.home}">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:href="@{/about}">About</a>
+                            <a class="nav-link px-0 py-4" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
                         <li class="nav-item mx-2 dropdown">
-                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle px-0 py-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.courses}">
                                 Courses
                             </a>
                             <ul class="dropdown-menu m-0 border-0 shadow-sm p-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/all}">All Courses</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/all}" th:text="#{courses.title}">All Courses</a></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/detail}">Courses Detail</a></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/course/success}">Order Successful</a></li>
                             </ul>
@@ -197,7 +197,7 @@
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/privacy}">Profile Privacy</a></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/security}">Security</a></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/profile/social}">Social Profiles</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}">Subscriptions</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">Subscriptions</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-2 dropdown">
@@ -217,14 +217,32 @@
                             </ul>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:href="@{/contact}">Contact</a>
+                            <a class="nav-link px-0 py-4" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
+                        <!-- Language Switcher -->
+                        <div class="dropdown me-2">
+                            <a class="btn btn-outline-dark dropdown-toggle rounded-pill px-3 py-1 border-dark text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span th:text="${#locale.language == 'vi' ? 'VI' : 'EN'}">EN</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-1 mt-2">
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')">English</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')">Tiếng Việt</a></li>
+                            </ul>
+                        </div>
+                        <script>
+                            function changeLang(lang) {
+                                const url = new URL(window.location.href);
+                                url.searchParams.set('lang', lang);
+                                window.location.href = url.toString();
+                            }
+                        </script>
+
                         <!-- If NOT logged in -->
                         <div th:if="${session.userLogin == null}">
-                            <a th:href="@{/signin}" class="btn text-decoration-none text-dark rounded-pill border-0">Log In</a>
-                            <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill">Sign up</a>
+                            <a th:href="@{/signin}" class="btn text-decoration-none text-dark rounded-pill border-0" th:text="#{nav.login}">Log In</a>
+                            <a th:href="@{/signup}" type="button" class="btn btn-success rounded-pill" th:text="#{nav.signup}">Sign up</a>
                         </div>
                         
                         <!-- If logged in -->
@@ -242,21 +260,21 @@
                                 </li>
                                 <!-- Student links -->
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}">My Courses</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">My Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}">Edit Profile</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}" th:text="#{nav.edit_profile}">Edit Profile</a>
                                 </li>
                                 <!-- Instructor links -->
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}">Manage Courses</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}" th:text="#{nav.manage_courses}">Manage Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}">Earnings</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
                                 </li>
                                 
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}">Log Out</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}" th:text="#{nav.logout}">Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -291,9 +309,6 @@
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row py-4">
                     <div class="col-auto order-1 order-md-0">
                         <span class="small">©2022 <b class="text-primary">Edutree</b>. All rights reserved</span>
-                    </div>
-                    <div class="col-auto order-0 order-md-1">
-                        <a href="#" class="text-decoration-none text-primary"><i class="bi bi-globe me-1"></i> Language</a>
                     </div>
                 </div>
             </div>

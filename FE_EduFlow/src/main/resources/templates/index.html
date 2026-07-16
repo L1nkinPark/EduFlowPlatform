@@ -30,8 +30,8 @@
                     <img th:src="@{/img/hero-img.png}" class="img-fluid" alt="#" loading="lazy">
                 </div>
                 <div class="col-lg-6">
-                    <h1 class="fw-bold text-white display-4 mb-3">Edutree is a community <br>for creative people.</h1>
-                    <p class="lead text-white-50 mb-0">Learn from expert professionals and<br> join
+                    <h1 class="fw-bold text-white display-4 mb-3" th:text="#{home.title}">Edutree is a community <br>for creative people.</h1>
+                    <p class="lead text-white-50 mb-0" th:text="#{home.subtitle}">Learn from expert professionals and<br> join
                         the largest online community for creatives.
                     </p>
                     <form action="#!" class="pt-2 mb-5">
@@ -40,7 +40,7 @@
                             <div class="form-floating services-search-form-service">
                                 <input type="text" class="form-control border-0" id="sservice"
                                     placeholder="Enter Service...">
-                                <label for="sservice">What <span class="text-body">courses</span> do you need?</label>
+                                <label for="sservice" th:text="#{home.search_label}">What courses do you need?</label>
                             </div>
                             <button
                                 class="btn btn-success border-0 d-flex align-items-center rounded-3 text-uppercase m-1"
@@ -56,10 +56,10 @@
         <div class="container py-4">
             <div class="d-flex align-items-end gap-2 mb-4">
                 <div>
-                    <h3 class="pb-0 fw-bold text-dark mb-1">Learn by Doing</h3>
-                    <p class="text-muted m-0">Get access to the best online courses for creatives.</p>
+                    <h3 class="pb-0 fw-bold text-dark mb-1" th:text="#{home.featured_courses}">Learn by Doing</h3>
+                    <p class="text-muted m-0" th:text="#{home.subtitle}">Get access to the best online courses for creatives.</p>
                 </div>
-                <a th:href="@{/course/all}" class="text-decoration-none text-primary ms-auto">See More <i
+                <a th:href="@{/course/all}" class="text-decoration-none text-primary ms-auto"><span th:text="#{home.see_more}">See More</span> <i
                         class="bi bi-arrow-right-circle"></i></a>
             </div>
 
@@ -72,7 +72,7 @@
                                 <span class="bg-primary badge me-2">New</span>
                                 <span th:text="${course.courseName}"></span>
                             </h6>
-                            <span class="card-text mb-0">A course by <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
+                            <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                             <div class="card-text text-muted small" th:text="${course.description}"></div>
                             <div class="text-muted gap-2 pt-2 small d-flex">
                                 <span><i class="bi bi-person"></i> 23643</span>
@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="text-center mt-3 pb-4">
-            <a th:href="@{/course/all}" class="btn btn-danger">See more Edutree course &nbsp;<i
+            <a th:href="@{/course/all}" class="btn btn-danger"><span th:text="#{home.see_more}">See more Edutree course</span> &nbsp;<i
                     class="bi bi-arrow-right"></i></a>
         </div>
         </div>

@@ -51,21 +51,21 @@
                         <form action="#" th:action="@{/register/process}" th:object="${userRegister}" method="POST" class="d-grid gap-3 mb-2">
                             <input type="hidden" th:field="*{email}" id="hiddenEmail">
                             <div class="d-grid d-md-flex gap-3">
-                                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Enter First Name" required>
-                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Enter Last Name" required>
+                                <input type="text" th:field="*{firstName}" class="form-control" th:placeholder="#{auth.fullname}" required>
+                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Last Name" required>
                             </div>
                             
-                            <input type="password" th:field="*{password}" class="form-control" placeholder="Enter Password" required>
+                            <input type="password" th:field="*{password}" class="form-control" th:placeholder="#{auth.password}" required>
                             <div class="form-check text-start">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                                 <label class="form-check-label small text-muted" for="exampleCheck1">I agree to the <a
                                         th:href="@{/term-condition}" class="text-mdinfo">Terms &amp;
                                         Conditions</a></label>
                             </div>
-                            <button type="submit" id="signUpBtn" class="btn btn-primary" disabled>Sign Up</button>
+                            <button type="submit" id="signUpBtn" class="btn btn-primary" th:text="#{auth.signup}" disabled>Sign Up</button>
                         </form>
-                        <p class="text-muted mt-3 mb-0">Already have an account? <a th:href="@{/signin}"
-                                class="text-mdinfo">Sign In</a></p>
+                        <p class="text-muted mt-3 mb-0"><span th:text="#{auth.has_account}">Already have an account?</span> <a th:href="@{/signin}"
+                                class="text-mdinfo" th:text="#{auth.signin}">Sign In</a></p>
                     </div>
                 </div>
             </div>

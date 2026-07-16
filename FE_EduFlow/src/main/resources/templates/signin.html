@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:40 GMT -->
@@ -55,22 +55,21 @@
                                 <span class="text-muted small px-2">OR</span>
                                 <hr class="w-100">
                             </div>
-                            <input type="text" th:field="*{username}" class="form-control" placeholder="Enter User Name">
-                            <input type="password" th:field="*{password}" class="form-control" placeholder="Enter Password">
+                            <input type="text" th:field="*{username}" class="form-control" th:placeholder="#{auth.username}">
+                            <input type="password" th:field="*{password}" class="form-control" th:placeholder="#{auth.password}">
                             <div class="d-flex justify-content-between">
                                 <div class="mb-0 form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label small text-muted" for="exampleCheck1">Remember
-                                        me</label>
+                                    <label class="form-check-label small text-muted" for="exampleCheck1" th:text="#{auth.remember}">Remember me</label>
                                 </div>
                                 <div>
-                                    <a th:href="@{/forgot}" class="text-mdinfo small">Forgot password?</a>
+                                    <a th:href="@{/forgot}" class="text-mdinfo small" th:text="#{auth.forgot}">Forgot password?</a>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Sign In</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{auth.signin}">Sign In</button>
                         </form>
-                        <p class="text-muted mt-3 mb-0">Donâ€™t have an account? <a th:href="@{/signup}"
-                                class="text-mdinfo">Sign Up</a></p>
+                        <p class="text-muted mt-3 mb-0"><span th:text="#{auth.no_account}">Don't have an account?</span> <a th:href="@{/signup}"
+                                class="text-mdinfo" th:text="#{auth.signup}">Sign Up</a></p>
                     </div>
                 </div>
             </div>

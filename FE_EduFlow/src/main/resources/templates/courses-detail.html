@@ -45,7 +45,7 @@
                 <div class="col-lg-8 col-md-12">
                     <div >
                         <h1 class="text-black fw-bold" th:text="${courses?.courseName}">Professional Photography for Instagram</h1>
-                        <p class="fs-4">A course by <strong th:text="${courses?.teacher?.fullName}">Abhay Rai</strong> </p>
+                        <p class="fs-4"><span th:text="#{detail.author}">A course by</span> <strong th:text="${courses?.teacher?.fullName}">Abhay Rai</strong> </p>
                     </div>
                     <small class="bg-light pt-3 gap-2 d-block d-md-flex">
                         <div><span class="badge bg-warning pills text-black">BEST SELLER</span></div>
@@ -64,18 +64,18 @@
                             <li class="nav-item me-3" role="presentation">
                                 <button class="nav-link px-0 active py-3" id="pills-home-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true">Information</button>
+                                    aria-selected="true" th:text="#{detail.info}">Information</button>
                             </li>
                             <li class="nav-item me-3" role="presentation">
                                 <button class="nav-link px-0 py-3" id="pills-profile-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-profile" type="button" role="tab"
-                                    aria-controls="pills-profile" aria-selected="false">Content</button>
+                                    aria-controls="pills-profile" aria-selected="false" th:text="#{detail.content}">Content</button>
                             </li>
                             <li class="nav-item me-3" role="presentation">
                                 <button class="nav-link text-muted px-0 py-3" id="pills-Community-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-Community" type="button" role="tab"
                                     aria-controls="pills-Community" aria-selected="false"><i
-                                        class="bi bi-shield-lock"></i> Community</button>
+                                        class="bi bi-shield-lock"></i> <span th:text="#{detail.community}">Community</span></button>
                             </li>
                             <li class="nav-item me-3" role="presentation">
                                 <button class="nav-link px-0 py-3" id="pills-Projects-tab" data-bs-toggle="pill"
@@ -689,12 +689,12 @@
                                 </div>
                                 <div class="d-grid my-2" th:if="${isPurchased}">
                                     <a th:href="@{/student/subscription}" class="btn btn-success py-3">
-                                        <i class="bi bi-play-circle-fill"></i> START LEARNING
+                                        <i class="bi bi-play-circle-fill"></i> <span th:text="#{detail.unlocked}">START LEARNING</span>
                                     </a>
                                 </div>
                                 <div class="d-grid my-2" th:if="${!isPurchased}">
                                     <a th:href="@{/course/checkout(courseId=${courses.courseId})}" class="btn btn-primary py-3">
-                                        <i class="bi bi-cart-fill"></i> BUY
+                                        <i class="bi bi-cart-fill"></i> <span th:text="#{detail.buy_now}">BUY</span>
                                     </a>
                                 </div>
                                 <div class="mb-4"><span class="text-danger">
@@ -732,7 +732,7 @@
                                 </ul>
                                 <hr>
                                 <div class="d-flex mb-4 justify-content-between align-items-center">
-                                    <small class="text-muted">A course by <a
+                                    <small class="text-muted"><span th:text="#{detail.author}">A course by</span> <a
                                             class="text-decoration-none link-dark fw-bold" th:text="${courses?.teacher?.fullName}">Sudhindra Sujan</a><br>
                                         Instructor</small>
                                     <div>
@@ -742,7 +742,7 @@
                                 </div>
                                 <div class="d-grid">
                                     <button type="button" class="btn btn-outline-primary py-3">
-                                        <i class="bi bi-gift"></i> Buy as a gift
+                                        <i class="bi bi-gift"></i> <span th:text="#{detail.buy_gift}">Buy as a gift</span>
                                     </button>
                                 </div>
                                 <div class="text-center pt-3">

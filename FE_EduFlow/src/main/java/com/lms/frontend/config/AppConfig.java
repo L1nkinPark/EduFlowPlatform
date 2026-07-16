@@ -72,8 +72,22 @@ public class AppConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
+    @Bean
+    public org.springframework.web.servlet.LocaleResolver localeResolver() {
+        org.springframework.web.servlet.i18n.SessionLocaleResolver slr = new org.springframework.web.servlet.i18n.SessionLocaleResolver();
+        slr.setDefaultLocale(java.util.Locale.ENGLISH);
+        return slr;
+    }
 
+    @Bean
+    public org.springframework.web.servlet.i18n.LocaleChangeInterceptor localeChangeInterceptor() {
+        org.springframework.web.servlet.i18n.LocaleChangeInterceptor lci = new org.springframework.web.servlet.i18n.LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
 
-
-
+    @Override
+    public void addInterceptors(org.springframework.web.servlet.config.annotation.InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
 }
