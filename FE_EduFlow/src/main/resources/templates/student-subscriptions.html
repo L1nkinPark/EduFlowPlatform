@@ -246,8 +246,8 @@
                     <!-- My Purchased Courses Section -->
                     <div class="border-0 card mt-4 shadow-sm">
                         <div class="card-header bg-white py-3">
-                            <h4 class="mb-0 text-black fw-bold">My Purchased Courses</h4>
-                            <p class="mb-0 text-muted small">Here is the list of courses you have successfully purchased and connected.</p>
+                            <h4 class="mb-0 text-black fw-bold" th:text="#{nav.my_courses}">My Purchased Courses</h4>
+                            <p class="mb-0 text-muted small" th:text="#{sub.purchased_desc}">Here is the list of courses you have successfully purchased and connected.</p>
                         </div>
                         <div class="card-body">
                             <div class="row row-cols-1 row-cols-md-2 g-4" th:if="${not #lists.isEmpty(purchasedCourses)}">
@@ -259,20 +259,20 @@
                                             <p class="card-text text-muted small" th:text="${course.description}">Description</p>
                                             <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
                                                 <span class="text-primary fw-bold" th:text="${'$' + course.price}">$49.00</span>
-                                                <span class="badge bg-success">Connected</span>
+                                                <span class="badge bg-success" th:text="#{sub.connected}">Connected</span>
                                             </div>
                                         </div>
                                         <div class="card-footer bg-light border-0 p-3">
                                             <a th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="btn btn-primary btn-sm w-100">
-                                                <i class="bi bi-play-fill me-1"></i> Go to Course
+                                                <i class="bi bi-play-fill me-1"></i> <span th:text="#{sub.go_to_course}">Go to Course</span>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center py-5" th:if="${#lists.isEmpty(purchasedCourses)}">
-                                <p class="text-muted mb-3">You have not purchased any courses yet.</p>
-                                <a th:href="@{/course/all}" class="btn btn-outline-primary btn-sm">Explore Courses</a>
+                                <p class="text-muted mb-3" th:text="#{sub.no_courses}">You have not purchased any courses yet.</p>
+                                <a th:href="@{/course/all}" class="btn btn-outline-primary btn-sm" th:text="#{sub.explore}">Explore Courses</a>
                             </div>
                         </div>
                     </div>
