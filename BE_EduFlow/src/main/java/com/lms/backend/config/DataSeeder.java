@@ -29,6 +29,7 @@ public class DataSeeder implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @org.springframework.transaction.annotation.Transactional
     @Override
     public void run(String... args) throws Exception {
         // Fix existing courses with relative image paths
@@ -44,7 +45,7 @@ public class DataSeeder implements CommandLineRunner {
                     updated = true;
                 }
                 if (updated) {
-                    courseRepository.save(course);
+                    courseRepository.saveAndFlush(course);
                 }
             });
         } catch (Exception ex) {
