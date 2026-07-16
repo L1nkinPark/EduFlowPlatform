@@ -6,9 +6,8 @@
 # Random Password for Database
 # ------------------------------------------------------------------------------
 resource "random_password" "db_password" {
-  length           = 32
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+  length  = 32
+  special = false
 }
 
 # ------------------------------------------------------------------------------
