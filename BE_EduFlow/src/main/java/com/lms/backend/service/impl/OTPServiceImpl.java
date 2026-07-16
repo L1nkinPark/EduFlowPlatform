@@ -44,6 +44,7 @@ public class OTPServiceImpl {
         otpEntity.setOtpCode(otp);
         otpEntity.setExpirationTime(System.currentTimeMillis() + OTP_EXPIRY_DURATION); // Đặt thời gian hết hạn
         otpRepository.save(otpEntity);
+        System.out.println("[OTP_LOG] GENERATED OTP FOR " + email + " IS: " + otp);
 
         // Gửi OTP qua email với xử lý lỗi
         try {
