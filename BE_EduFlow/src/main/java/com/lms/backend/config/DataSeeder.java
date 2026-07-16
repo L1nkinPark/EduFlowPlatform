@@ -31,6 +31,26 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Fix existing courses with relative image paths
+        try {
+            courseRepository.findAll().forEach(course -> {
+                boolean updated = false;
+                if (course.getImage() != null && course.getImage().startsWith("globel/")) {
+                    course.setImage("/img/" + course.getImage());
+                    updated = true;
+                }
+                if (course.getThumbnail() != null && course.getThumbnail().startsWith("globel/")) {
+                    course.setThumbnail("/img/" + course.getThumbnail());
+                    updated = true;
+                }
+                if (updated) {
+                    courseRepository.save(course);
+                }
+            });
+        } catch (Exception ex) {
+            System.err.println("Error fixing relative course image paths: " + ex.getMessage());
+        }
+
         if (courseRepository.count() > 0) {
             System.out.println("Database already contains courses. Skipping seeder.");
             return;
@@ -101,8 +121,8 @@ public class DataSeeder implements CommandLineRunner {
         animationCourse.setStatus("ACTIVE");
         animationCourse.setSubCategory(animSub);
         animationCourse.setAccount(instructor);
-        animationCourse.setImage("globel/b1.jpg");
-        animationCourse.setThumbnail("globel/b1.jpg");
+        animationCourse.setImage("/img/globel/b1.jpg");
+        animationCourse.setThumbnail("/img/globel/b1.jpg");
 
         // Chapters & Lessons for Course 1
         Chapter ch1 = new Chapter();
@@ -162,8 +182,8 @@ public class DataSeeder implements CommandLineRunner {
         webCourse.setStatus("ACTIVE");
         webCourse.setSubCategory(webSub);
         webCourse.setAccount(instructor);
-        webCourse.setImage("globel/b2.jpg");
-        webCourse.setThumbnail("globel/b2.jpg");
+        webCourse.setImage("/img/globel/b2.jpg");
+        webCourse.setThumbnail("/img/globel/b2.jpg");
 
         Chapter ch3 = new Chapter();
         ch3.setTitle("Chương 1: Khởi đầu với Frontend cơ bản");
@@ -215,8 +235,8 @@ public class DataSeeder implements CommandLineRunner {
         engCourse.setStatus("ACTIVE");
         engCourse.setSubCategory(engSub);
         engCourse.setAccount(instructor);
-        engCourse.setImage("globel/b3.jpg");
-        engCourse.setThumbnail("globel/b3.jpg");
+        engCourse.setImage("/img/globel/b3.jpg");
+        engCourse.setThumbnail("/img/globel/b3.jpg");
 
         Chapter ch5 = new Chapter();
         ch5.setTitle("Chương 1: Bảng ký tự phiên âm quốc tế IPA");
