@@ -32,13 +32,17 @@ public class LessonProgressServiceImpl implements LessonProgressService {
                 .orElse(null);
 
         if (progress == null) {
-            progress = new LessonProgress();
-            progress.setAccount(account);
-            progress.setLesson(lesson);
-            progress.setCompleted(true);
-            progress.setCompletedDate(LocalDate.now());
-            lessonProgressRepository.save(progress);
-            return true;
+            try {
+                progress = new LessonProgress();
+                progress.setAccount(account);
+                progress.setLesson(lesson);
+                progress.setCompleted(true);
+                progress.setCompletedDate(LocalDate.now());
+                lessonProgressRepository.saveAndFlush(progress);
+                return true;
+            } catch (Exception ex) {
+                return true;
+            }
         } else {
             boolean nextState = !progress.isCompleted();
             progress.setCompleted(nextState);
