@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class RegisterRequest {
 
 
+    @com.fasterxml.jackson.annotation.JsonAlias({"fullName", "fullname"})
     private String fullname;
     private String username;
     private String email;

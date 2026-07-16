@@ -22,13 +22,18 @@ public class UserRegister {
     @Email(message = "Email không phù hợp")
     private String email;
 
+    @NotBlank(message = "Thông tin bắt buộc")
+    @Size(min = 1, message = "Độ dài tối thiểu là 1")
+    private String confirmPassword;
+
     public UserRegister() {
     }
 
-    public UserRegister(String firstName, String lastName, String password, String email) {
+    public UserRegister(String firstName, String lastName, String password, String confirmPassword, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.confirmPassword = confirmPassword;
         this.email = email;
     }
 
@@ -54,6 +59,14 @@ public class UserRegister {
 
     public void setPassword(@NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String password) {
         this.password = password;
+    }
+
+    public @NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(@NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public @NotBlank(message = "Thông tin bắt buộc") @Email(message = "Email không phù hợp") String getEmail() {

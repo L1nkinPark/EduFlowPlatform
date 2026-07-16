@@ -32,6 +32,12 @@ public class SignUpController {
             return "signup";
         }
 
+        if (!userRegister.getPassword().equals(userRegister.getConfirmPassword())) {
+            model.addAttribute("userRegister", userRegister);
+            model.addAttribute("error", "Mật khẩu và xác nhận mật khẩu không khớp.");
+            return "signup";
+        }
+
         SignUpRequest signUpRequest = SignUpRequest.builder()
                 .fullName(userRegister.getFirstName() + " " + userRegister.getLastName())
                 .email(userRegister.getEmail())
