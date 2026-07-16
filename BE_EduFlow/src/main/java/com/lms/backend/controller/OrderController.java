@@ -100,7 +100,7 @@ public class OrderController {
             vnp_Params.put("vnp_Amount", "10000000"); // 100,000 VND for testing
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", txnRef);
-            vnp_Params.put("vnp_OrderInfo", "Thanh toan khoa hoc: " + course.getCourseName());
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan khoa hoc EduFlow");
             vnp_Params.put("vnp_OrderType", "other");
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", redirectOrigin + "/course/vnpay-callback");
