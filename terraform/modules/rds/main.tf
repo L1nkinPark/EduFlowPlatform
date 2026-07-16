@@ -107,7 +107,7 @@ resource "aws_db_instance" "main" {
   # Monitoring
   monitoring_interval          = 60
   monitoring_role_arn          = aws_iam_role.rds_monitoring.arn
-  performance_insights_enabled = true
+  performance_insights_enabled = false
   enabled_cloudwatch_logs_exports = [
     "error",
     "general",
