@@ -6,6 +6,30 @@
 </head>
 <body>
     <div th:fragment="header_1">
+        <script>
+            window.addEventListener('error', function(e) {
+                const msg = e.message || '';
+                const url = e.filename || '';
+                if (
+                    url.includes('chrome-extension') ||
+                    url.includes('content.1.bundle.js') ||
+                    url.includes('share-modal.js') ||
+                    url.includes('contentscript.js') ||
+                    msg.includes('PageTransport') ||
+                    (msg.includes('addEventListener') && url.includes('share-modal'))
+                ) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+            window.addEventListener('unhandledrejection', function(e) {
+                const reason = e.reason && e.reason.message || '';
+                if (reason.includes('PageTransport')) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+        </script>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 main-header-nav" id="nav-bar">
             <div class="container">
                 <a th:href="@{/}"
@@ -141,6 +165,30 @@
         </nav>
     </div>
     <div th:fragment="header_2">
+        <script>
+            window.addEventListener('error', function(e) {
+                const msg = e.message || '';
+                const url = e.filename || '';
+                if (
+                    url.includes('chrome-extension') ||
+                    url.includes('content.1.bundle.js') ||
+                    url.includes('share-modal.js') ||
+                    url.includes('contentscript.js') ||
+                    msg.includes('PageTransport') ||
+                    (msg.includes('addEventListener') && url.includes('share-modal'))
+                ) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+            window.addEventListener('unhandledrejection', function(e) {
+                const reason = e.reason && e.reason.message || '';
+                if (reason.includes('PageTransport')) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+        </script>
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-0 main-header-nav" id="nav-bar">
             <div class="container">
                 <a th:href="@{/}" class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h4 text-white">
