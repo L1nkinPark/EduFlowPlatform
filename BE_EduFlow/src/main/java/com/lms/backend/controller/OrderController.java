@@ -127,6 +127,7 @@ public class OrderController {
                 }
             }
             String queryUrl = com.lms.backend.util.VnPayUtil.VNP_URL + "?" + query.toString() + "vnp_SecureHash=" + secureHash;
+            System.out.println("[VNPAY_URL_LOG] " + queryUrl);
             response.ok("VNPAY URL generated", queryUrl);
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
