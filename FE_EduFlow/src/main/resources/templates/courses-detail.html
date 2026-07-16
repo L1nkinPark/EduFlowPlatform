@@ -436,11 +436,11 @@
                                                                                 <div class="small text-muted mt-1" th:text="${lesson.duration + ' mins'}">10 mins</div>
                                                                             </div>
                                                                         </div>
-                                                                        <div th:if="${isPurchased && lesson.video != null && !#strings.isEmpty(lesson.video)}">
-                                                                            <button class="btn btn-sm btn-outline-primary" type="button" 
+                                                                        <div th:if="${isPurchased}">
+                                                                            <button class="btn btn-sm btn-outline-primary px-3" type="button" 
                                                                                     data-bs-toggle="collapse" 
                                                                                     th:data-bs-target="'#videoPlayer' + ${lesson.lessonId}">
-                                                                                Watch Lesson
+                                                                                Vào Học <i class="bi bi-chevron-down ms-1"></i>
                                                                             </button>
                                                                         </div>
                                                                         <div th:if="${!isPurchased}">
@@ -448,19 +448,32 @@
                                                                         </div>
                                                                     </div>
                                                                     
-                                                                    <!-- Video player for purchased lesson -->
-                                                                    <div th:if="${isPurchased && lesson.video != null && !#strings.isEmpty(lesson.video)}" 
+                                                                    <!-- Content for purchased lesson -->
+                                                                    <div th:if="${isPurchased}" 
                                                                          th:id="'videoPlayer' + ${lesson.lessonId}" 
                                                                          class="collapse mt-3">
-                                                                        <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden bg-black">
-                                                                            <!-- If youtube video -->
-                                                                            <iframe th:if="${#strings.contains(lesson.video, 'youtube.com') || #strings.contains(lesson.video, 'youtu.be')}" 
-                                                                                    th:src="${lesson.video}" 
-                                                                                    allowfullscreen></iframe>
-                                                                            <!-- Standard video -->
-                                                                            <video th:if="${!#strings.contains(lesson.video, 'youtube.com') && !#strings.contains(lesson.video, 'youtu.be')}" 
-                                                                                   th:src="${lesson.video}" 
-                                                                                   controls></video>
+                                                                        <div class="card card-body border border-light-subtle bg-light shadow-sm p-4 rounded-3">
+                                                                            <h5 class="fw-bold text-primary mb-3">
+                                                                                <i class="bi bg-primary text-white p-1 rounded bi-journal-text me-2"></i> Bài học: <span th:text="${lesson.title}">Lesson Title</span>
+                                                                            </h5>
+                                                                            <div class="row align-items-center g-4">
+                                                                                <div class="col-md-7">
+                                                                                    <p class="text-dark mb-3 lh-lg" style="text-align: justify;">
+                                                                                        Chào mừng bạn đến với bài học <strong><span th:text="${lesson.title}">Lesson Title</span></strong>. 
+                                                                                        Trong nội dung này, chúng ta sẽ học lý thuyết kết hợp sơ đồ tư duy thực chiến và các bước tự luyện tập tại nhà. 
+                                                                                        Hãy nghiên cứu kỹ tài liệu học tập, thực hành theo mẫu và gửi kết quả lên hệ thống để nhận đánh giá trực tiếp từ Giảng viên.
+                                                                                    </p>
+                                                                                    <ul class="list-unstyled mb-0 text-muted small">
+                                                                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Thời lượng tự học: <strong th:text="${lesson.duration}">10</strong> phút.</li>
+                                                                                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Tài liệu: Bài đọc lý thuyết + Hình ảnh trực quan.</li>
+                                                                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Giáo trình được kiểm duyệt chất lượng cao.</li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div class="col-md-5 text-center">
+                                                                                    <img th:src="@{'/img/globel/' + (${lesson.lessonId % 3 == 0 ? 'b3.jpg' : (lesson.lessonId % 3 == 1 ? 'b1.jpg' : 'b2.jpg')})}" 
+                                                                                         class="img-fluid rounded border shadow-sm w-100" style="max-height: 180px; object-fit: cover;" alt="Lesson Image" />
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
