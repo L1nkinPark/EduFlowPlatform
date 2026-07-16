@@ -77,6 +77,12 @@ variable "be_desired_count" {
   default     = 1
 }
 
+variable "backend_url" {
+  description = "URL of the backend API (ALB DNS name)"
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Common tags for all resources"
   type        = map(string)

@@ -127,5 +127,6 @@ module "ecs" {
   be_image             = var.be_image
   fe_desired_count     = var.fe_desired_count
   be_desired_count     = var.be_desired_count
+  backend_url          = "http://${module.alb.alb_dns_name}"
   tags                 = local.common_tags
 }
