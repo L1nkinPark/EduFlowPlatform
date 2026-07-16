@@ -19,8 +19,18 @@ variable "alarm_email" {
   default     = ""
 }
 
-variable "asg_name" {
-  description = "Auto Scaling Group name"
+variable "ecs_cluster_name" {
+  description = "Name of the ECS cluster"
+  type        = string
+}
+
+variable "fe_service_name" {
+  description = "Name of the Frontend ECS service"
+  type        = string
+}
+
+variable "be_service_name" {
+  description = "Name of the Backend ECS service"
   type        = string
 }
 
@@ -32,11 +42,7 @@ variable "rds_instance_id" {
 variable "alb_arn_suffix" {
   description = "ALB ARN suffix for metrics"
   type        = string
-}
-
-variable "target_group_arn_suffix" {
-  description = "Target Group ARN suffix for metrics"
-  type        = string
+  default     = ""
 }
 
 variable "tags" {

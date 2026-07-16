@@ -1,22 +1,22 @@
 # ==============================================================================
-# Security Groups Module – ALB SG, EC2 SG, RDS SG
+# Security Groups Module – ALB SG, FE SG, BE SG, RDS SG
 # ==============================================================================
-# Security group rules follow the system design diagram:
-#   ALB SG:  Inbound 80/443 from Internet    → Outbound app_port to EC2 SG
-#   EC2 SG:  Inbound app_port from ALB SG    → Outbound 3306 to RDS SG, 443 to S3/Secrets
-#   RDS SG:  Inbound 3306 from EC2 SG        → Outbound: none
+# Security group rules follow the ECS Fargate design diagram:
+#   ALB-SG: Inbound 80/443 from Internet → Outbound 0.0.0.0/0
+#   FE-SG:  Inbound 8080 from ALB-SG       → Outbound 0.0.0.0/0 (for AWS service endpoints)
+#   BE-SG:  Inbound 8888 from ALB-SG       → Outbound 0.0.0.0/0 (to reach RDS and AWS)
+#   RDS-SG: Inbound 3306 from BE-SG only   → Outbound: none
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
 # ALB Security Group
 # ------------------------------------------------------------------------------
-
 resource "aws_security_group" "alb" {
   name        = "${var.name_prefix}-alb-sg"
   description = "Security group for the Application Load Balancer"
   vpc_id      = var.vpc_id
 
-  # Inbound: HTTP from Internet
+  # Inbound HTTP from Internet
   ingress {
     description = "HTTP from Internet"
     from_port   = 80
@@ -25,7 +25,7 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Inbound: HTTPS from Internet
+  # Inbound HTTPS from Internet
   ingress {
     description = "HTTPS from Internet"
     from_port   = 443
@@ -34,13 +34,13 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Outbound: Application port to EC2 instances
+  # Outbound to VPC/Internet
   egress {
-    description     = "App traffic to EC2 instances"
-    from_port       = var.app_port
-    to_port         = var.app_port
-    protocol        = "tcp"
-    security_groups = [aws_security_group.ec2.id]
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = merge(var.tags, {
@@ -49,84 +49,85 @@ resource "aws_security_group" "alb" {
 }
 
 # ------------------------------------------------------------------------------
-# EC2 Security Group
+# Frontend ECS Service Security Group
 # ------------------------------------------------------------------------------
-
-resource "aws_security_group" "ec2" {
-  name        = "${var.name_prefix}-ec2-sg"
-  description = "Security group for EC2 application instances"
+resource "aws_security_group" "fe" {
+  name        = "${var.name_prefix}-fe-sg"
+  description = "Security group for Frontend ECS Fargate tasks"
   vpc_id      = var.vpc_id
 
+  # Inbound from ALB only
+  ingress {
+    description     = "Traffic from ALB on 8080"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
+
+  # Outbound to Internet for ECR pulls, Secrets Manager, CloudWatch Logs
+  egress {
+    description = "Outbound to Internet"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = merge(var.tags, {
-    Name = "${var.name_prefix}-ec2-sg"
+    Name = "${var.name_prefix}-fe-sg"
   })
 }
 
-# Inbound: Application port from ALB
-resource "aws_security_group_rule" "ec2_inbound_alb" {
-  type                     = "ingress"
-  from_port                = var.app_port
-  to_port                  = var.app_port
-  protocol                 = "tcp"
-  description              = "App traffic from ALB"
-  security_group_id        = aws_security_group.ec2.id
-  source_security_group_id = aws_security_group.alb.id
-}
+# ------------------------------------------------------------------------------
+# Backend ECS Service Security Group
+# ------------------------------------------------------------------------------
+resource "aws_security_group" "be" {
+  name        = "${var.name_prefix}-be-sg"
+  description = "Security group for Backend ECS Fargate tasks"
+  vpc_id      = var.vpc_id
 
-# Outbound: MySQL to RDS
-resource "aws_security_group_rule" "ec2_outbound_rds" {
-  type                     = "egress"
-  from_port                = 3306
-  to_port                  = 3306
-  protocol                 = "tcp"
-  description              = "MySQL traffic to RDS"
-  security_group_id        = aws_security_group.ec2.id
-  source_security_group_id = aws_security_group.rds.id
-}
+  # Inbound from ALB only
+  ingress {
+    description     = "Traffic from ALB on 8888"
+    from_port       = 8888
+    to_port         = 8888
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
 
-# Outbound: HTTPS to S3 and Secrets Manager (via VPC endpoints or NAT)
-resource "aws_security_group_rule" "ec2_outbound_https" {
-  type              = "egress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  description       = "HTTPS to AWS services (S3, Secrets Manager, CloudWatch)"
-  security_group_id = aws_security_group.ec2.id
-  cidr_blocks       = ["0.0.0.0/0"]
-}
+  # Outbound to VPC/Internet (allows reaching RDS and AWS API endpoints)
+  egress {
+    description = "Outbound to VPC/Internet"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-# Outbound: HTTP for package updates
-resource "aws_security_group_rule" "ec2_outbound_http" {
-  type              = "egress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  description       = "HTTP for package updates"
-  security_group_id = aws_security_group.ec2.id
-  cidr_blocks       = ["0.0.0.0/0"]
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-be-sg"
+  })
 }
 
 # ------------------------------------------------------------------------------
 # RDS Security Group
 # ------------------------------------------------------------------------------
-
 resource "aws_security_group" "rds" {
   name        = "${var.name_prefix}-rds-sg"
-  description = "Security group for RDS MySQL instances"
+  description = "Security group for RDS MySQL instance"
   vpc_id      = var.vpc_id
 
-  # Inbound: MySQL from EC2 instances
+  # Inbound from Backend ECS Service only
   ingress {
-    description     = "MySQL from EC2 instances"
+    description     = "MySQL port from BE ECS Service"
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.ec2.id]
+    security_groups = [aws_security_group.be.id]
   }
 
-  # No outbound rules – deny all egress
-  # (RDS doesn't need outbound access)
-
+  # RDS database needs no outbound traffic
   tags = merge(var.tags, {
     Name = "${var.name_prefix}-rds-sg"
   })

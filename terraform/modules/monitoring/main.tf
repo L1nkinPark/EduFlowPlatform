@@ -1,11 +1,10 @@
 # ==============================================================================
-# Monitoring Module – CloudWatch Alarms, Dashboards, Log Groups
+# Monitoring Module – CloudWatch Alarms, Dashboard, SNS Topics
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
 # SNS Topic for Alarm Notifications
 # ------------------------------------------------------------------------------
-
 resource "aws_sns_topic" "alarms" {
   name = "${var.name_prefix}-alarms"
 
@@ -23,53 +22,54 @@ resource "aws_sns_topic_subscription" "email" {
 }
 
 # ------------------------------------------------------------------------------
-# CloudWatch Log Groups
-# ------------------------------------------------------------------------------
-
-resource "aws_cloudwatch_log_group" "application" {
-  name              = "/eduflow/${var.environment}/application"
-  retention_in_days = 30
-
-  tags = merge(var.tags, {
-    Name = "${var.name_prefix}-app-logs"
-  })
-}
-
-resource "aws_cloudwatch_log_group" "access_logs" {
-  name              = "/eduflow/${var.environment}/access-logs"
-  retention_in_days = 30
-
-  tags = merge(var.tags, {
-    Name = "${var.name_prefix}-access-logs"
-  })
-}
-
-# ------------------------------------------------------------------------------
 # CloudWatch Alarms
 # ------------------------------------------------------------------------------
 
-# EC2 CPU Utilization > 80%
-resource "aws_cloudwatch_metric_alarm" "ec2_cpu_high" {
-  alarm_name          = "${var.name_prefix}-ec2-cpu-high"
+# Frontend ECS CPU Utilization > 85%
+resource "aws_cloudwatch_metric_alarm" "fe_cpu_high" {
+  alarm_name          = "${var.name_prefix}-fe-cpu-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 3
   metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
+  namespace           = "AWS/ECS"
   period              = 300
   statistic           = "Average"
-  threshold           = 80
-  alarm_description   = "EC2 CPU utilization exceeds 80% for 15 minutes"
+  threshold           = 85
+  alarm_description   = "Frontend ECS CPU utilization exceeds 85%"
   alarm_actions       = [aws_sns_topic.alarms.arn]
   ok_actions          = [aws_sns_topic.alarms.arn]
 
   dimensions = {
-    AutoScalingGroupName = var.asg_name
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.fe_service_name
   }
 
   tags = var.tags
 }
 
-# RDS CPU Utilization > 80%
+# Backend ECS CPU Utilization > 85%
+resource "aws_cloudwatch_metric_alarm" "be_cpu_high" {
+  alarm_name          = "${var.name_prefix}-be-cpu-high"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 3
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 85
+  alarm_description   = "Backend ECS CPU utilization exceeds 85%"
+  alarm_actions       = [aws_sns_topic.alarms.arn]
+  ok_actions          = [aws_sns_topic.alarms.arn]
+
+  dimensions = {
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.be_service_name
+  }
+
+  tags = var.tags
+}
+
+# RDS CPU Utilization > 85%
 resource "aws_cloudwatch_metric_alarm" "rds_cpu_high" {
   alarm_name          = "${var.name_prefix}-rds-cpu-high"
   comparison_operator = "GreaterThanThreshold"
@@ -78,8 +78,8 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu_high" {
   namespace           = "AWS/RDS"
   period              = 300
   statistic           = "Average"
-  threshold           = 80
-  alarm_description   = "RDS CPU utilization exceeds 80% for 15 minutes"
+  threshold           = 85
+  alarm_description   = "RDS CPU utilization exceeds 85%"
   alarm_actions       = [aws_sns_topic.alarms.arn]
   ok_actions          = [aws_sns_topic.alarms.arn]
 
@@ -110,7 +110,7 @@ resource "aws_cloudwatch_metric_alarm" "rds_storage_low" {
   tags = var.tags
 }
 
-# RDS Free Memory < 256 MB
+# RDS Free Memory < 128 MB (for db.t4g.micro instance size)
 resource "aws_cloudwatch_metric_alarm" "rds_memory_low" {
   alarm_name          = "${var.name_prefix}-rds-memory-low"
   comparison_operator = "LessThanThreshold"
@@ -119,8 +119,8 @@ resource "aws_cloudwatch_metric_alarm" "rds_memory_low" {
   namespace           = "AWS/RDS"
   period              = 300
   statistic           = "Average"
-  threshold           = 268435456 # 256 MB in bytes
-  alarm_description   = "RDS freeable memory is less than 256 MB"
+  threshold           = 134217728 # 128 MB in bytes
+  alarm_description   = "RDS freeable memory is less than 128 MB"
   alarm_actions       = [aws_sns_topic.alarms.arn]
 
   dimensions = {
@@ -130,84 +130,15 @@ resource "aws_cloudwatch_metric_alarm" "rds_memory_low" {
   tags = var.tags
 }
 
-# ALB 5xx Error Rate > 5%
-resource "aws_cloudwatch_metric_alarm" "alb_5xx_high" {
-  alarm_name          = "${var.name_prefix}-alb-5xx-high"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 3
-  threshold           = 5
-  alarm_description   = "ALB 5xx error rate exceeds 5%"
-  alarm_actions       = [aws_sns_topic.alarms.arn]
-  ok_actions          = [aws_sns_topic.alarms.arn]
-
-  metric_query {
-    id          = "error_rate"
-    expression  = "(errors / requests) * 100"
-    label       = "5xx Error Rate"
-    return_data = true
-  }
-
-  metric_query {
-    id = "errors"
-    metric {
-      metric_name = "HTTPCode_ELB_5XX_Count"
-      namespace   = "AWS/ApplicationELB"
-      period      = 300
-      stat        = "Sum"
-      dimensions = {
-        LoadBalancer = var.alb_arn_suffix
-      }
-    }
-  }
-
-  metric_query {
-    id = "requests"
-    metric {
-      metric_name = "RequestCount"
-      namespace   = "AWS/ApplicationELB"
-      period      = 300
-      stat        = "Sum"
-      dimensions = {
-        LoadBalancer = var.alb_arn_suffix
-      }
-    }
-  }
-
-  tags = var.tags
-}
-
-# ALB Unhealthy Host Count > 0
-resource "aws_cloudwatch_metric_alarm" "alb_unhealthy_hosts" {
-  alarm_name          = "${var.name_prefix}-alb-unhealthy-hosts"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  metric_name         = "UnHealthyHostCount"
-  namespace           = "AWS/ApplicationELB"
-  period              = 60
-  statistic           = "Maximum"
-  threshold           = 0
-  alarm_description   = "ALB has unhealthy targets"
-  alarm_actions       = [aws_sns_topic.alarms.arn]
-  ok_actions          = [aws_sns_topic.alarms.arn]
-
-  dimensions = {
-    LoadBalancer = var.alb_arn_suffix
-    TargetGroup  = var.target_group_arn_suffix
-  }
-
-  tags = var.tags
-}
-
 # ------------------------------------------------------------------------------
 # CloudWatch Dashboard
 # ------------------------------------------------------------------------------
-
 resource "aws_cloudwatch_dashboard" "main" {
   dashboard_name = "${var.name_prefix}-dashboard"
 
   dashboard_body = jsonencode({
     widgets = [
-      # Row 1: EC2 Metrics
+      # Row 1: ECS Fargate CPU/Memory
       {
         type   = "metric"
         x      = 0
@@ -215,21 +146,19 @@ resource "aws_cloudwatch_dashboard" "main" {
         width  = 12
         height = 6
         properties = {
-          title   = "EC2 - CPU Utilization"
+          title   = "ECS - Frontend Fargate CPU/Memory"
           region  = var.aws_region
           metrics = [
-            ["AWS/EC2", "CPUUtilization", "AutoScalingGroupName", var.asg_name, {
+            ["AWS/ECS", "CPUUtilization", "ServiceName", var.fe_service_name, "ClusterName", var.ecs_cluster_name, {
+              stat   = "Average"
+              period = 300
+            }],
+            ["AWS/ECS", "MemoryUtilization", "ServiceName", var.fe_service_name, "ClusterName", var.ecs_cluster_name, {
               stat   = "Average"
               period = 300
             }]
           ]
           view = "timeSeries"
-          yAxis = {
-            left = {
-              min = 0
-              max = 100
-            }
-          }
         }
       },
       {
@@ -239,51 +168,14 @@ resource "aws_cloudwatch_dashboard" "main" {
         width  = 12
         height = 6
         properties = {
-          title   = "EC2 - Network I/O"
+          title   = "ECS - Backend Fargate CPU/Memory"
           region  = var.aws_region
           metrics = [
-            ["AWS/EC2", "NetworkIn", "AutoScalingGroupName", var.asg_name, {
-              stat   = "Sum"
+            ["AWS/ECS", "CPUUtilization", "ServiceName", var.be_service_name, "ClusterName", var.ecs_cluster_name, {
+              stat   = "Average"
               period = 300
             }],
-            ["AWS/EC2", "NetworkOut", "AutoScalingGroupName", var.asg_name, {
-              stat   = "Sum"
-              period = 300
-            }]
-          ]
-          view = "timeSeries"
-        }
-      },
-      # Row 2: ALB Metrics
-      {
-        type   = "metric"
-        x      = 0
-        y      = 6
-        width  = 8
-        height = 6
-        properties = {
-          title   = "ALB - Request Count"
-          region  = var.aws_region
-          metrics = [
-            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", var.alb_arn_suffix, {
-              stat   = "Sum"
-              period = 300
-            }]
-          ]
-          view = "timeSeries"
-        }
-      },
-      {
-        type   = "metric"
-        x      = 8
-        y      = 6
-        width  = 8
-        height = 6
-        properties = {
-          title   = "ALB - Target Response Time"
-          region  = var.aws_region
-          metrics = [
-            ["AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", var.alb_arn_suffix, {
+            ["AWS/ECS", "MemoryUtilization", "ServiceName", var.be_service_name, "ClusterName", var.ecs_cluster_name, {
               stat   = "Average"
               period = 300
             }]
@@ -291,65 +183,21 @@ resource "aws_cloudwatch_dashboard" "main" {
           view = "timeSeries"
         }
       },
-      {
-        type   = "metric"
-        x      = 16
-        y      = 6
-        width  = 8
-        height = 6
-        properties = {
-          title   = "ALB - HTTP Errors"
-          region  = var.aws_region
-          metrics = [
-            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", var.alb_arn_suffix, {
-              stat   = "Sum"
-              period = 300
-              color  = "#d62728"
-            }],
-            ["AWS/ApplicationELB", "HTTPCode_ELB_4XX_Count", "LoadBalancer", var.alb_arn_suffix, {
-              stat   = "Sum"
-              period = 300
-              color  = "#ff7f0e"
-            }]
-          ]
-          view = "timeSeries"
-        }
-      },
-      # Row 3: RDS Metrics
+      # Row 2: RDS Metrics
       {
         type   = "metric"
         x      = 0
-        y      = 12
-        width  = 8
+        y      = 6
+        width  = 12
         height = 6
         properties = {
-          title   = "RDS - CPU Utilization"
+          title   = "RDS - CPU & Connections"
           region  = var.aws_region
           metrics = [
             ["AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", var.rds_instance_id, {
               stat   = "Average"
               period = 300
-            }]
-          ]
-          view = "timeSeries"
-          yAxis = {
-            left = {
-              min = 0
-              max = 100
-            }
-          }
-        }
-      },
-      {
-        type   = "metric"
-        x      = 8
-        y      = 12
-        width  = 8
-        height = 6
-        properties = {
-          title   = "RDS - Database Connections"
-          region  = var.aws_region
-          metrics = [
+            }],
             ["AWS/RDS", "DatabaseConnections", "DBInstanceIdentifier", var.rds_instance_id, {
               stat   = "Average"
               period = 300
@@ -360,15 +208,19 @@ resource "aws_cloudwatch_dashboard" "main" {
       },
       {
         type   = "metric"
-        x      = 16
-        y      = 12
-        width  = 8
+        x      = 12
+        y      = 6
+        width  = 12
         height = 6
         properties = {
-          title   = "RDS - Free Storage Space"
+          title   = "RDS - Free Storage & Memory"
           region  = var.aws_region
           metrics = [
             ["AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", var.rds_instance_id, {
+              stat   = "Average"
+              period = 300
+            }],
+            ["AWS/RDS", "FreeableMemory", "DBInstanceIdentifier", var.rds_instance_id, {
               stat   = "Average"
               period = 300
             }]

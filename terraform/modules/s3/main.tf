@@ -47,6 +47,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "content" {
     id     = "transition-to-ia"
     status = "Enabled"
 
+    filter {} # Required by newer AWS provider versions
+
     transition {
       days          = 90
       storage_class = "STANDARD_IA"
@@ -75,7 +77,7 @@ resource "aws_s3_bucket_cors_configuration" "content" {
   }
 }
 
-# CloudFront Origin Access Control policy
+# CloudFront Origin Access Control policy (Disabled if no cloudfront distribution is provided)
 resource "aws_s3_bucket_policy" "content_cloudfront" {
   count  = var.cloudfront_distribution_arn != "" ? 1 : 0
   bucket = aws_s3_bucket.content.id
@@ -102,7 +104,7 @@ resource "aws_s3_bucket_policy" "content_cloudfront" {
 }
 
 # ------------------------------------------------------------------------------
-# Artifact Bucket (JAR deployments)
+# Artifact Bucket (JAR deployments / Backups)
 # ------------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "artifacts" {
@@ -145,6 +147,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "artifacts" {
   rule {
     id     = "cleanup-old-versions"
     status = "Enabled"
+
+    filter {} # Required by newer AWS provider versions
 
     noncurrent_version_expiration {
       noncurrent_days = 30

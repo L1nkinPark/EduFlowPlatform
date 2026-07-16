@@ -38,19 +38,13 @@ variable "vpc_cidr" {
 variable "public_subnet_cidrs" {
   description = "CIDR blocks for public subnets (one per AZ)"
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.4.0/24"]
-}
-
-variable "private_app_subnet_cidrs" {
-  description = "CIDR blocks for private application subnets (one per AZ)"
-  type        = list(string)
-  default     = ["10.0.2.0/24", "10.0.5.0/24"]
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "private_data_subnet_cidrs" {
   description = "CIDR blocks for private data subnets (one per AZ)"
   type        = list(string)
-  default     = ["10.0.3.0/24", "10.0.6.0/24"]
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
 variable "availability_zones" {
@@ -69,50 +63,38 @@ variable "domain_name" {
   default     = "eduflow.example.com"
 }
 
-variable "create_dns_zone" {
-  description = "Whether to create a new Route 53 hosted zone or use an existing one"
-  type        = bool
-  default     = true
-}
-
-# ==============================================================================
-# EC2 / Auto Scaling
-# ==============================================================================
-
-variable "ec2_instance_type" {
-  description = "EC2 instance type for application servers"
-  type        = string
-  default     = "t3.medium"
-}
-
-variable "ec2_key_pair_name" {
-  description = "Name of the EC2 key pair for SSH access (optional)"
+variable "acm_certificate_arn" {
+  description = "ARN of the ACM certificate for HTTPS (empty for HTTP only)"
   type        = string
   default     = ""
 }
 
-variable "asg_min_size" {
-  description = "Minimum number of instances in the Auto Scaling Group"
-  type        = number
-  default     = 2
+# ==============================================================================
+# ECS Fargate
+# ==============================================================================
+
+variable "fe_image" {
+  description = "Docker image for the Frontend task"
+  type        = string
+  default     = "nginx:alpine"
 }
 
-variable "asg_max_size" {
-  description = "Maximum number of instances in the Auto Scaling Group"
-  type        = number
-  default     = 6
+variable "be_image" {
+  description = "Docker image for the Backend task"
+  type        = string
+  default     = "nginx:alpine"
 }
 
-variable "asg_desired_capacity" {
-  description = "Desired number of instances in the Auto Scaling Group"
+variable "fe_desired_count" {
+  description = "Desired number of Frontend tasks"
   type        = number
-  default     = 2
+  default     = 1
 }
 
-variable "app_port" {
-  description = "Port on which the Spring Boot application listens"
+variable "be_desired_count" {
+  description = "Desired number of Backend tasks"
   type        = number
-  default     = 8080
+  default     = 1
 }
 
 # ==============================================================================
@@ -122,7 +104,7 @@ variable "app_port" {
 variable "rds_instance_class" {
   description = "RDS instance class"
   type        = string
-  default     = "db.t3.medium"
+  default     = "db.t4g.micro"
 }
 
 variable "rds_engine_version" {
@@ -134,13 +116,13 @@ variable "rds_engine_version" {
 variable "rds_allocated_storage" {
   description = "Initial allocated storage in GB"
   type        = number
-  default     = 50
+  default     = 20
 }
 
 variable "rds_max_allocated_storage" {
   description = "Maximum allocated storage in GB for autoscaling"
   type        = number
-  default     = 200
+  default     = 50
 }
 
 variable "rds_db_name" {
@@ -152,19 +134,19 @@ variable "rds_db_name" {
 variable "rds_multi_az" {
   description = "Whether to enable Multi-AZ deployment for RDS"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "rds_backup_retention_period" {
   description = "Number of days to retain RDS backups"
   type        = number
-  default     = 7
+  default     = 1
 }
 
 variable "rds_deletion_protection" {
   description = "Whether to enable deletion protection on the RDS instance"
   type        = bool
-  default     = true
+  default     = false
 }
 
 # ==============================================================================

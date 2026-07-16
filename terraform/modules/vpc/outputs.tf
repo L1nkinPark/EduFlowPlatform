@@ -23,17 +23,7 @@ output "private_data_subnet_ids" {
   value       = aws_subnet.private_data[*].id
 }
 
-output "nat_gateway_ids" {
-  description = "IDs of the NAT gateways"
-  value       = aws_nat_gateway.main[*].id
-}
-
 output "internet_gateway_id" {
   description = "ID of the Internet Gateway"
   value       = aws_internet_gateway.main.id
-}
-
-output "nat_gateway_public_ips" {
-  description = "Public IPs of the NAT gateways"
-  value       = aws_eip.nat[*].public_ip
 }
