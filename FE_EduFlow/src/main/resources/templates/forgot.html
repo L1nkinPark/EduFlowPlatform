@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/forgot.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:42 GMT -->
@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree â€“ Online Course & Education HTML5 Template</title>
+    <title>Edutree – Online Course & Education HTML5 Template</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -45,19 +45,19 @@
                             send you a link to reset your password
                         </p>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
-                            <!-- TrÆ°á»ng nháº­p email -->
+                            <!-- Trường nhập email -->
                             <div class="input-group">
                                 <input type="email" id="email" class="form-control" placeholder="Enter Email" required>
                                 <button type="button" onclick="sendOtp()" class="btn btn-primary">Send OTP</button>
                             </div>
 
-                            <!-- TrÆ°á»ng nháº­p OTP -->
+                            <!-- Trường nhập OTP -->
                             <div class="input-group ">
                                 <input type="text" id="otp" class="form-control" placeholder="Enter OTP" required>
                                 <button type="button" onclick="verifyOtp()" class="btn btn-success">OTP Authentication</button>
                             </div>
 
-                            <!-- Form nháº­p máº­t kháº©u má»›i (áº©n Ä‘i ban Ä‘áº§u) -->
+                            <!-- Form nhập mật khẩu mới (ẩn đi ban đầu) -->
                             <div class="input-group" id="newPasswordForm" style="display:none;">
                                 <input type="password" id="newPassword" class="form-control" placeholder="Enter New Password" required>
                                 <button type="button" onclick="resetPassword()" class="btn btn-primary">Reset Password</button>
@@ -152,9 +152,9 @@
                             Edutree
                         </a>
                         <div class="text-muted my-3 py-1">
-                            <small>All rights recerved</small>
-                            <span class="small">â€œBe open to new ideas and approaches. Develop your problem-solving
-                                skills.â€</span>
+                            <small>All rights reserved</small>
+                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
+                                skills.”</span>
                         </div>
                         <div class="d-flex gap-3 h5 m-0">
                             <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
@@ -244,29 +244,29 @@
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-    // Kiá»ƒm tra email trÆ°á»›c khi gá»­i OTP
+    // Kiểm tra email trước khi gửi OTP
     function sendOtp() {
         const email = document.getElementById("email").value;
 
-        // Kiá»ƒm tra email há»£p lá»‡
+        // Kiểm tra email hợp lệ
         if (!validateEmail(email)) {
             alert("Please enter a valid email address.");
             return;
         }
 
-        // Gá»­i yÃªu cáº§u kiá»ƒm tra email tá»« phÃ­a server
+        // Gửi yêu cầu kiểm tra email từ phía server
         fetch(`${backendUrl}/api/otp/validate-email?email=` + encodeURIComponent(email), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email: email }),  // Náº¿u backend yÃªu cáº§u body
+            body: JSON.stringify({ email: email }),  // Nếu backend yêu cầu body
         })
         .then(response => response.json())
         .then(data => {
             if (data === true) {
                 alert("Email exists.");
-                sendOtpToEmail(email);  // Gá»­i OTP náº¿u email há»£p lá»‡
+                sendOtpToEmail(email);  // Gửi OTP nếu email hợp lệ
             } else {
                 alert("Email not found.");
             }
@@ -276,7 +276,7 @@
         });
     }
 
-    // Gá»­i OTP tá»›i email Ä‘Ã£ xÃ¡c thá»±c
+    // Gửi OTP tới email đã xác thực
     function sendOtpToEmail(email) {
         fetch(`${backendUrl}/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
             method: "POST",
@@ -299,7 +299,7 @@
         });
     }
 
-    // XÃ¡c minh OTP
+    // Xác minh OTP
     function verifyOtp() {
         const email = document.getElementById("email").value;
         const otp = document.getElementById("otp").value;
@@ -318,7 +318,7 @@
         })
         .then(data => {
             alert("OTP verified successfully!");
-            // Hiá»ƒn thá»‹ form nháº­p máº­t kháº©u má»›i
+            // Hiển thị form nhập mật khẩu mới
             document.getElementById("newPasswordForm").style.display = "block";
         })
         .catch(error => {
@@ -327,7 +327,7 @@
         });
     }
 
-    // Äáº·t láº¡i máº­t kháº©u
+    // Đặt lại mật khẩu
     function resetPassword() {
         const email = document.getElementById("email").value;
         const newPassword = document.getElementById("newPassword").value;
@@ -350,7 +350,7 @@
         })
         .then(data => {
             alert("Password reset successfully!");
-            window.location.href = "signin"; // Chuyá»ƒn hÆ°á»›ng Ä‘áº¿n trang Ä‘Äƒng nháº­p
+            window.location.href = "signin"; // Chuyển hướng đến trang đăng nhập
         })
         .catch(error => {
             console.error("Error resetting password:", error);

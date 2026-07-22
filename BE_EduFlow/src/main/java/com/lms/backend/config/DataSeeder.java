@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -28,6 +29,9 @@ public class DataSeeder implements CommandLineRunner {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PromoCodeRepository promoCodeRepository;
 
     @org.springframework.transaction.annotation.Transactional
     @Override
@@ -51,6 +55,8 @@ public class DataSeeder implements CommandLineRunner {
         } catch (Exception ex) {
             System.err.println("Error fixing relative course image paths: " + ex.getMessage());
         }
+
+        seedPromoCodes();
 
         if (courseRepository.count() > 0) {
             System.out.println("Database already contains courses. Skipping seeder.");
@@ -265,5 +271,24 @@ public class DataSeeder implements CommandLineRunner {
         courseRepository.save(engCourse);
 
         System.out.println("Database seeding completed successfully!");
+    }
+
+    private void seedPromoCodes() {
+        if (promoCodeRepository.findByCodeIgnoreCase("WELCOME10").isPresent()) {
+            return;
+        }
+
+        PromoCode welcome10 = new PromoCode();
+        welcome10.setCode("WELCOME10");
+        welcome10.setDiscountPercent(10.0);
+        welcome10.setMaxDiscountAmount(20000.0);
+        welcome10.setMinOrderAmount(0.0);
+        welcome10.setStartDate(LocalDateTime.now().minusDays(1));
+        welcome10.setEndDate(LocalDateTime.now().plusMonths(3));
+        welcome10.setUsageLimit(1000);
+        welcome10.setActive(true);
+        promoCodeRepository.save(welcome10);
+
+        System.out.println("Seeded promo code: WELCOME10 (10% off, max 20,000 VND discount)");
     }
 }

@@ -11,5 +11,7 @@ public interface OrderService {
     ApiResponse<List<CourseResponse>> getUserCourses();
     boolean hasPurchased(String courseId);
     ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin);
+    ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin, String promoCode);
+    ApiResponse<Map<String, Object>> validatePromoCode(String courseId, String promoCode);
     ApiResponse<String> verifyVnPayCallback(Map<String, String> params);
 }

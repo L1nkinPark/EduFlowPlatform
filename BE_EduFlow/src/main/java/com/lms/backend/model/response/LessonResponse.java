@@ -8,7 +8,9 @@ import lombok.Setter;
 public class LessonResponse {
     private Long lessonId;
     private String title;
+    private String lessonType;
     private String video;
+    private String content;
     private int duration;
     private boolean status;
 }

@@ -108,10 +108,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin) {
+        return getVnPayUrl(courseId, redirectOrigin, null);
+    }
+
+    @Override
+    public ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin, String promoCode) {
         try {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl + "/vnpay-url")
                     .queryParam("courseId", courseId)
                     .queryParam("redirectOrigin", redirectOrigin);
+            if (promoCode != null && !promoCode.isBlank()) {
+                builder.queryParam("promoCode", promoCode);
+            }
 
             ResponseEntity<ApiResponse<String>> responseEntity = restTemplate.exchange(
                     builder.toUriString(),
@@ -120,6 +128,34 @@ public class OrderServiceImpl implements OrderService {
                     new ParameterizedTypeReference<ApiResponse<String>>() {}
             );
             return responseEntity.getBody();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public ApiResponse<Map<String, Object>> validatePromoCode(String courseId, String promoCode) {
+        try {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl + "/promo/validate")
+                    .queryParam("courseId", courseId)
+                    .queryParam("promoCode", promoCode);
+
+            ResponseEntity<ApiResponse<Map<String, Object>>> responseEntity = restTemplate.exchange(
+                    builder.toUriString(),
+                    HttpMethod.POST,
+                    getAuthorizedEntity(),
+                    new ParameterizedTypeReference<ApiResponse<Map<String, Object>>>() {}
+            );
+            return responseEntity.getBody();
+        } catch (org.springframework.web.client.HttpClientErrorException ex) {
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                return objectMapper.readValue(ex.getResponseBodyAsString(),
+                        objectMapper.getTypeFactory().constructParametricType(ApiResponse.class, Map.class));
+            } catch (Exception e) {
+                return null;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

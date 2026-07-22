@@ -25,6 +25,14 @@ public class Lesson implements Serializable {
     @Column(name = "video")
     private String video;
 
+    // VIDEO or DOCUMENT. VIDEO lessons play the `video` field; DOCUMENT
+    // lessons render the `content` field as reading material.
+    @Column(name = "lesson_type")
+    private String lessonType = "VIDEO";
+
+    @Column(name = "content", columnDefinition = "TEXT")
+    private String content;
+
     @Column(name = "duration")
     private int duration;
 

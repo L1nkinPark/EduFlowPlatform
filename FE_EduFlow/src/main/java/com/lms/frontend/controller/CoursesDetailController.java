@@ -29,8 +29,16 @@ public class CoursesDetailController {
     LessonProgressService lessonProgressService;
 
     @GetMapping(value = "/detail")
-    public String showDetailCourse(Model model, @RequestParam String courseId, HttpSession session) {
+    public String showDetailCourse(Model model, @RequestParam(required = false) String courseId, HttpSession session) {
+        if (courseId == null || courseId.isBlank()) {
+            return "redirect:/course/all";
+        }
+
         ApiResponse<CourseResponse> apiResponse = courseService.getCourseById(courseId);
+
+        if (apiResponse == null || apiResponse.getPayload() == null) {
+            return "redirect:/course/all";
+        }
 
         model.addAttribute("courses", apiResponse.getPayload());
 

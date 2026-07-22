@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="img/icon.png">
-    <title>Edutree â€“ Online Course & Education HTML5 Template</title>
+    <title>Edutree – Online Course & Education HTML5 Template</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -430,7 +430,9 @@
                                                                 <div class="list-group-item d-flex flex-column align-items-stretch border-0 py-3 px-4 bg-white border-bottom" th:each="lesson : ${chapter.lessons}">
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <div class="d-flex align-items-center">
-                                                                            <i th:class="${isPurchased ? 'bi bi-play-circle-fill text-primary me-3 fs-5' : 'bi bi-lock-fill text-muted me-3 fs-5'}"></i>
+                                                                            <i th:if="${!isPurchased}" class="bi bi-lock-fill text-muted me-3 fs-5"></i>
+                                                                            <i th:if="${isPurchased && lesson.lessonType == 'DOCUMENT'}" class="bi bi-file-text-fill text-primary me-3 fs-5"></i>
+                                                                            <i th:if="${isPurchased && lesson.lessonType != 'DOCUMENT'}" class="bi bi-play-circle-fill text-primary me-3 fs-5"></i>
                                                                             <div>
                                                                                 <span class="fw-semibold text-dark" th:text="${lesson.title}">Lesson Title</span>
                                                                                 <div class="small text-muted mt-1" th:text="${lesson.duration + ' mins'}">10 mins</div>
@@ -468,22 +470,34 @@
                                                                                      </label>
                                                                                  </div>
                                                                              </div>
-                                                                             <div class="row align-items-center g-4">
-                                                                                 <div class="col-md-7">
-                                                                                     <p class="text-dark mb-3 lh-lg" style="text-align: justify;">
-                                                                                         Chào mừng bạn đến với bài học <strong><span th:text="${lesson.title}">Lesson Title</span></strong>. 
-                                                                                         Trong nội dung này, chúng ta sẽ học lý thuyết kết hợp sơ đồ tư duy thực chiến và các bước tự luyện tập tại nhà. 
-                                                                                         Hãy nghiên cứu kỹ tài liệu học tập, thực hành theo mẫu và gửi kết quả lên hệ thống để nhận đánh giá trực tiếp từ Giảng viên.
-                                                                                     </p>
-                                                                                     <ul class="list-unstyled mb-0 text-muted small">
-                                                                                         <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Thời lượng tự học: <strong th:text="${lesson.duration}">10</strong> phút.</li>
-                                                                                         <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Tài liệu: Bài đọc lý thuyết + Hình ảnh trực quan.</li>
-                                                                                         <li><i class="bi bi-check-circle-fill text-success me-2"></i> Giáo trình được kiểm duyệt chất lượng cao.</li>
+                                                                             <!-- VIDEO lesson -->
+                                                                             <div th:if="${lesson.lessonType == null || lesson.lessonType == 'VIDEO'}" class="row align-items-center g-4">
+                                                                                 <div class="col-12" th:if="${lesson.video != null && !#strings.isEmpty(lesson.video)}">
+                                                                                     <div class="ratio ratio-16x9">
+                                                                                         <video th:if="${lesson.video.endsWith('.mp4')}" controls class="rounded-3 shadow-sm w-100">
+                                                                                             <source th:src="${lesson.video}" type="video/mp4">
+                                                                                         </video>
+                                                                                         <iframe th:unless="${lesson.video.endsWith('.mp4')}" th:src="${lesson.video}"
+                                                                                                 class="rounded-3 shadow-sm" frameborder="0" allowfullscreen></iframe>
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <div class="col-12">
+                                                                                     <ul class="list-unstyled mb-0 text-muted small mt-3">
+                                                                                         <li><i class="bi bi-check-circle-fill text-success me-2"></i> Thời lượng: <strong th:text="${lesson.duration}">10</strong> phút.</li>
                                                                                      </ul>
                                                                                  </div>
-                                                                                 <div class="col-md-5 text-center">
-                                                                                     <img th:src="@{/img/globel/{file}(file=${lesson.lessonId % 3 == 0 ? 'b3.jpg' : (lesson.lessonId % 3 == 1 ? 'b1.jpg' : 'b2.jpg')})}" 
-                                                                                          class="img-fluid rounded border shadow-sm w-100" style="max-height: 180px; object-fit: cover;" alt="Lesson Image" />
+                                                                             </div>
+
+                                                                             <!-- DOCUMENT (reading) lesson -->
+                                                                             <div th:if="${lesson.lessonType == 'DOCUMENT'}" class="row g-4">
+                                                                                 <div class="col-12">
+                                                                                     <div class="p-3 bg-white border rounded-3 lh-lg" style="text-align: justify; white-space: pre-line;"
+                                                                                          th:utext="${lesson.content}">
+                                                                                         Nội dung bài đọc sẽ hiển thị ở đây.
+                                                                                     </div>
+                                                                                     <ul class="list-unstyled mb-0 text-muted small mt-3">
+                                                                                         <li><i class="bi bi-book-half text-success me-2"></i> Thời lượng đọc ước tính: <strong th:text="${lesson.duration}">10</strong> phút.</li>
+                                                                                     </ul>
                                                                                  </div>
                                                                              </div>
                                                                         </div>
@@ -717,10 +731,17 @@
                                         <i class="bi bi-play-circle-fill"></i> <span th:text="#{detail.unlocked}">START LEARNING</span>
                                     </a>
                                 </div>
-                                <div class="d-grid my-2" th:if="${!isPurchased}">
-                                    <a th:href="@{/course/checkout(courseId=${courses.courseId})}" class="btn btn-primary py-3">
-                                        <i class="bi bi-cart-fill"></i> <span th:text="#{detail.buy_now}">BUY</span>
-                                    </a>
+                                <div th:if="${!isPurchased}">
+                                    <div class="input-group mb-2">
+                                        <input type="text" id="promoCodeInput" class="form-control" placeholder="Nhập mã giảm giá">
+                                        <button type="button" id="applyPromoBtn" class="btn btn-outline-primary">Áp dụng</button>
+                                    </div>
+                                    <div id="promoCodeMessage" class="small mb-2"></div>
+                                    <div class="d-grid my-2">
+                                        <a id="checkoutLink" th:href="@{/course/checkout(courseId=${courses.courseId})}" class="btn btn-primary py-3">
+                                            <i class="bi bi-cart-fill"></i> <span th:text="#{detail.buy_now}">BUY</span>
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="mb-4"><span class="text-danger">
                                         <i class="bi bi-clock"></i> This offer end in <strong>4d</strong> </span>
@@ -866,9 +887,9 @@
                             Edutree
                         </a>
                         <div class="text-muted my-3 py-1">
-                            <small>All rights recerved</small>
-                            <span class="small">â€œBe open to new ideas and approaches. Develop your problem-solving
-                                skills.â€</span>
+                            <small>All rights reserved</small>
+                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
+                                skills.”</span>
                         </div>
                         <div class="d-flex gap-3 h5 m-0">
                             <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
@@ -949,7 +970,7 @@
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
         data-cf-beacon='{"rayId":"8d693ae26855dd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
         crossorigin="anonymous"></script>
-    <script>
+    <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.progress-checkbox').forEach(function(chk) {
                 chk.addEventListener('change', function() {
@@ -957,7 +978,7 @@
                     const label = document.querySelector('label[for="checkLesson' + lessonId + '"]');
                     
                     if (label) {
-                        label.innerHTML = 'Đang đồng bộ tiến độ... <span class="spinner-border spinner-border-sm" role="status"></span>';
+                        label.innerHTML = 'Đang cập nhật tiến độ... <span class="spinner-border spinner-border-sm" role="status"></span>';
                     }
                     
                     const formData = new FormData();
@@ -992,6 +1013,56 @@
                     });
                 });
             });
+
+            const applyPromoBtn = document.getElementById('applyPromoBtn');
+            const promoCodeInput = document.getElementById('promoCodeInput');
+            const promoCodeMessage = document.getElementById('promoCodeMessage');
+            const checkoutLink = document.getElementById('checkoutLink');
+            const courseId = /*[[${courses.courseId}]]*/ '';
+            const baseCheckoutUrl = /*[[@{/course/checkout(courseId=${courses.courseId})}]]*/ '';
+
+            if (applyPromoBtn) {
+                applyPromoBtn.addEventListener('click', function() {
+                    const promoCode = promoCodeInput.value.trim();
+                    if (!promoCode) {
+                        promoCodeMessage.className = 'small mb-2 text-danger';
+                        promoCodeMessage.textContent = 'Vui lòng nhập mã giảm giá';
+                        return;
+                    }
+
+                    applyPromoBtn.disabled = true;
+                    promoCodeMessage.className = 'small mb-2 text-muted';
+                    promoCodeMessage.textContent = 'Đang kiểm tra mã giảm giá...';
+
+                    const formData = new FormData();
+                    formData.append('courseId', courseId);
+                    formData.append('promoCode', promoCode);
+
+                    fetch('/course/promo/validate', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        applyPromoBtn.disabled = false;
+                        if (data && data.status === 'SUCCESS') {
+                            promoCodeMessage.className = 'small mb-2 text-success';
+                            promoCodeMessage.textContent = 'Áp dụng mã thành công! Giảm ' + data.payload.discountAmount.toLocaleString('vi-VN') + ' VND.';
+                            checkoutLink.href = baseCheckoutUrl + '&promoCode=' + encodeURIComponent(promoCode);
+                        } else {
+                            promoCodeMessage.className = 'small mb-2 text-danger';
+                            promoCodeMessage.textContent = (data && data.message) ? data.message : 'Mã giảm giá không hợp lệ';
+                            checkoutLink.href = baseCheckoutUrl;
+                        }
+                    })
+                    .catch(error => {
+                        applyPromoBtn.disabled = false;
+                        console.error('Error validating promo code:', error);
+                        promoCodeMessage.className = 'small mb-2 text-danger';
+                        promoCodeMessage.textContent = 'Lỗi kết nối server. Vui lòng thử lại!';
+                    });
+                });
+            }
         });
     </script>
 </body>

@@ -48,10 +48,18 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ApiResponse<List<CourseResponse>> getAllCourses(int currentPage, int size) {
+        return getAllCourses(currentPage, size, null);
+    }
+
+    @Override
+    public ApiResponse<List<CourseResponse>> getAllCourses(int currentPage, int size, String keyword) {
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("currentPage", currentPage);
             params.put("size", size);
+            if (keyword != null && !keyword.isBlank()) {
+                params.put("keyword", keyword);
+            }
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl);
             for (Map.Entry<String, Object> entry : params.entrySet()) {

@@ -1,6 +1,7 @@
 package com.lms.backend.security;
 
 import com.lms.backend.exception.InvalidTokenException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +51,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // Lấy username từ chuỗi JWT
             jwt = authHeader.substring(7);
-            username = jwtToken.extractUsername(jwt);
+            try {
+                username = jwtToken.extractUsername(jwt);
+            } catch (JwtException ex) {
+                // Token hết hạn hoặc không hợp lệ: bỏ qua và xử lý request như ẩn danh
+                // để không làm gãy các endpoint public (ví dụ /api/courses).
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 // Lấy thông tin người dùng

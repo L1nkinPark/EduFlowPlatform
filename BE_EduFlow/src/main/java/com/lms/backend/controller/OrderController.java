@@ -1,5 +1,6 @@
 package com.lms.backend.controller;
 
+import com.lms.backend.exception.InvalidPromoCodeException;
 import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.entity.Order;
@@ -9,6 +10,7 @@ import com.lms.backend.repository.CourseRepository;
 import com.lms.backend.repository.AccountRepository;
 import com.lms.backend.security.CustomUserDetails;
 import com.lms.backend.service.OrderService;
+import com.lms.backend.service.PromoCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +32,13 @@ public class OrderController {
     public static class PendingPayment {
         public String courseId;
         public long accountId;
+        public String promoCode;
         public long timestamp;
 
-        public PendingPayment(String courseId, long accountId) {
+        public PendingPayment(String courseId, long accountId, String promoCode) {
             this.courseId = courseId;
             this.accountId = accountId;
+            this.promoCode = promoCode;
             this.timestamp = System.currentTimeMillis();
         }
     }
@@ -50,6 +54,36 @@ public class OrderController {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private PromoCodeService promoCodeService;
+
+    @PostMapping("/promo/validate")
+    public ResponseEntity<ApiResponse> validatePromoCode(@RequestParam String courseId,
+                                                          @RequestParam String promoCode) {
+        ApiResponse response = new ApiResponse();
+        try {
+            Course course = courseRepository.findById(courseId)
+                    .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
+
+            double originalAmount = course.getPrice();
+            double finalAmount = promoCodeService.calculateDiscountedAmount(promoCode, originalAmount);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("originalAmount", originalAmount);
+            data.put("finalAmount", finalAmount);
+            data.put("discountAmount", originalAmount - finalAmount);
+
+            response.ok("Áp dụng mã giảm giá thành công", data);
+            return ResponseEntity.ok(response);
+        } catch (InvalidPromoCodeException ex) {
+            response.error(ex.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception ex) {
+            response.error(ex.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createOrder(@RequestParam String courseId,
@@ -74,6 +108,7 @@ public class OrderController {
     @GetMapping("/vnpay-url")
     public ResponseEntity<ApiResponse> getVnPayUrl(@RequestParam String courseId,
                                                    @RequestParam String redirectOrigin,
+                                                   @RequestParam(required = false) String promoCode,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
         ApiResponse response = new ApiResponse();
         if (userDetails == null) {
@@ -86,18 +121,31 @@ public class OrderController {
             Course course = courseRepository.findById(courseId)
                     .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
 
+            // NOTE: This is a sandbox/test flow, so the base payment amount is
+            // fixed at 100,000 VND regardless of the course's stored price
+            // (courses use a USD-style price field that is not yet wired to
+            // VNPay). The promo code discount is applied on top of this test
+            // amount so the feature can be validated end-to-end.
+            double baseTestAmountVnd = 100000;
+            double amount = baseTestAmountVnd;
+            if (promoCode != null && !promoCode.isBlank()) {
+                amount = promoCodeService.calculateDiscountedAmount(promoCode, baseTestAmountVnd);
+            }
+            // VNPay expects the amount multiplied by 100 (smallest currency unit).
+            long vnpAmount = Math.round(amount * 100);
+
             // Clean up old pending payments
             long now = System.currentTimeMillis();
             pendingPayments.entrySet().removeIf(entry -> (now - entry.getValue().timestamp) > 1800000); // 30 mins
 
             String txnRef = "EP" + System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
-            pendingPayments.put(txnRef, new PendingPayment(courseId, account.getAccountId()));
+            pendingPayments.put(txnRef, new PendingPayment(courseId, account.getAccountId(), promoCode));
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", "2.1.0");
             vnp_Params.put("vnp_Command", "pay");
             vnp_Params.put("vnp_TmnCode", com.lms.backend.util.VnPayUtil.TMN_CODE);
-            vnp_Params.put("vnp_Amount", "10000000"); // 100,000 VND for testing
+            vnp_Params.put("vnp_Amount", String.valueOf(vnpAmount));
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", txnRef);
             vnp_Params.put("vnp_OrderInfo", "Thanh toan khoa hoc EduFlow");
@@ -164,6 +212,11 @@ public class OrderController {
                 Account user = accountRepository.findById(pending.accountId)
                         .orElseThrow(() -> new RuntimeException("User not found"));
                 Order order = orderService.createOrder(user, pending.courseId);
+
+                if (pending.promoCode != null && !pending.promoCode.isBlank()) {
+                    promoCodeService.markCodeAsUsed(pending.promoCode);
+                }
+
                 response.ok("Payment successful and order created", pending.courseId);
                 return ResponseEntity.ok(response);
             } else {
