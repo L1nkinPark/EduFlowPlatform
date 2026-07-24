@@ -64,6 +64,11 @@ public class AccountServiceImpl implements AccountService {
     public Optional<Account> checkUsername(String username){
         return accountRepository.findByUsername(username);
     }
+
+    @Override
+    public boolean existsAdmin() {
+        return accountRepository.existsByRole("ADMIN");
+    }
 }
 
 

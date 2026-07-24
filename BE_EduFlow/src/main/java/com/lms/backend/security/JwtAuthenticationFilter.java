@@ -30,7 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            if (request.getServletPath().contains("/api/auth")) {
+            // /api/auth/login và /api/auth/refresh-token không cần (và không nên) đọc JWT hiện có.
+            // Riêng /api/auth/register vẫn cần xử lý JWT nếu có, để biết người gọi có phải ADMIN
+            // hay không (phục vụ việc chỉ cho ADMIN tạo account INSTRUCTOR/ADMIN).
+            if (request.getServletPath().contains("/api/auth/login")
+                    || request.getServletPath().contains("/api/auth/refresh-token")) {
                 filterChain.doFilter(request, response);
                 return;
             }

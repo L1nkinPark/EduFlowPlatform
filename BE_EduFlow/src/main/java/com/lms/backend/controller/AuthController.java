@@ -1,5 +1,6 @@
 package com.lms.backend.controller;
 
+import com.lms.backend.exception.ForbiddenException;
 import com.lms.backend.model.request.AuthRequest;
 import com.lms.backend.model.request.LoginRequest;
 import com.lms.backend.model.request.RegisterRequest;
@@ -29,6 +30,8 @@ public class AuthController {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.ok(authResponse);
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        } catch (ForbiddenException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }
