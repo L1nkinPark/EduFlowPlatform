@@ -8,6 +8,7 @@ public class AccountResponse {
 
     private String email;
 
+    @com.fasterxml.jackson.annotation.JsonAlias({"userName", "username"})
     private String username;
 
     private String password;

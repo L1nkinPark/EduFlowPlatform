@@ -20,6 +20,7 @@ public class AccountMapper {
         accountResponse.setFullName(account.getFullName());
         accountResponse.setEmail(account.getEmail());
         accountResponse.setPhone(account.getPhone());
+        accountResponse.setUserName(account.getUsername());
         accountResponse.setBirthday(account.getBirthday());
         accountResponse.setRole(account.getRole());
         accountResponse.setStatus(account.isStatus());

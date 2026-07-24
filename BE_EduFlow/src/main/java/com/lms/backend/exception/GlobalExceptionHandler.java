@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.management.BadAttributeValueExpException;
-import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -21,6 +20,18 @@ public class GlobalExceptionHandler {
         ApiResponse apiResponse = new ApiResponse();
 
         apiResponse.error(ex.getMessage());
+
+        return apiResponse;
+    }
+
+    // Ném ra bởi @PreAuthorize khi caller không có role phù hợp (ví dụ không phải ADMIN).
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ApiResponse handleAccessDeniedException(org.springframework.security.access.AccessDeniedException ex) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.error("Access denied: admin privileges required.");
 
         return apiResponse;
     }
