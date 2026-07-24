@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
+    <title>Course Content - Edutree Instructor</title>
+
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
+</head>
+<body class="bg-light">
+<div th:replace="~{layouts/layout :: instructor_header}"></div>
+
+<section class="py-3 border-bottom bg-white shadow-sm">
+    <div class="container">
+        <h4 class="mb-0" th:text="${course != null ? course.courseName : 'Course'}">Course Name</h4>
+        <p class="text-muted mb-0">Quản lý chương và bài học</p>
+    </div>
+</section>
+
+<div class="pt-5 pb-5">
+    <div class="container">
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="row g-4">
+            <!-- Existing chapters/lessons tree -->
+            <div class="col-lg-7">
+                <div class="card border-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">Nội dung khóa học</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${course == null or course.chapters == null or course.chapters.isEmpty()}" class="text-muted text-center py-4">
+                            Chưa có chương nào. Thêm chương đầu tiên ở bên phải.
+                        </div>
+                        <div class="accordion" id="chapterAccordion" th:unless="${course == null or course.chapters == null or course.chapters.isEmpty()}">
+                            <div class="accordion-item" th:each="chapter, chIdx : ${course?.chapters}">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            th:data-bs-target="'#chapter-' + ${chapter.chapterId}">
+                                        <span th:text="${chIdx.count} + '. ' + ${chapter.title}">Chapter</span>
+                                    </button>
+                                </h2>
+                                <div th:id="'chapter-' + ${chapter.chapterId}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <p class="text-muted small" th:text="${chapter.description}">Description</p>
+                                        <ul class="list-group" th:if="${chapter.lessons != null and !chapter.lessons.isEmpty()}">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="lesson : ${chapter.lessons}">
+                                                <span>
+                                                    <i class="bi" th:classappend="${lesson.lessonType == 'DOCUMENT'} ? 'bi-file-text' : 'bi-play-circle'"></i>
+                                                    <span th:text="${lesson.title}">Lesson title</span>
+                                                </span>
+                                                <span class="badge bg-secondary" th:text="${lesson.lessonType}">VIDEO</span>
+                                            </li>
+                                        </ul>
+                                        <p class="text-muted small mb-0" th:if="${chapter.lessons == null or chapter.lessons.isEmpty()}">Chưa có bài học nào trong chương này.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forms to add chapter / lesson -->
+            <div class="col-lg-5">
+                <div class="card border-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-folder-plus"></i> Thêm chương mới</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/instructor/courses/content/chapters}" th:object="${newChapter}" method="post">
+                            <input type="hidden" name="courseId" th:value="${courseId}">
+                            <div class="mb-3">
+                                <label class="form-label">Tên chương</label>
+                                <input type="text" class="form-control" th:field="*{title}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mô tả</label>
+                                <textarea class="form-control" rows="2" th:field="*{description}"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Thêm chương</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card border-light">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-file-earmark-plus"></i> Thêm bài học mới</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/instructor/courses/content/lessons}" th:object="${newLesson}" method="post" id="lessonForm">
+                            <input type="hidden" name="courseId" th:value="${courseId}">
+                            <div class="mb-3">
+                                <label class="form-label">Chương</label>
+                                <select class="form-select" th:field="*{chapterId}" required>
+                                    <option value="" disabled selected>-- Chọn chương --</option>
+                                    <option th:each="chapter : ${course?.chapters}"
+                                            th:value="${chapter.chapterId}" th:text="${chapter.title}">Chapter</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tên bài học</label>
+                                <input type="text" class="form-control" th:field="*{title}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Loại bài học</label>
+                                <select class="form-select" th:field="*{lessonType}" id="lessonTypeSelect" onchange="toggleLessonFields()">
+                                    <option value="VIDEO">VIDEO</option>
+                                    <option value="DOCUMENT">DOCUMENT (đọc tài liệu)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3" id="videoField">
+                                <label class="form-label">Video URL (embed link)</label>
+                                <input type="text" class="form-control" th:field="*{video}" placeholder="https://www.youtube.com/embed/...">
+                            </div>
+                            <div class="mb-3" id="contentField" style="display:none;">
+                                <label class="form-label">Nội dung tài liệu (Markdown/Text)</label>
+                                <textarea class="form-control" rows="6" th:field="*{content}"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Thời lượng (giây, để 0 nếu là tài liệu)</label>
+                                <input type="number" class="form-control" th:field="*{duration}" min="0">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Thêm bài học</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="py-4 bg-white border-top text-center small text-muted">
+    <div class="container">©2026 Edutree Instructor Panel</div>
+</footer>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script>
+    function toggleLessonFields() {
+        var type = document.getElementById('lessonTypeSelect').value;
+        document.getElementById('videoField').style.display = (type === 'VIDEO') ? 'block' : 'none';
+        document.getElementById('contentField').style.display = (type === 'DOCUMENT') ? 'block' : 'none';
+    }
+    toggleLessonFields();
+</script>
+</body>
+</html>

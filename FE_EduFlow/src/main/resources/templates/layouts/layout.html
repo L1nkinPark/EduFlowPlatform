@@ -105,7 +105,7 @@
                                 </li>
                                 <!-- Instructor links -->
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}" th:text="#{nav.manage_courses}">Manage Courses</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/mycourse}" th:text="#{nav.manage_courses}">Manage Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
@@ -223,7 +223,7 @@
                                 </li>
                                 <!-- Instructor links -->
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/courses/list}" th:text="#{nav.manage_courses}">Manage Courses</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/mycourse}" th:text="#{nav.manage_courses}">Manage Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
@@ -271,6 +271,47 @@
                     </ul>
                     <div class="d-flex gap-2 align-items-center main-header-nav-right">
                         <span class="text-white-50 small" th:if="${session.userLogin != null}" th:text="${session.userLogin.fullName}">Admin</span>
+                        <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Dedicated header for the Instructor area. Instructors manage their own
+         courses/chapters/lessons rather than browsing the marketplace, so this
+         header omits the Home/Courses/Contact marketplace nav. -->
+    <div th:fragment="instructor_header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 main-header-nav" id="nav-bar">
+            <div class="container">
+                <a th:href="@{/instructor/mycourse}" class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h4 text-white">
+                    <img th:src="@{/img/logo.png}" class="img-fluid d-inline-block align-text-center me-2 rounded-pill border shadow" alt="Edutree" />
+                    Edutree <span class="badge bg-success ms-2">Instructor</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#instructorNavContent" aria-controls="instructorNavContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="instructorNavContent">
+                    <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/mycourse')} ? 'active'" th:href="@{/instructor/mycourse}">My Courses</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/courses/add')} ? 'active'" th:href="@{/instructor/courses/add}">New Course</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/earn')} ? 'active'" th:href="@{/instructor/earn}">Earnings</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/order')} ? 'active'" th:href="@{/instructor/order}">Orders</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/student')} ? 'active'" th:href="@{/instructor/student}">Students</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex gap-2 align-items-center main-header-nav-right">
+                        <span class="text-white-50 small" th:if="${session.userLogin != null}" th:text="${session.userLogin.fullName}">Instructor</span>
                         <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}">Log Out</a>
                     </div>
                 </div>

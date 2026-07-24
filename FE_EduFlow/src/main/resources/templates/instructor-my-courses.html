@@ -1,734 +1,85 @@
-?<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
-<!-- Mirrored from askbootstrap.com/preview/edutree/instructor-my-courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:28 GMT -->
-
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
-    <meta name="description" content="Edutree" />
-    <meta name="keywords" content="Edutree" />
+    <title>My Courses - Edutree Instructor</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
-
-    <link th:href="@{/vendor/slick/slick/slick.css}" rel="stylesheet">
-    <link th:href="@{/vendor/slick/slick/slick-theme.css}" rel="stylesheet">
-
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
 </head>
-
 <body class="bg-light">
-    <div th:replace="~{layouts/layout :: header_2}"></div>
-    <section class="bg-primary py-5 profile-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="d-flex gap-3 align-items-center">
-                        <img th:src="@{/img/globel/emoji.jpg}" class="img-fluid rounded-circle col-1 bg-white p-2"
-                            alt="...">
-                        <div>
-                            <div class="p-0">
-                                <h3 class="card-title text-white mb-0">Abhay Rai</h3>
-                                <p class="card-text fs-6 text-white-50 mb-1">@askbootstrap</p>
-                                <p class="card-text text-white">
-                                    <i class="bi bi-geo-alt"></i>
-                                    Sevilla, Spain
-                                </p>
-                            </div>
-                        </div>
-                        <div class="ms-auto">
-                            <div class="border-0">
-                                <button type="button" class="btn btn-light">+ Follow</button>
-                                <button type="button" class="btn btn-warning"> <i class="bi bi-envelope"></i>
-                                    Message</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div th:replace="~{layouts/layout :: instructor_header}"></div>
 
-    <section class="py-3 border-bottom bg-white shadow-sm">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="creatives d-flex align-items-center">
-                    <a href="#" class="small text-primary">Home</a>
-                    <i class="bi bi-caret-right mx-1"></i>
-                    <a href="#" class="small">Instructor</a>
-                    <i class="bi bi-caret-right mx-1"></i>
-                    <a href="#" class="small">My Courses</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="pt-5 pb-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-12">
-                    <div class="sidebar-fixed">
-                        <nav
-                            class="navbar sidebar-dash navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 sidenav navbar navbar-expand-lg navbar-light">
-                            <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold fs-5 float-start py-1"
-                                th:href="@{/instructor/profile}">Menu</a>
-                            <button data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
-                                aria-expanded="false" aria-label="Toggle navigation"
-                                class="p-0 focus-none border-0 navbar-toggler collapsed">
-                                <span
-                                    class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary p-0 text-white float-end">
-                                    <span class="fe fe-menu"></span>
-                                </span>
-                            </button>
-                            <div class="navbar-collapse collapse" id="navbarNav">
-                                <ul class="me-auto flex-column navbar-nav">
-                                    <li class="navbar-header nav-item">Dashboard</li>
-                                    <li class="nav-item"><a class="nav-link" th:href="@{/instructor/profile}"><i
-                                                class="fe fe-home nav-icon"></i> Profile</a></li>
-                                    <li class="nav-item"><a class="nav-link" th:href="@{/instructor/earn}"><i
-                                                class="fe fe-pie-chart nav-icon"></i> Earnings</a></li>
-                                    <li class="nav-item active"><a class="nav-link" th:href="@{/instructor/mycourse}"><i
-                                                class="fe fe-book nav-icon"></i> My Courses</a></li>
-                                    <li class="nav-item"><a class="nav-link" th:href="@{/instructor/order}"><i
-                                                class="fe fe-shopping-bag nav-icon"></i> Orders</a></li>
-                                    <li class="nav-item"><a class="nav-link" th:href="@{/instructor/payout}"><i
-                                                class="fe fe-dollar-sign nav-icon"></i> Payouts</a></li>
-                                    <li class="nav-item"><a class="nav-link" th:href="@{/instructor/reviews}"><i
-                                                class="fe fe-star nav-icon"></i> Reviews</a></li>
-                                    <li class="nav-item"><a class="nav-link" th:href="@{/instructor/student}"><i
-                                                class="fe fe-users nav-icon"></i> Students</a></li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-8 col-sm-12">
-                    <div class="border-0 card">
-                        <div class="card-header">
-                            <div class="mb-3 mb-lg-0">
-                                <h3 class="mb-0">Courses</h3>
-                                <p class="mb-0">Manage your courses and its update like live, draft and insight.</p>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="mb-lg-0 mb-2 col-lg-9 col-md-7 col-sm-12"><input type="search"
-                                        class="form-control" placeholder="Search Your Courses" value></div>
-                                <div class="col-lg-3 col-md-5 col-sm-12">
-                                    <select name class="form-select">
-                                        <option value class="text-muted" selected>Sort by</option>
-                                        <option value="Date Created">Date Created</option>
-                                        <option value="Newest">Newest</option>
-                                        <option value="High Rated">High Rated</option>
-                                        <option value="Law Rated">Law Rated</option>
-                                        <option value="High Earned">High Earned</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-0 pb-5 card-body">
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="table-responsive">
-                                        <table role="table" class="text-nowrap table">
-                                            <thead class="table-light">
-                                                <tr role="row">
-                                                    <th colspan="1" role="columnheader">COURSES</th>
-                                                    <th colspan="1" role="columnheader">STUDENTS</th>
-                                                    <th colspan="1" role="columnheader">RATING</th>
-                                                    <th colspan="1" role="columnheader">STATUS</th>
-                                                    <th colspan="1" role="columnheader"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody role="rowgroup">
-                                                <tr role="row">
-                                                    <td role="cell">
-                                                        <div class="d-lg-flex align-items-center">
-                                                            <div>
-                                                                <a th:href="@{/instructor/mycourse}"><img
-                                                                        th:src="@{/img/5.jpg}"
-                                                                        class="rounded img-4by3-sm"></a>
-                                                            </div>
-                                                            <div class="ms-lg-3 mt-2 mt-lg-0">
-                                                                <h4 class="mb-1 h5"><a class="text-inherit"
-                                                                        th:href="@{/instructor/mycourse}">Revolutionize
-                                                                        how you build the web</a>
-                                                                </h4>
-                                                                <ul class="fs-6 mb-0 list-inline">
-                                                                    <li class="list-inline-item"><i
-                                                                            class="far fa-clock me-1"></i>1h 30m</li>
-                                                                    <li class="list-inline-item">
-                                                                        <svg class="me-1 mt-n1" width="16" height="16"
-                                                                            viewBox="0 0 16 16" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <rect x="3" y="8" width="2" height="6"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="7" y="5" width="2" height="9"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                            <rect x="11" y="2" width="2" height="12"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                        </svg>
-                                                                        Beginner
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td role="cell">12,234</td>
-                                                    <td role="cell">
-                                                        <span class="text-warning">
-                                                            4.5
-                                                            <svg viewBox="0 0 24 24" role="presentation"
-                                                                style="width: 0.9rem; height: 0.9rem;">
-                                                                <path
-                                                                    d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                                                                    style="fill: currentcolor;"></path>
-                                                            </svg>
-                                                        </span>
-                                                        (3,250)
-                                                    </td>
-                                                    <td role="cell"><span class="badge bg-info ">Draft</span></td>
-                                                    <td role="cell">
-                                                        <div class="dropdown">
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px"
-                                                                    height="15px" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-secondary">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="12" cy="5" r="1"></circle>
-                                                                    <circle cx="12" cy="19" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr role="row">
-                                                    <td role="cell">
-                                                        <div class="d-lg-flex">
-                                                            <div>
-                                                                <a th:href="@{/instructor/mycourse}"><img
-                                                                        th:src="@{/img/2.jpg}"
-                                                                        class="rounded img-4by3-sm"></a>
-                                                            </div>
-                                                            <div class="ms-lg-3 mt-2 mt-lg-0">
-                                                                <h4 class="mb-1 h5"><a class="text-inherit"
-                                                                        th:href="@{/instructor/mycourse}">Guide
-                                                                        to Static Sites with Gatsby</a>
-                                                                </h4>
-                                                                <ul class="fs-6 mb-0 list-inline">
-                                                                    <li class="list-inline-item"><i
-                                                                            class="far fa-clock me-1"></i>3h 40m</li>
-                                                                    <li class="list-inline-item">
-                                                                        <svg class="me-1 mt-n1" width="16" height="16"
-                                                                            viewBox="0 0 16 16" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <rect x="3" y="8" width="2" height="6"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="7" y="5" width="2" height="9"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="11" y="2" width="2" height="12"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                        </svg>
-                                                                        Intermediate
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td role="cell">2,000</td>
-                                                    <td role="cell">
-                                                        <span class="text-warning">
-                                                            4.5
-                                                            <svg viewBox="0 0 24 24" role="presentation"
-                                                                style="width: 0.9rem; height: 0.9rem;">
-                                                                <path
-                                                                    d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                                                                    style="fill: currentcolor;"></path>
-                                                            </svg>
-                                                        </span>
-                                                        (5,300)
-                                                    </td>
-                                                    <td role="cell"><span class="badge bg-info ">Draft</span></td>
-                                                    <td role="cell">
-                                                        <div class="dropdown">
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px"
-                                                                    height="15px" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-secondary">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="12" cy="5" r="1"></circle>
-                                                                    <circle cx="12" cy="19" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr role="row">
-                                                    <td role="cell">
-                                                        <div class="d-lg-flex">
-                                                            <div>
-                                                                <a th:href="@{/instructor/mycourse}"><img
-                                                                        th:src="@{/img/7.jpg}"
-                                                                        class="rounded img-4by3-sm"></a>
-                                                            </div>
-                                                            <div class="ms-lg-3 mt-2 mt-lg-0">
-                                                                <h4 class="mb-1 h5"><a class="text-inherit"
-                                                                        th:href="@{/instructor/mycourse}">The
-                                                                        Modern HTML Courses</a>
-                                                                </h4>
-                                                                <ul class="fs-6 mb-0 list-inline">
-                                                                    <li class="list-inline-item"><i
-                                                                            class="far fa-clock me-1"></i>4h 10m</li>
-                                                                    <li class="list-inline-item">
-                                                                        <svg class="me-1 mt-n1" width="16" height="16"
-                                                                            viewBox="0 0 16 16" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <rect x="3" y="8" width="2" height="6"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="7" y="5" width="2" height="9"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                            <rect x="11" y="2" width="2" height="12"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                        </svg>
-                                                                        Beginner
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td role="cell">22,345</td>
-                                                    <td role="cell">
-                                                        <span class="text-warning">
-                                                            4.5
-                                                            <svg viewBox="0 0 24 24" role="presentation"
-                                                                style="width: 0.9rem; height: 0.9rem;">
-                                                                <path
-                                                                    d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                                                                    style="fill: currentcolor;"></path>
-                                                            </svg>
-                                                        </span>
-                                                        (6,380)
-                                                    </td>
-                                                    <td role="cell"><span class="badge bg-warning ">Pending</span></td>
-                                                    <td role="cell">
-                                                        <div class="dropdown">
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px"
-                                                                    height="15px" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-secondary">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="12" cy="5" r="1"></circle>
-                                                                    <circle cx="12" cy="19" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr role="row">
-                                                    <td role="cell">
-                                                        <div class="d-lg-flex">
-                                                            <div>
-                                                                <a th:href="@{/instructor/mycourse}"><img
-                                                                        th:src="@{/img/4.jpg}"
-                                                                        class="rounded img-4by3-sm"></a>
-                                                            </div>
-                                                            <div class="ms-lg-3 mt-2 mt-lg-0">
-                                                                <h4 class="mb-1 h5"><a class="text-inherit"
-                                                                        th:href="@{/instructor/mycourse}">Courses
-                                                                        JavaScript Heading Title</a>
-                                                                </h4>
-                                                                <ul class="fs-6 mb-0 list-inline">
-                                                                    <li class="list-inline-item"><i
-                                                                            class="far fa-clock me-1"></i>4h 10m</li>
-                                                                    <li class="list-inline-item">
-                                                                        <svg class="me-1 mt-n1" width="16" height="16"
-                                                                            viewBox="0 0 16 16" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <rect x="3" y="8" width="2" height="6"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="7" y="5" width="2" height="9"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="11" y="2" width="2" height="12"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                        </svg>
-                                                                        Advance
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td role="cell">5,235</td>
-                                                    <td role="cell">
-                                                        <span class="text-warning">
-                                                            4.5
-                                                            <svg viewBox="0 0 24 24" role="presentation"
-                                                                style="width: 0.9rem; height: 0.9rem;">
-                                                                <path
-                                                                    d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                                                                    style="fill: currentcolor;"></path>
-                                                            </svg>
-                                                        </span>
-                                                        (5,400)
-                                                    </td>
-                                                    <td role="cell"><span class="badge bg-warning ">Pending</span></td>
-                                                    <td role="cell">
-                                                        <div class="dropdown">
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px"
-                                                                    height="15px" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-secondary">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="12" cy="5" r="1"></circle>
-                                                                    <circle cx="12" cy="19" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr role="row">
-                                                    <td role="cell">
-                                                        <div class="d-lg-flex">
-                                                            <div>
-                                                                <a th:href="@{/instructor/mycourse}"><img
-                                                                        th:src="@{/img/1.jpg}"
-                                                                        class="rounded img-4by3-sm"></a>
-                                                            </div>
-                                                            <div class="ms-lg-3 mt-2 mt-lg-0">
-                                                                <h4 class="mb-1 h5"><a class="text-inherit"
-                                                                        th:href="@{/instructor/mycourse}">Get
-                                                                        Start with Node Heading Title</a>
-                                                                </h4>
-                                                                <ul class="fs-6 mb-0 list-inline">
-                                                                    <li class="list-inline-item"><i
-                                                                            class="far fa-clock me-1"></i>2h 59m</li>
-                                                                    <li class="list-inline-item">
-                                                                        <svg class="me-1 mt-n1" width="16" height="16"
-                                                                            viewBox="0 0 16 16" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <rect x="3" y="8" width="2" height="6"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="7" y="5" width="2" height="9"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="11" y="2" width="2" height="12"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                        </svg>
-                                                                        Intermediate
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td role="cell">7,200</td>
-                                                    <td role="cell">
-                                                        <span class="text-warning">
-                                                            4.5
-                                                            <svg viewBox="0 0 24 24" role="presentation"
-                                                                style="width: 0.9rem; height: 0.9rem;">
-                                                                <path
-                                                                    d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                                                                    style="fill: currentcolor;"></path>
-                                                            </svg>
-                                                        </span>
-                                                        (7,800)
-                                                    </td>
-                                                    <td role="cell"><span class="badge bg-success ">Live</span></td>
-                                                    <td role="cell">
-                                                        <div class="dropdown">
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px"
-                                                                    height="15px" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-secondary">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="12" cy="5" r="1"></circle>
-                                                                    <circle cx="12" cy="19" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr role="row">
-                                                    <td role="cell">
-                                                        <div class="d-lg-flex">
-                                                            <div>
-                                                                <a th:href="@{/instructor/mycourse}"><img
-                                                                        th:src="@{/img/6.jpg}"
-                                                                        class="rounded img-4by3-sm"></a>
-                                                            </div>
-                                                            <div class="ms-lg-3 mt-2 mt-lg-0">
-                                                                <h4 class="mb-1 h5"><a class="text-inherit"
-                                                                        th:href="@{/instructor/mycourse}">Get
-                                                                        Start with Laravel</a>
-                                                                </h4>
-                                                                <ul class="fs-6 mb-0 list-inline">
-                                                                    <li class="list-inline-item"><i
-                                                                            class="far fa-clock me-1"></i>3h 40m</li>
-                                                                    <li class="list-inline-item">
-                                                                        <svg class="me-1 mt-n1" width="16" height="16"
-                                                                            viewBox="0 0 16 16" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <rect x="3" y="8" width="2" height="6"
-                                                                                rx="1" fill="#356df1"></rect>
-                                                                            <rect x="7" y="5" width="2" height="9"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                            <rect x="11" y="2" width="2" height="12"
-                                                                                rx="1" fill="#DBD8E9"></rect>
-                                                                        </svg>
-                                                                        Beginner
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td role="cell">22,500</td>
-                                                    <td role="cell">
-                                                        <span class="text-warning">
-                                                            4.5
-                                                            <svg viewBox="0 0 24 24" role="presentation"
-                                                                style="width: 0.9rem; height: 0.9rem;">
-                                                                <path
-                                                                    d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                                                                    style="fill: currentcolor;"></path>
-                                                            </svg>
-                                                        </span>
-                                                        (9,200)
-                                                    </td>
-                                                    <td role="cell"><span class="badge bg-success ">Live</span></td>
-                                                    <td role="cell">
-                                                        <div class="dropdown">
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px"
-                                                                    height="15px" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-secondary">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="12" cy="5" r="1"></circle>
-                                                                    <circle cx="12" cy="19" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div>
-                                        <nav>
-                                            <ul class="justify-content-center mb-0 pagination">
-                                                <li class="page-item"><button type="button"
-                                                        class="page-link mx-1 rounded btn btn-primary"><i
-                                                            class="fe fe-chevron-left"></i></button></li>
-                                                <li class="page-item active page-item"><button type="button"
-                                                        class="page-link mx-1 rounded btn btn-primary">1</button></li>
-                                                <li class="page-item  page-item"><button type="button"
-                                                        class="page-link mx-1 rounded btn btn-primary">2</button></li>
-                                                <li class="page-item"><button type="button"
-                                                        class="page-link mx-1 rounded btn btn-primary"><i
-                                                            class="fe fe-chevron-right"></i></button></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white border-top border-bottom cities-footer">
+<section class="py-3 border-bottom bg-white shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
         <div>
-            <div class="container">
-                <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
-                    href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center py-1">
-                        <h6 class="m-0 h5 text-dark fw-bold">POPULAR CATEGORIES</h6>
-                        <small>SEE ALL CATEGORIES <i class="icofont-rounded-down border p-1 ms-2 rounded-3"></i></small>
-                    </div>
-                </a>
-            </div>
+            <h4 class="mb-0">My Courses</h4>
+            <p class="text-muted mb-0">Các khóa học của bạn</p>
         </div>
-        <div class="collapse border-top" id="collapseExample">
-            <div class="container py-4">
-                <div class="row">
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">llustration courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Craft courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Marketing & Business courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Photography & Video courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Design courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">3D & Animation courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Architecture & Spaces courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Web & App Design courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">llustration courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Craft courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Marketing & Business courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Photography & Video courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Design courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">3D & Animation courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Architecture & Spaces courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Web & App Design courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Writing courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Calligraphy & Typography courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Fashion courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Music & Audio courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Writing courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Calligraphy & Typography courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Fashion courses</a></div>
-                    <div class="col-6 col-lg-3 col-md-3"><a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Music & Audio courses</a></div>
-                </div>
-            </div>
-        </div>
+        <a class="btn btn-primary" th:href="@{/instructor/courses/add}">
+            <i class="bi bi-plus-lg"></i> New Course
+        </a>
     </div>
+</section>
 
-    <div class="py-5 footer bg-white">
-        <div>
-            <div class="container py-3">
-                <div class="row">
-                    <div class="col-md-12 col-lg-2 col-6 order-1 order-md-0">
-                        <a th:href="@{/}"
-                            class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h5 text-black">
-                            <img th:src="@{/img/logo.png}"
-                                class="img-fluid d-inline-block align-text-center me-2 rounded-pill">
-                            Edutree
-                        </a>
-                        <div class="text-muted my-3 py-1">
-                            <small>All rights reserved</small>
-                            <span class="small">“Be open to new ideas and approaches. Develop your problem-solving
-                                skills.”</span>
-                        </div>
-                        <div class="d-flex gap-3 h5 m-0">
-                            <a href="#" class="link-dark"><i class="bi bi-linkedin"></i></a>
-                            <a href="#" class="link-dark"><i class="bi bi-facebook"></i></a>
-                            <a href="#" class="link-dark"><i class="bi bi-github"></i></a>
-                            <a href="#" class="link-dark"><i class="bi bi-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-2 col-6 offset-lg-1 mb-lg-0 mb-3">
-                        <h6 class="pb-2">Company</h6>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/about}">About</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">All
-                            Courses</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/career}">Careers</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/student/edit}">Account</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/testimonial}">Testimonials</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/contact}">Contact
-                            Us</a>
-                    </div>
-                    <div class="col-md-6 col-lg-2 col-6">
-                        <h6 class="pb-2">Categories</h6>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Illustration courses</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Craft
-                            courses</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Marketing
-                            & Business</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Photography & Video</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Design
-                            courses</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">3D &
-                            Animation</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/course/all}">Architecture & Spaces</a>
-                    </div>
-                    <div class="col-md-12 col-lg-2 col-12 mb-lg-0 mb-3">
-                        <h6 class="pb-2">Software</h6>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
-                            Photoshop</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
-                            Illustrator</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
-                            After Effects</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Procreate
-                            courses</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Cinema 4D
-                            courses</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
-                            Lightroom </a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/course/all}">Adobe
-                            InDesign </a>
-                    </div>
-                    <div class="col-md-12 col-lg-3 col-6 order-1 order-md-0">
-                        <h6 class="pb-2">Fancy a cool newsletter?</h6>
-                        <small class="text-muted">Be the first to get Edutree's latest news</small>
-                        <form>
-                            <div class="input-group my-3 shadow-sm border rounded-3 overflow-hidden p-1">
-                                <input type="text" class="form-control shadow-none border-0"
-                                    placeholder="Enter your email">
-                                <a href class="input-group-text bg-white shadow-none border-0 text-primary btn"
-                                    id="basic-addon2">
-                                    Sign up
+<div class="pt-5 pb-5">
+    <div class="container">
+        <div class="card border-light">
+            <div class="p-0 card-body">
+                <div class="table-responsive border-0">
+                    <table class="mb-0 text-nowrap table">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="border-0">Course</th>
+                            <th scope="col" class="border-0">Price</th>
+                            <th scope="col" class="border-0">Chapters</th>
+                            <th scope="col" class="border-0">Status</th>
+                            <th scope="col" class="border-0">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${courseList.isEmpty()}">
+                            <td colspan="5" class="text-center text-muted py-5">
+                                Bạn chưa có khóa học nào. <a th:href="@{/instructor/courses/add}">Tạo khóa học đầu tiên</a>
+                            </td>
+                        </tr>
+                        <tr th:each="course : ${courseList}">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img th:src="${course.thumbnail}" class="rounded img-4by3-sm" style="width:60px;height:45px;object-fit:cover;" onerror="this.style.display='none'">
+                                    <h5 class="mb-0 ms-3" th:text="${course.courseName}">Course name</h5>
+                                </div>
+                            </td>
+                            <td th:text="${course.price} + ' VND'">0</td>
+                            <td th:text="${course.chapters != null ? course.chapters.size() : 0}">0</td>
+                            <td>
+                                <span class="badge bg-success" th:text="${course.status}">ACTIVE</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/instructor/courses/content(courseId=${course.courseId})}">
+                                    <i class="bi bi-collection-play"></i> Manage Content
                                 </a>
-                            </div>
-                        </form>
-                        <p><i class="bi bi-envelope"></i> Get new clients, grow your business.</p>
-                    </div>
+                                <a class="btn btn-sm btn-outline-secondary" th:href="@{/instructor/courses/add(courseId=${course.courseId})}">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <div th:replace="~{layouts/layout :: footer}"></div>
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-        data-cf-beacon='{"rayId":"8d693ae7e9bbdd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
-        crossorigin="anonymous"></script>
+</div>
+
+<footer class="py-4 bg-white border-top text-center small text-muted">
+    <div class="container">©2026 Edutree Instructor Panel</div>
+</footer>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
-
-<script th:src="@{/vendor/jquery/jquery.min.js}" type="0fccd77ef638339abfa41d63-text/javascript"></script>
-
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}" type="0fccd77ef638339abfa41d63-text/javascript">
-</script>
-
-<script th:src="@{/vendor/slick/slick/slick.min.js}" type="0fccd77ef638339abfa41d63-text/javascript"></script>
-
-<script th:src="@{/js/custom.js}" type="0fccd77ef638339abfa41d63-text/javascript"></script>
-<script th:src="@{/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js}"
-    data-cf-settings="0fccd77ef638339abfa41d63-|49" defer></script>
-<!-- Mirrored from askbootstrap.com/preview/edutree/instructor-my-courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:28 GMT -->
-
 </html>
