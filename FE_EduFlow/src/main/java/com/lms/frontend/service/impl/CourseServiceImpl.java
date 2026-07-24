@@ -142,6 +142,28 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public ApiResponse<List<CourseResponse>> getMyCourses() {
+        try {
+            ResponseEntity<ApiResponse<List<CourseResponse>>> responseEntity = restTemplate.exchange(
+                    apiUrl + "/mine",
+                    HttpMethod.GET,
+                    getAuthorizedEntity(null),
+                    new ParameterizedTypeReference<ApiResponse<List<CourseResponse>>>() {}
+            );
+
+            ApiResponse<List<CourseResponse>> apiResponse = responseEntity.getBody();
+            if (apiResponse != null && "SUCCESS".equals(apiResponse.getStatus())) {
+                return apiResponse;
+            }
+
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public ApiResponse<CourseResponse> saveCourse(CourseResponse courseResponse) {
         try {
             ResponseEntity<ApiResponse<CourseResponse>> responseEntity = restTemplate.exchange(

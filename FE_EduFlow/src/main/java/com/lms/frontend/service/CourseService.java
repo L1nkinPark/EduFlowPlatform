@@ -15,6 +15,9 @@ public interface CourseService {
 
     ApiResponse<List<CourseResponse>> getCoursesByAccount(Long accountId);
 
+    // Danh sách course thuộc về instructor đang đăng nhập (dựa vào JWT, không cần truyền accountId).
+    ApiResponse<List<CourseResponse>> getMyCourses();
+
 //    Page<Course> searchCourse(Pageable pageable, String keyword);
 //
     ApiResponse<CourseResponse> saveCourse(CourseResponse courseResponse);

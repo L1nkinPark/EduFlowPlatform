@@ -10,7 +10,12 @@ public class LessonResponse {
 
     private String title;
 
+    // VIDEO or DOCUMENT
+    private String lessonType;
+
     private String video;
+
+    private String content;
 
     private int duration;
 

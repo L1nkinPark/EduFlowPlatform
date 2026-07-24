@@ -30,6 +30,9 @@ public class CourseController {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
     // API hiển thị danh sách tất cả khóa học
     @GetMapping
     public ResponseEntity<ApiResponse> getAllCourses(@RequestParam(defaultValue = "1") Integer currentPage,
@@ -60,6 +63,20 @@ public class CourseController {
         Course course = courseSevice.getCourseById(courseId);
         ApiResponse response = new ApiResponse();
         response.ok("OK", courseMapper.convertToDTO(course));
+        return ResponseEntity.ok(response);
+    }
+
+    // Danh sách course thuộc về instructor đang đăng nhập (dùng cho trang "My Courses" của instructor).
+    @GetMapping("/mine")
+    public ResponseEntity<ApiResponse> getMyCourses(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        ApiResponse response = new ApiResponse();
+        if (userDetails == null) {
+            response.error("User not authenticated");
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        List<Course> courses = courseRepository.findByAccount(userDetails.getAccount());
+        response.ok("OK", courseMapper.convertToDTO(courses));
         return ResponseEntity.ok(response);
     }
 

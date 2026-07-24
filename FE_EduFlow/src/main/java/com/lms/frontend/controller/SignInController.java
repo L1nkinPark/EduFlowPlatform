@@ -58,6 +58,10 @@ public class SignInController {
             return "redirect:/admin";
         }
 
+        if ("INSTRUCTOR".equals(authResponse.getRole())) {
+            return "redirect:/instructor/mycourse";
+        }
+
         return "redirect:/";
     }
 }
