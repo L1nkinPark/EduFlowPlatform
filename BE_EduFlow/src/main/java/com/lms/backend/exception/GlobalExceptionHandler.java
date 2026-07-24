@@ -14,6 +14,17 @@ import java.nio.file.AccessDeniedException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ApiResponse handleForbiddenException(ForbiddenException ex) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.error(ex.getMessage());
+
+        return apiResponse;
+    }
+
 //    @ExceptionHandler({Exception.class, RuntimeException.class})
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    @ResponseBody

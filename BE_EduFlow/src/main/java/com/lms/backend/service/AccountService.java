@@ -19,4 +19,6 @@ public interface AccountService {
     Optional<Account> findByEmail(String email);
 
     Optional<Account>  checkUsername(String username);
+
+    boolean existsAdmin();
 }

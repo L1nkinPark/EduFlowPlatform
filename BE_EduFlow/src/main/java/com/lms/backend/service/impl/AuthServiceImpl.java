@@ -1,5 +1,6 @@
 package com.lms.backend.service.impl;
 
+import com.lms.backend.exception.ForbiddenException;
 import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.request.AuthRequest;
 import com.lms.backend.model.request.LoginRequest;
@@ -12,11 +13,15 @@ import com.lms.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -33,12 +38,25 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    // Roles that a caller may self-assign without being an admin.
+    private static final Set<String> PUBLIC_SELF_REGISTER_ROLES = Set.of("STUDENT");
+
     @Override
     public AuthResponse register(RegisterRequest request) {
         // Kiểm tra xem tên đăng nhập đã tồn tại chưa
         if (userService.checkUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("Username is already taken.");
         }
+
+        String requestedRole = request.getRole() == null ? "STUDENT" : request.getRole().toUpperCase();
+
+        // Chỉ ADMIN mới được tạo account với role khác STUDENT (INSTRUCTOR, ADMIN...).
+        // Ngoại lệ: cho phép bootstrap ADMIN đầu tiên khi hệ thống chưa có ADMIN nào.
+        boolean isBootstrapAdmin = "ADMIN".equals(requestedRole) && !userService.existsAdmin();
+        if (!PUBLIC_SELF_REGISTER_ROLES.contains(requestedRole) && !isBootstrapAdmin && !isCallerAdmin()) {
+            throw new ForbiddenException("Only an ADMIN account can create a " + requestedRole + " account.");
+        }
+
         // new User
         Account user = new Account();
         user.setFullName(request.getFullname().trim().toLowerCase());
@@ -46,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(request.getUsername().trim().toLowerCase());
         user.setBirthday(request.getBirthday());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole().toUpperCase());
+        user.setRole(requestedRole);
         user.setStatus(true);
 
         // Save
@@ -102,6 +120,20 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse refreshToken(AuthRequest request) {
         return null;
+    }
+
+    // Kiểm tra người gọi hiện tại (dựa trên JWT trong Authorization header) có phải ADMIN không.
+    private boolean isCallerAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if ("ROLE_ADMIN".equals(authority.getAuthority())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
