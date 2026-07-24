@@ -46,16 +46,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI == '/'} ? 'active'" th:href="@{/}" th:text="#{nav.home}">Home</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/'} ? 'active'" th:href="@{/}" th:text="#{nav.home}">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI == '/about'} ? 'active'" th:href="@{/about}" th:text="#{nav.about}">About</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/about'} ? 'active'" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI == '/contact'} ? 'active'" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/contact'} ? 'active'" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
@@ -157,16 +157,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI == '/'} ? 'active'" th:href="@{/}" th:text="#{nav.home}">Home</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/'} ? 'active'" th:href="@{/}" th:text="#{nav.home}">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI == '/about'} ? 'active'" th:href="@{/about}" th:text="#{nav.about}">About</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/about'} ? 'active'" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${#httpServletRequest.requestURI == '/contact'} ? 'active'" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/contact'} ? 'active'" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
