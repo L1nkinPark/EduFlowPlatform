@@ -54,6 +54,10 @@ public class SignInController {
         // Store JWT in session
         session.setAttribute("userLogin", authResponse);
 
+        if ("ADMIN".equals(authResponse.getRole())) {
+            return "redirect:/admin";
+        }
+
         return "redirect:/";
     }
 }

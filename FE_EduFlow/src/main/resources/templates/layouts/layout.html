@@ -110,7 +110,14 @@
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
                                 </li>
-                                
+                                <!-- Admin links -->
+                                <li th:if="${session.userLogin.role == 'ADMIN'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin}">Admin Dashboard</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'ADMIN'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin/instructors}">Manage Instructors</a>
+                                </li>
+
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}" th:text="#{nav.logout}">Log Out</a></li>
                             </ul>
@@ -221,11 +228,50 @@
                                 <li th:if="${session.userLogin.role == 'INSTRUCTOR'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
                                 </li>
-                                
+                                <!-- Admin links -->
+                                <li th:if="${session.userLogin.role == 'ADMIN'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin}">Admin Dashboard</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'ADMIN'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin/instructors}">Manage Instructors</a>
+                                </li>
+
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item px-3 py-2 rounded text-danger" th:href="@{/logout}" th:text="#{nav.logout}">Log Out</a></li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Dedicated header for the Admin area. Admin manages the platform (accounts,
+         monitoring) rather than browsing courses, so this header intentionally
+         omits the Home/Courses/Contact marketplace nav and shows admin-only links. -->
+    <div th:fragment="admin_header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 main-header-nav" id="nav-bar">
+            <div class="container">
+                <a th:href="@{/admin}" class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h4 text-white">
+                    <img th:src="@{/img/logo.png}" class="img-fluid d-inline-block align-text-center me-2 rounded-pill border shadow" alt="Edutree" />
+                    Edutree <span class="badge bg-danger ms-2">Admin</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#adminNavContent" aria-controls="adminNavContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="adminNavContent">
+                    <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/admin'} ? 'active'" th:href="@{/admin}">Dashboard</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/admin/instructors')} ? 'active'" th:href="@{/admin/instructors}">Instructors</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex gap-2 align-items-center main-header-nav-right">
+                        <span class="text-white-50 small" th:if="${session.userLogin != null}" th:text="${session.userLogin.fullName}">Admin</span>
+                        <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}">Log Out</a>
                     </div>
                 </div>
             </div>
