@@ -12,9 +12,11 @@
     margin: 0;
     background: #f7f8fb;
     color: #182230;
-    overflow: hidden;
+    overflow: hidden;               /* keep hidden on desktop: the two panels scroll independently */
+    height: 100vh;                  /* lock viewport so the two-panel layout works */
 }
 
+/* ── Header ─────────────────────────────────────────────── */
 .learning-header {
     height: 68px;
     background: var(--learning-navy);
@@ -46,13 +48,21 @@
 .learning-progress-summary { display: flex; align-items: center; gap: 12px; font-size: 13px; }
 .learning-progress-summary strong { border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 6px 10px; }
 
+/* ── Two-panel shell ────────────────────────────────────── */
 .learning-shell {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 390px;
-    height: calc(100vh - 68px);
+    height: calc(100vh - 68px);      /* fill remaining viewport */
+    overflow: hidden;                 /* panels scroll independently */
 }
 
-.learning-content { overflow-y: auto; }
+/* ── Left: main content panel ───────────────────────────── */
+.learning-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;   /* smooth scroll on iOS */
+}
+
 .lesson-stage { background: #090c12; display: flex; justify-content: center; }
 .video-frame { width: min(100%, 1120px); aspect-ratio: 16 / 9; position: relative; background: #000; }
 .video-frame video, .video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
@@ -94,15 +104,30 @@
 .course-about h3 { font-size: 18px; }
 .course-about p { color: var(--learning-muted); margin-bottom: 0; line-height: 1.7; }
 
-.curriculum-panel { background: #fff; border-left: 1px solid var(--learning-border); min-width: 0; display: flex; flex-direction: column; }
-.curriculum-heading { min-height: 82px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--learning-border); }
+/* ── Right: curriculum sidebar ──────────────────────────── */
+.curriculum-panel {
+    background: #fff;
+    border-left: 1px solid var(--learning-border);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;               /* contain children; curriculum-scroll handles scrolling */
+}
+.curriculum-heading { min-height: 82px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--learning-border); flex-shrink: 0; }
 .curriculum-heading div { display: flex; flex-direction: column; }
 .curriculum-heading span { font-size: 16px; font-weight: 800; }
 .curriculum-heading strong { font-size: 12px; color: var(--learning-success); margin-top: 4px; }
 .curriculum-heading a { color: var(--learning-muted); }
-.learning-progress { height: 4px; background: #e5e7eb; }
+.learning-progress { height: 4px; background: #e5e7eb; flex-shrink: 0; }
 .learning-progress div { height: 100%; background: var(--learning-success); transition: width .25s ease; }
-.curriculum-scroll { overflow-y: auto; flex: 1; }
+
+.curriculum-scroll {
+    overflow-y: auto;
+    flex: 1 1 0;                    /* fill remaining space and shrink if needed */
+    min-height: 0;                  /* critical: allows flex child to shrink below content height */
+    -webkit-overflow-scrolling: touch;
+}
+
 .chapter-block { border-bottom: 1px solid var(--learning-border); }
 .chapter-heading { padding: 18px 20px 12px; display: flex; flex-direction: column; background: #f8fafc; }
 .chapter-heading span { color: var(--learning-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
@@ -117,6 +142,7 @@
 .lesson-copy small { color: var(--learning-muted); font-size: 11px; }
 .lesson-copy small i { margin-right: 4px; }
 
+/* ── Empty state & toast ────────────────────────────────── */
 .learning-empty { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 32px; }
 .learning-empty i { font-size: 56px; color: #94a3b8; }
 .learning-empty h2 { margin: 16px 0 8px; }
@@ -125,16 +151,60 @@
 .learning-toast.show { opacity: 1; transform: translate(-50%, 0); }
 .learning-toast.error { background: #b91c1c; }
 
+/* ── Custom scrollbar styling ───────────────────────────── */
+.learning-content::-webkit-scrollbar,
+.curriculum-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.learning-content::-webkit-scrollbar-track,
+.curriculum-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.learning-content::-webkit-scrollbar-thumb,
+.curriculum-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .15);
+    border-radius: 3px;
+}
+.learning-content::-webkit-scrollbar-thumb:hover,
+.curriculum-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, .3);
+}
+/* Firefox */
+.learning-content,
+.curriculum-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, .15) transparent;
+}
+
+/* ── Tablet / Mobile ────────────────────────────────────── */
 @media (max-width: 991px) {
-    .learning-body { overflow: auto; }
+    .learning-body {
+        overflow: auto;             /* allow normal page scrolling on mobile */
+        height: auto;
+    }
     .learning-header { grid-template-columns: auto minmax(0, 1fr); padding: 0 14px; }
     .learning-brand span, .learning-progress-summary span { display: none; }
     .learning-progress-summary { position: absolute; right: 12px; }
     .learning-course-title { padding-right: 58px; }
-    .learning-shell { display: flex; height: auto; flex-direction: column; }
-    .learning-content { overflow: visible; }
-    .curriculum-panel { order: -1; border-left: 0; max-height: 48vh; }
-    .curriculum-scroll { max-height: 38vh; }
+    .learning-shell {
+        display: flex;
+        height: auto;
+        flex-direction: column;
+        overflow: visible;          /* no overflow trapping on mobile */
+    }
+    .learning-content {
+        overflow: visible;          /* content flows naturally */
+    }
+    .curriculum-panel {
+        order: -1;
+        border-left: 0;
+        max-height: 48vh;
+        overflow: hidden;
+    }
+    .curriculum-scroll {
+        max-height: 38vh;
+        overflow-y: auto;
+    }
     .lesson-toolbar { align-items: stretch; flex-direction: column; }
     .lesson-toolbar button { width: 100%; }
     .reading-stage { margin: 18px; padding: 30px 24px; min-height: 360px; }
