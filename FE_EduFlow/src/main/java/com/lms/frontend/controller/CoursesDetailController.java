@@ -57,6 +57,23 @@ public class CoursesDetailController {
         model.addAttribute("isPurchased", isPurchased);
         model.addAttribute("completedLessonIds", completedLessonIds);
 
+        // Các khóa học khác để gợi ý (loại trừ khóa học hiện tại) — dùng cho mục
+        // "Courses you might be interested in", thay cho việc tái sử dụng nhầm
+        // biến course đơn lẻ như một list.
+        List<CourseResponse> relatedCourses = new ArrayList<>();
+        ApiResponse<List<CourseResponse>> relatedResponse = courseService.getAllCourses(1, 5, null);
+        if (relatedResponse != null && relatedResponse.getPayload() != null) {
+            for (CourseResponse c : relatedResponse.getPayload()) {
+                if (!c.getCourseId().equals(courseId)) {
+                    relatedCourses.add(c);
+                }
+                if (relatedCourses.size() >= 4) {
+                    break;
+                }
+            }
+        }
+        model.addAttribute("relatedCourses", relatedCourses);
+
         return "courses-detail";
     }
 

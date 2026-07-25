@@ -56,125 +56,11 @@
                         </button>
                         <div class="navbar-collapse collapse" id="navbarNav">
                             <div class="side-nav me-auto flex-column navbar-nav">
-                                <p class="navbar-header nav-item mb-2 p-0 text-danger"><i class="bi bi-gift"></i> OFFERS
-                                </p>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="gi">
-                                    <label class="form-check-label ps-1" for="gi">
-                                        Gift ideas
-                                    </label>
+                                <p class="navbar-header nav-item mb-2 p-0 text-dark" th:text="#{courses.filter.categories}">CATEGORIES</p>
+                                <div class="my-1" th:each="category : ${categories}">
+                                    <a class="text-decoration-none link-dark" th:href="@{/course/all}" th:text="${category.categoryName}">Category</a>
                                 </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="gc">
-                                    <label class="form-check-label ps-1" for="gc">
-                                        Gift cards
-                                    </label>
-                                </div>
-                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4" th:text="#{nav.courses}">Courses</p>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault1">
-                                    <label class="form-check-label ps-1" for="flexRadioDefault1">
-                                        Course Bundles
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault2" checked>
-                                    <label class="form-check-label ps-1" for="flexRadioDefault2">
-                                        Edutree Basics <small><span class="badge bg-primary">NEW</span></small>
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault3">
-                                    <label class="form-check-label ps-1" for="flexRadioDefault3">
-                                        New courses
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault4">
-                                    <label class="form-check-label ps-1" for="flexRadioDefault4">
-                                        Top rated
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault5">
-                                    <label class="form-check-label ps-1" for="flexRadioDefault5">
-                                        Popular courses
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault6">
-                                    <label class="form-check-label ps-1" for="flexRadioDefault6">
-                                        Open courses <small><span class="badge bg-danger">PRO</span></small>
-                                    </label>
-                                </div>
-                                <p class="navbar-header nav-item mb-2 p-0 text-dark  mt-4" th:text="#{courses.filter.categories}">CATEGORIES</p>
-                                <div class="form-check my-1">
-<!--                                    <input class="form-check-input" type="checkbox" value id="Illustration">-->
-                                    <label class="form-check-label ps-1" for="Illustration">
-                                        Illustration
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Craft" checked>
-                                    <label class="form-check-label ps-1" for="Craft">
-                                        Craft
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Marketing">
-                                    <label class="form-check-label ps-1" for="Marketing">
-                                        Marketing & Business
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Photography">
-                                    <label class="form-check-label ps-1" for="Photography">
-                                        Photography & Video
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Design">
-                                    <label class="form-check-label ps-1" for="Design">
-                                        Design
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Animation">
-                                    <label class="form-check-label ps-1" for="Animation">
-                                        3D & Animation
-                                    </label>
-                                </div>
-                                <p class="navbar-header nav-item mb-2 p-0 text-dark mt-4" th:text="#{courses.filter.software}">SOFTWARE</p>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Wordpress">
-                                    <label class="form-check-label ps-1" for="Wordpress">
-                                        Wordpress
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="Adobe">
-                                    <label class="form-check-label ps-1" for="Adobe">
-                                        Adobe Photoshop
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="SketchUp">
-                                    <label class="form-check-label ps-1" for="SketchUp">
-                                        SketchUp
-                                    </label>
-                                </div>
-                                <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value id="illustration">
-                                    <label class="form-check-label ps-1" for="illustration">
-                                        Adobe illustration
-                                    </label>
-                                </div>
+                                <div class="text-muted small" th:if="${#lists.isEmpty(categories)}">Chưa có danh mục nào.</div>
                             </div>
                         </div>
                     </nav>
@@ -183,33 +69,24 @@
             <div class="col-lg-9 col-sm-12">
                 <div class="d-flex align-items-center gap-2 mb-3">
                     <h3 class="pb-0 fw-bold text-dark m-0" th:text="#{home.featured_courses}">Featured</h3>
-                    <a href="#" class="text-decoration-none text-danger ms-auto">See More <i
-                            class="bi bi-arrow-right-circle"></i></a>
                 </div>
 
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5" >
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5" th:if="${not #lists.isEmpty(courses)}">
                     <div class="col" th:each="course : ${courses}">
                         <div
                             class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
                             <img th:src="${course?.image}" class="img-fluid"  loading="lazy">
                             <div class="card-body">
                                 <h6 class="card-title pb-3 text-black mb-0">
-                                    <span class="bg-warning badge text-black me-2">BEST SELLER</span>
                                     <span th:text="${course?.courseName}"></span>
                                 </h6>
                                 <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                                 <div class="card-text text-muted small" th:text="${course?.description}"></div>
                                 <div class="text-muted gap-2 pt-2 small d-flex">
-                                    <span><i class="bi bi-person"></i> 23643</span>
-                                    <span><i class="bi bi-hand-thumbs-up"></i> 80% (2.2k)</span>
+                                    <span><i class="bi bi-person"></i> <span th:text="${course?.enrollmentCount}">0</span> học viên</span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-white border-top p-3">
-                                <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <span class="badge bg-danger text-white">SALE</span>
-                                    <div class="card-price text-danger">78% Disc. <del class="text-black">$1,800</del>
-                                    </div>
-                                </div>
                                 <div class="d-grid">
                                     <button class="btn btn-primary">
                                         <i class="bi bi-cart-fill"></i> <span th:text="${'$' + course.price}"></span>
@@ -220,49 +97,8 @@
                         </div>
                     </div>
                 </div>
-
-
-<!--               Đoạn này cần làm cho chức năng gì? -->
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <h3 class="pb-0 fw-bold text-dark m-0">Course Bundle</h3>
-                    <span class="badge bg-primary">NEW</span>
-                    <a href="#" class="text-decoration-none text-danger ms-auto">See More <i
-                            class="bi bi-arrow-right-circle"></i></a>
-                </div>
-
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
-                    <div class="col">
-                        <div
-                            class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
-                            <img th:src="@{/img/globel/b1.jpg}" class="img-fluid">
-                            <div class="card-body">
-                                <h6 class="card-title fw-bold text-dark">
-                                    Bring Your Creations to Life
-                                </h6>
-                                <p class="card-text text-muted small">Experience the feeling of watching your creations
-                                    come to life through animation. Choose any 3 courses from this selection and add
-                                    some movement to your work. Thi</p>
-                            </div>
-                            <div class="card-footer border-0 bg-white border-top p-3">
-                                <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <span class="badge bg-info text-white">HOT</span>
-                                    <div class="card-price text-danger">78% Disc. <span class="text-black">$1,800</span>
-                                    </div>
-                                </div>
-                                <div class="d-grid">
-                                    <button class="btn btn-primary" onclick="alert('Tính năng mua combo/gói khóa học (Course Bundle) đang được phát triển. Vui lòng chọn mua lẻ các khóa học trong danh sách của chúng tôi!')">
-                                        Create your own bundle <i class="bi bi-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="text-center pt-2 pb-2">
-                    <button type="button" class="btn btn-danger">See more Edutree course <i
-                            class="bi bi-arrow-right"></i></button>
+                <div class="text-center text-muted py-5" th:if="${#lists.isEmpty(courses)}">
+                    Không tìm thấy khóa học nào phù hợp.
                 </div>
             </div>
         </div>
@@ -323,8 +159,6 @@
                         <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/career}">Careers</a>
                         <a class="py-1 text-decoration-none d-block w-100 link-dark"
                             th:href="@{/student/edit}">Account</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/testimonial}">Testimonials</a>
                         <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/contact}">Contact
                             Us</a>
                     </div>

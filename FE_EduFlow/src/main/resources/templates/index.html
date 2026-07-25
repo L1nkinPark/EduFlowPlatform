@@ -63,27 +63,21 @@
                         class="bi bi-arrow-right-circle"></i></a>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" >
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" th:if="${not #lists.isEmpty(courses)}">
                 <div class="col" th:each="course : ${courses}">
                     <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
                         <img th:src="${course?.image}" class="img-fluid" loading="lazy">
                         <div class="card-body">
                             <h6 class="card-title pb-3 text-black mb-0">
-                                <span class="bg-primary badge me-2">New</span>
                                 <span th:text="${course.courseName}"></span>
                             </h6>
                             <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                             <div class="card-text text-muted small" th:text="${course.description}"></div>
                             <div class="text-muted gap-2 pt-2 small d-flex">
-                                <span><i class="bi bi-person"></i> 23643</span>
-                                <span><i class="bi bi-hand-thumbs-up"></i> 80% (2.2k)</span>
+                                <span><i class="bi bi-person"></i> <span th:text="${course.enrollmentCount}">0</span> học viên</span>
                             </div>
                         </div>
                         <div class="card-footer border-0 bg-white border-top p-3">
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <span class="badge bg-danger text-white">SALE</span>
-                                <div class="card-price text-danger">78% Disc. <del class="text-black">$1,800</del></div>
-                            </div>
                              <div class="d-grid">
                                  <button class="btn btn-primary">
                                      <i class="bi bi-cart-fill"></i> <span th:text="${'$' + course.price}"></span>
@@ -94,6 +88,9 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="text-center text-muted py-4" th:if="${#lists.isEmpty(courses)}">
+                Chưa có khóa học nào được đăng.
             </div>
         </div>
         <div class="text-center mt-3 pb-4">
@@ -178,277 +175,23 @@
                 <a th:href="@{/course/all}" class="text-decoration-none text-primary ms-auto">See More <i
                         class="bi bi-arrow-right-circle"></i></a>
             </div>
-            <div class="row gy-3 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2">
-                <div class="col">
+            <div class="row gy-3 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2" th:if="${not #lists.isEmpty(categories)}">
+                <div class="col" th:each="category, iterStat : ${categories}">
                     <div
                         class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/1.jpg}" class="img-fluid">
+                        <img th:src="@{'/img/category/' + ${iterStat.index % 8 + 1} + '.jpg'}" class="img-fluid">
                         <div class="card-body p-3">
-                            <h6 class="card-title m-0">Music</h6>
+                            <h6 class="card-title m-0" th:text="${category.categoryName}">Category</h6>
                         </div>
                         <a th:href="@{/course/all}" class="stretched-link"></a>
                     </div>
                 </div>
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/2.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">Photography</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/3.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">Business</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/4.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">Personal Development</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/5.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">IT and Software</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/6.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">Marketing</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/7.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">Web & App Design</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-                <div class="col">
-                    <div
-                        class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{/img/category/8.jpg}" class="img-fluid">
-                        <div class="card-body p-3">
-                            <h6 class="card-title m-0">Design & Typography</h6>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
+            </div>
+            <div class="text-muted text-center py-4" th:if="${#lists.isEmpty(categories)}">
+                Chưa có danh mục nào.
             </div>
         </div>
     </main>
-    <section class="bg-white py-5 feature-list">
-        <div class="container py-4">
-            <div class="d-flex align-items-end gap-2 mb-4">
-                <div>
-                    <h3 class="pb-0 fw-bold text-dark mb-1">The Community for Creative People</h3>
-                    <p class="text-muted m-0">The largest online community of creatives.</p>
-                </div>
-                <a th:href="@{/course/all}" class="text-decoration-none text-primary ms-auto">See More <i
-                        class="bi bi-arrow-right-circle"></i></a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-5 g-4">
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities1.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Veronica Cerna</h5>
-                            <p class="card-text text-muted small">Lima District, Peru</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">3512 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities2.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Caro Bello</h5>
-                            <p class="card-text text-muted small">Denver, Argentina</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">35241 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities3.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Ernex</h5>
-                            <p class="card-text text-muted small">Denpasar, Indonesia</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">75 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities4.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Victoe Village</h5>
-                            <p class="card-text text-muted small">Mexico City, Mexico</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">10455 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities5.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Hola Bosque</h5>
-                            <p class="card-text text-muted small">Buenos Aires, Argentina</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">2241 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities6.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Luaiso Lopez</h5>
-                            <p class="card-text text-muted small">Barcelona, Spain</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">35802 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities7.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Ameskeria</h5>
-                            <p class="card-text text-muted small">Barcelona, Spain</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">35241 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities8.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Elias Mule</h5>
-                            <p class="card-text text-muted small">Adolfo López Mateos, Mexico</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">1175 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities9.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Agustin Arroyo</h5>
-                            <p class="card-text text-muted small">Madrid, Spain</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">8742 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div
-                        class="card h-100 shadow-sm rounded-3 overflow-hidden video-card-item border position-relative">
-                        <img th:src="@{/img/communities/communities10.jpg}" class="card-img-top" alt="...">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-1 text-dark">Rafa Zabala</h5>
-                            <p class="card-text text-muted small">Singapur, Singapore</p>
-                        </div>
-                        <div
-                            class="card-footer bg-white border-0 d-flex align-items-center justify-content-between p-3 border-top">
-                            <p class="text-muted small mb-0">3848 followers</p>
-                            <button type="button" class="btn btn-secondary btn-sm px-2 py-0">+ Follow</button>
-                        </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
-
     <div class="bg-white border-top border-bottom cities-footer">
         <div>
             <div class="container">
@@ -504,8 +247,6 @@
                         <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/career}">Careers</a>
                         <a class="py-1 text-decoration-none d-block w-100 link-dark"
                             th:href="@{/student/edit}">Account</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/testimonial}">Testimonials</a>
                         <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/contact}">Contact
                             Us</a>
                     </div>

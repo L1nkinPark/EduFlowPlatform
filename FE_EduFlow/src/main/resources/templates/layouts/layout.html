@@ -101,6 +101,9 @@
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">My Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Order History</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'STUDENT'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}" th:text="#{nav.edit_profile}">Edit Profile</a>
                                 </li>
                                 <!-- Instructor links -->
@@ -219,6 +222,9 @@
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">My Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Order History</a>
+                                </li>
+                                <li th:if="${session.userLogin.role == 'STUDENT'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}" th:text="#{nav.edit_profile}">Edit Profile</a>
                                 </li>
                                 <!-- Instructor links -->
@@ -276,6 +282,47 @@
                 </div>
             </div>
         </nav>
+    </div>
+    <!-- Shared sidebar for all Student account-settings pages. Students still
+         browse the marketplace (unlike Admin/Instructor), so they keep the
+         normal header_2 top nav; this fragment just de-duplicates the
+         previously copy-pasted sidebar markup across ~12 templates. -->
+    <div th:fragment="student_sidebar(active)">
+        <div class="sidebar-fixed">
+            <nav class="navbar sidebar-dash navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 sidenav navbar navbar-expand-lg navbar-light">
+                <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold fs-5 float-start py-1"
+                   th:href="@{/student/subscription}">Menu</a>
+                <button data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                        aria-expanded="false" aria-label="Toggle navigation"
+                        class="p-0 focus-none border-0 navbar-toggler collapsed">
+                    <span class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary p-0 text-white float-end">
+                        <span class="fe fe-menu"></span>
+                    </span>
+                </button>
+                <div class="navbar-collapse collapse" id="navbarNav">
+                    <ul class="me-auto flex-column navbar-nav">
+                        <li class="navbar-header nav-item">SUBSCRIPTION</li>
+                        <li class="nav-item" th:classappend="${active == 'subscription'} ? 'active'">
+                            <a class="nav-link" th:href="@{/student/subscription}"><i class="fe fe-home nav-icon"></i> My Courses</a>
+                        </li>
+                        <li class="nav-item" th:classappend="${active == 'invoice'} ? 'active'">
+                            <a class="nav-link" th:href="@{/student/invoice}"><i class="fe fe-pie-chart nav-icon"></i> Order History</a>
+                        </li>
+                        <li class="navbar-header mt-4 nav-item">ACCOUNT SETTINGS</li>
+                        <li class="nav-item" th:classappend="${active == 'edit'} ? 'active'">
+                            <a class="nav-link" th:href="@{/student/edit}"><i class="fe fe-settings nav-icon"></i> Edit Profile</a>
+                        </li>
+                        <li class="nav-item" th:classappend="${active == 'security'} ? 'active'">
+                            <a class="nav-link" th:href="@{/student/security}"><i class="fe fe-lock nav-icon"></i> Security</a>
+                        </li>
+                        <li class="nav-item" th:classappend="${active == 'delete'} ? 'active'">
+                            <a class="nav-link" th:href="@{/student/delete}"><i class="fe fe-trash nav-icon"></i> Delete Profile</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/logout}"><i class="fe fe-power nav-icon"></i>Sign Out</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </div>
     <!-- Dedicated header for the Instructor area. Instructors manage their own
          courses/chapters/lessons rather than browsing the marketplace, so this

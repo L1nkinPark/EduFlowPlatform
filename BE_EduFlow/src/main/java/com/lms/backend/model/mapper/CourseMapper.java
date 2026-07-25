@@ -7,6 +7,8 @@ import com.lms.backend.model.response.AccountResponse;
 import com.lms.backend.model.response.CourseResponse;
 import com.lms.backend.model.response.ChapterResponse;
 import com.lms.backend.model.response.LessonResponse;
+import com.lms.backend.repository.OrderItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ import java.util.List;
 
 @Component
 public class CourseMapper {
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     public CourseResponse convertToDTO(Course course) {
         if(course == null) {
             return null;
@@ -30,6 +36,7 @@ public class CourseMapper {
         courseResponse.setStatus(course.getStatus());
         courseResponse.setImage(course.getImage());
         courseResponse.setThumbnail(course.getThumbnail());
+        courseResponse.setEnrollmentCount(orderItemRepository.countByCourse(course));
 
         // Mapping chapters
         if (course.getChapters() != null) {

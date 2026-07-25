@@ -1,6 +1,7 @@
 package com.lms.backend.repository;
 
 import com.lms.backend.model.entity.Account;
+import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,10 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     // Tất cả order item thuộc các course do 1 instructor sở hữu (dùng cho trang Orders/Earnings của instructor).
     @Query("SELECT oi FROM OrderItem oi WHERE oi.course.account = :instructor ORDER BY oi.order.orderDate DESC")
     List<OrderItem> findByInstructor(@Param("instructor") Account instructor);
+
+    // Số học viên thực đã mua 1 khóa học cụ thể (dùng để hiển thị số liệu thật thay cho số liệu giả trên UI).
+    @Query("SELECT COUNT(oi) FROM OrderItem oi WHERE oi.course = :course")
+    long countByCourse(@Param("course") Course course);
 
     @Query("SELECT COALESCE(SUM(oi.price), 0) FROM OrderItem oi WHERE oi.course.account = :instructor")
     double sumRevenueByInstructor(@Param("instructor") Account instructor);

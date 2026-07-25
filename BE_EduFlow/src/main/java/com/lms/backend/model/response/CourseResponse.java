@@ -34,4 +34,7 @@ public class CourseResponse {
     //Sub Category
     private SubCategoryResponse category;
 
+    // Số học viên thực đã mua khóa học này (thay thế số liệu giả trên UI).
+    private long enrollmentCount;
+
 }

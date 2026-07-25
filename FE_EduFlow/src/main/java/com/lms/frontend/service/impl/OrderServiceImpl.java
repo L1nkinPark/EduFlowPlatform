@@ -3,6 +3,7 @@ package com.lms.frontend.service.impl;
 import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.model.response.CourseResponse;
 import com.lms.frontend.model.response.AuthResponse;
+import com.lms.frontend.model.response.OrderHistoryResponse;
 import com.lms.frontend.service.OrderService;
 import com.lms.frontend.util.ConstantUtil;
 import jakarta.servlet.http.HttpSession;
@@ -156,6 +157,22 @@ public class OrderServiceImpl implements OrderService {
             } catch (Exception e) {
                 return null;
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public ApiResponse<List<OrderHistoryResponse>> getOrderHistory() {
+        try {
+            ResponseEntity<ApiResponse<List<OrderHistoryResponse>>> responseEntity = restTemplate.exchange(
+                    apiUrl + "/history",
+                    HttpMethod.GET,
+                    getAuthorizedEntity(),
+                    new ParameterizedTypeReference<ApiResponse<List<OrderHistoryResponse>>>() {}
+            );
+            return responseEntity.getBody();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

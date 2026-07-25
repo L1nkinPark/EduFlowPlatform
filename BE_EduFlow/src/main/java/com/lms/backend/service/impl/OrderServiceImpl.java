@@ -67,6 +67,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Order> getOrdersByUser(Account user) {
+        return orderRepository.findByUser(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public boolean hasPurchasedCourse(Account user, String courseId) {
         List<Order> orders = orderRepository.findByUser(user);
         for (Order order : orders) {

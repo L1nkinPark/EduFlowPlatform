@@ -66,16 +66,16 @@ public class CourseServiceImpl implements CourseService {
                 builder.queryParam(entry.getKey(), entry.getValue());
             }
 
-            ResponseEntity<ApiResponse> responseEntity = restTemplate.exchange(
+            ResponseEntity<ApiResponse<List<CourseResponse>>> responseEntity = restTemplate.exchange(
                     builder.toUriString(),
                     HttpMethod.GET,
                     getAuthorizedEntity(null),
-                    new ParameterizedTypeReference<>() {
+                    new ParameterizedTypeReference<ApiResponse<List<CourseResponse>>>() {
                     }
             );
 
-            ApiResponse apiResponse = responseEntity.getBody();
-            if (apiResponse != null && apiResponse.getStatus().equals("SUCCESS")) {
+            ApiResponse<List<CourseResponse>> apiResponse = responseEntity.getBody();
+            if (apiResponse != null && "SUCCESS".equals(apiResponse.getStatus())) {
                 return apiResponse;
             }
 
