@@ -2,6 +2,7 @@ package com.lms.frontend.service;
 
 import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.model.response.CourseResponse;
+import com.lms.frontend.model.response.OrderHistoryResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -14,4 +15,5 @@ public interface OrderService {
     ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin, String promoCode);
     ApiResponse<Map<String, Object>> validatePromoCode(String courseId, String promoCode);
     ApiResponse<String> verifyVnPayCallback(Map<String, String> params);
+    ApiResponse<List<OrderHistoryResponse>> getOrderHistory();
 }

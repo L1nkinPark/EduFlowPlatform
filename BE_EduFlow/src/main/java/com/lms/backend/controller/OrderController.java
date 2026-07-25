@@ -248,6 +248,50 @@ public class OrderController {
         }
     }
 
+    // Lịch sử đơn hàng thật của học viên đang đăng nhập (dùng cho trang Invoice).
+    @GetMapping("/history")
+    public ResponseEntity<ApiResponse> getOrderHistory(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        ApiResponse response = new ApiResponse();
+        if (userDetails == null) {
+            response.error("User not authenticated");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        try {
+            Account account = userDetails.getAccount();
+            List<Order> orders = orderService.getOrdersByUser(account);
+
+            List<com.lms.backend.model.response.OrderHistoryResponse> history = new ArrayList<>();
+            for (Order order : orders) {
+                com.lms.backend.model.response.OrderHistoryResponse dto = new com.lms.backend.model.response.OrderHistoryResponse();
+                dto.setOrderId(order.getId());
+                dto.setTotalAmount(order.getTotalAmount());
+                dto.setOrderDate(order.getOrderDate());
+                if (order.getOrderItems() != null && !order.getOrderItems().isEmpty()) {
+                    List<String> names = new ArrayList<>();
+                    for (var item : order.getOrderItems()) {
+                        if (item.getCourse() != null) {
+                            names.add(item.getCourse().getCourseName());
+                        }
+                    }
+                    dto.setCourseNames(names);
+                }
+                history.add(dto);
+            }
+            // Newest first.
+            history.sort((a, b) -> {
+                if (a.getOrderDate() == null || b.getOrderDate() == null) return 0;
+                return b.getOrderDate().compareTo(a.getOrderDate());
+            });
+
+            response.ok("OK", history);
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            response.error(ex.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     @GetMapping("/check-purchase")
     public ResponseEntity<ApiResponse> checkPurchase(@RequestParam String courseId,
                                                      @AuthenticationPrincipal CustomUserDetails userDetails) {

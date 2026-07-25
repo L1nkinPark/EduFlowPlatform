@@ -34,4 +34,7 @@ public class CourseResponse {
     private AccountResponse teacher;
 
     private java.util.List<ChapterResponse> chapters;
+
+    // Số học viên thực đã mua khóa học này.
+    private long enrollmentCount;
 }

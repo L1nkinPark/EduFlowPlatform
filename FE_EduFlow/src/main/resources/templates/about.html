@@ -45,26 +45,26 @@
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
-                        <h1 class="fw-bold text-primary display-2 m-0">10K</h1>
+                        <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalCourses}">0</h1>
                         <h5>Online Courses</h5>
                     </div>
                 </div>
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
-                        <h1 class="fw-bold text-primary display-2 m-0">200+</h1>
+                        <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalInstructors}">0</h1>
                         <h5>Expert Tutors</h5>
                     </div>
                 </div>
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
-                        <h1 class="fw-bold text-primary display-2 m-0">60K+</h1>
+                        <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalStudents}">0</h1>
                         <h5>Online Students</h5>
                     </div>
                 </div>
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
-                        <h1 class="fw-bold text-primary display-2 m-0">6K+</h1>
-                        <h5>Certified Courses</h5>
+                        <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalEnrollments}">0</h1>
+                        <h5>Course Enrollments</h5>
                     </div>
                 </div>
             </div>
@@ -248,8 +248,6 @@
                         <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/career}">Careers</a>
                         <a class="py-1 text-decoration-none d-block w-100 link-dark"
                             th:href="@{/student/edit}">Account</a>
-                        <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                            th:href="@{/testimonial}">Testimonials</a>
                         <a class="py-1 text-decoration-none d-block w-100 link-dark" th:href="@{/contact}">Contact
                             Us</a>
                     </div>

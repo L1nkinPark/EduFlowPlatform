@@ -10,4 +10,5 @@ public interface OrderService {
     Order createOrder(Account user, String courseId);
     List<Course> getPurchasedCourses(Account user);
     boolean hasPurchasedCourse(Account user, String courseId);
+    List<Order> getOrdersByUser(Account user);
 }
