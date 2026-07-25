@@ -15,7 +15,7 @@ public class UserRegister {
     private String lastName;
 
     @NotBlank(message = "Thông tin bắt buộc")
-    @Size(min = 1, message = "Độ dài tối thiểu là 1")
+    @Size(min = 6, max = 72, message = "Mật khẩu phải có từ 6 đến 72 ký tự")
     private String password;
 
     @NotBlank(message = "Thông tin bắt buộc")
@@ -23,7 +23,7 @@ public class UserRegister {
     private String email;
 
     @NotBlank(message = "Thông tin bắt buộc")
-    @Size(min = 1, message = "Độ dài tối thiểu là 1")
+    @Size(min = 6, max = 72, message = "Mật khẩu xác nhận phải có từ 6 đến 72 ký tự")
     private String confirmPassword;
 
     public UserRegister() {
@@ -53,19 +53,19 @@ public class UserRegister {
         this.lastName = lastName;
     }
 
-    public @NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String getPassword() {
+    public @NotBlank(message = "Thông tin bắt buộc") @Size(min = 6, max = 72, message = "Mật khẩu phải có từ 6 đến 72 ký tự") String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String password) {
+    public void setPassword(@NotBlank(message = "Thông tin bắt buộc") @Size(min = 6, max = 72, message = "Mật khẩu phải có từ 6 đến 72 ký tự") String password) {
         this.password = password;
     }
 
-    public @NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String getConfirmPassword() {
+    public @NotBlank(message = "Thông tin bắt buộc") @Size(min = 6, max = 72, message = "Mật khẩu xác nhận phải có từ 6 đến 72 ký tự") String getConfirmPassword() {
         return confirmPassword;
     }
 
-    public void setConfirmPassword(@NotBlank(message = "Thông tin bắt buộc") @Size(min = 1, message = "Độ dài tối thiểu là 1") String confirmPassword) {
+    public void setConfirmPassword(@NotBlank(message = "Thông tin bắt buộc") @Size(min = 6, max = 72, message = "Mật khẩu xác nhận phải có từ 6 đến 72 ký tự") String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
 

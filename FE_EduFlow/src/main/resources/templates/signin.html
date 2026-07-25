@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:40 GMT -->
 
@@ -37,7 +37,8 @@
                     <div class="text-center rounded-3 bg-white shadow-sm p-5">
                         <form th:action="@{/signin}"th:object="${user}" method="POST" class="d-grid gap-3 mb-2">
                             <input type="text" th:field="*{username}" class="form-control" th:placeholder="#{auth.username}">
-                            <input type="password" th:field="*{password}" class="form-control" th:placeholder="#{auth.password}">
+                            <input type="password" th:field="*{password}" class="form-control"
+                                   th:placeholder="#{auth.password}" autocomplete="current-password">
                             <div class="d-flex justify-content-between">
                                 <div class="mb-0 form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -57,7 +58,7 @@
         </div>
     </section>
 
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -125,7 +126,7 @@
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">

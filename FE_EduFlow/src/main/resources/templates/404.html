@@ -1,5 +1,5 @@
 ?<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/404.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:42 GMT -->
 
@@ -29,17 +29,15 @@
 
         <div class="container p-5 mb-lg-3 text-center">
             <img th:src="@{/img/404.svg}" class="img-fluid w-50" alt="Edutree">
-            <h1 class="text-black fw-bold mt-5">Ooops, Page not found</h1>
-            <p class="fs-6 mb-5">Oops! Looks like you followed a bad link.<br>
-                If you think this is a problem with us, please tell us.
-            </p>
+            <h1 class="text-black fw-bold mt-5" th:text="#{error.not_found_title}">Oops, page not found</h1>
+            <p class="fs-6 mb-5" th:text="#{error.not_found_desc}">The link may be incorrect or the page may have moved.</p>
             <a th:href="@{/}" class="btn btn-danger">
-                <i class="bi bi-house me-2"></i> Go Back
+                <i class="bi bi-house me-2"></i> <span th:text="#{error.back_home}">Back to home</span>
             </a>
         </div>
     </div>
 
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -107,7 +105,7 @@
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">

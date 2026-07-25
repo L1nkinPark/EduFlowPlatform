@@ -1,6 +1,7 @@
 package com.lms.frontend.model.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class SignUpRequest {
     private String role;
 
     @NotBlank
+    @Size(min = 6, max = 72)
     private String password;
 }

@@ -50,25 +50,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ApiResponse<Void> createOrder(String courseId) {
-        try {
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl + "/create")
-                    .queryParam("courseId", courseId);
-
-            ResponseEntity<ApiResponse<Void>> responseEntity = restTemplate.exchange(
-                    builder.toUriString(),
-                    HttpMethod.POST,
-                    getAuthorizedEntity(),
-                    new ParameterizedTypeReference<ApiResponse<Void>>() {}
-            );
-            return responseEntity.getBody();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
     public ApiResponse<List<CourseResponse>> getUserCourses() {
         try {
             ResponseEntity<ApiResponse<List<CourseResponse>>> responseEntity = restTemplate.exchange(

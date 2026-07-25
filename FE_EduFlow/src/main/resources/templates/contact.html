@@ -1,5 +1,5 @@
-?<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:43 GMT -->
 <head>
@@ -7,8 +7,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
-    <meta name="description" content="Edutree" />
+    <title th:text="#{contact.page_title}">Contact EduFlow</title>
+    <meta name="description" content="Contact EduFlow support" />
     <meta name="keywords" content="Edutree" />
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
@@ -26,8 +26,8 @@
         <div class="container py-5 px-5 text-center">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-8">
-                    <h1 class="text-white display-5 mb-2 fw-bold">Contact us</h1>
-                    <p class="lead text-white-50 m-0">Have questions? We're here to help!</p>
+                    <h1 class="text-white display-5 mb-2 fw-bold" th:text="#{contact.title}">Contact us</h1>
+                    <p class="lead text-white-50 m-0" th:text="#{contact.subtitle}">Have questions? We're here to help!</p>
                 </div>
             </div>
         </div>
@@ -42,26 +42,21 @@
     <section class="py-5 text-center">
         <div class="container">
 
-            <div class="row gx-5 row-cols-2 row-cols-lg-4 py-5">
+            <div class="row gx-5 row-cols-1 row-cols-md-3 py-5">
                 <div class="col">
-                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-chat"></i></div>
-                    <div class="h5 mb-2 fw-bold text-black">Chat with us</div>
-                    <p class="text-muted mb-0">Chat live with one of our support specialists.</p>
+                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-envelope"></i></div>
+                    <div class="h5 mb-2 fw-bold text-black" th:text="#{contact.form_channel}">Send a request</div>
+                    <p class="text-muted mb-0" th:text="#{contact.form_channel_desc}">Your request is saved and sent to our support team.</p>
                 </div>
                 <div class="col">
-                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-people"></i></div>
-                    <div class="h5 fw-bold text-black">Ask the community</div>
-                    <p class="text-muted mb-0">Explore our community forums and communicate with other users.</p>
+                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-clock-time"></i></div>
+                    <div class="h5 fw-bold text-black" th:text="#{contact.response_time}">Response time</div>
+                    <p class="text-muted mb-0" th:text="#{contact.response_time_desc}">We usually respond within 1–2 business days.</p>
                 </div>
                 <div class="col">
-                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-question-circle"></i></div>
-                    <div class="h5 fw-bold text-black">Support center</div>
-                    <p class="text-muted mb-0">Browse FAQ's and support articles to find solutions.</p>
-                </div>
-                <div class="col">
-                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-telephone"></i></div>
-                    <div class="h5 fw-bold text-black">Call us</div>
-                    <p class="text-muted mb-0">Call us during normal business hours at (555) 892-9403.</p>
+                    <div class="feature bg-primary bg-gradient text-white rounded-pill mb-3"><i class="icofont-location-pin"></i></div>
+                    <div class="h5 fw-bold text-black" th:text="#{contact.location}">Location</div>
+                    <p class="text-muted mb-0" th:text="#{contact.location_desc}">Ho Chi Minh City, Vietnam.</p>
                 </div>
             </div>
         </div>
@@ -73,34 +68,94 @@
                     <div class="pe-lg-5">
                         <div class="pe-lg-5">
                             <div class="py-5">
-                                <div class="display-5 text-dark fw-bold mb-2">Get In Touch.</div>
-                                <p class="pt-1 pb-3 lead">Fill in the form to the right to get in touch with someone on our team, and we will reach out shortly.</p>
-                                <form>
-                                    <div class="d-flex gap-3 justify-content-between">
-                                        <div class="w-100">
-                                            <input type="text" class="form-control" placeholder="Enter Your E-Mail" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        </div>
-                                        <div class="w-100">
-                                            <input type="text" class="form-control" placeholder="Mobile No" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="display-5 text-dark fw-bold mb-2" th:text="#{contact.get_in_touch}">Get In Touch.</div>
+                                <p class="pt-1 pb-3 lead" th:text="#{contact.form_desc}">Send us your question and we will respond shortly.</p>
+
+                                <div class="alert alert-success d-flex align-items-start gap-2"
+                                     th:if="${contactSuccess}">
+                                    <i class="bi bi-check-circle-fill fs-5"></i>
+                                    <div>
+                                        <strong th:text="#{contact.success_title}">Request received!</strong>
+                                        <div th:text="#{contact.success_desc}">We will contact you shortly.</div>
+                                        <small th:if="${contactReference != null}">
+                                            <span th:text="#{contact.reference}">Reference</span>:
+                                            <strong th:text="${'#' + contactReference}">#1</strong>
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <form th:action="@{/contact}" th:object="${contactRequest}" method="post" novalidate>
+                                    <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+                                        <div th:each="error : ${#fields.globalErrors()}" th:text="#{${error.code}}">
+                                            Unable to submit your request.
                                         </div>
                                     </div>
-                                    <div class="my-3">
-                                        <textarea class="form-control" placeholder="Message" rows="6"></textarea>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="contactFullName" class="form-label" th:text="#{contact.full_name}">Full name</label>
+                                            <input id="contactFullName" type="text" class="form-control"
+                                                   th:errorclass="is-invalid" th:field="*{fullName}"
+                                                   autocomplete="name" maxlength="100">
+                                            <div class="invalid-feedback" th:errors="*{fullName}">Invalid name</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="contactEmail" class="form-label" th:text="#{contact.email}">Email</label>
+                                            <input id="contactEmail" type="email" class="form-control"
+                                                   th:errorclass="is-invalid" th:field="*{email}"
+                                                   autocomplete="email" maxlength="160">
+                                            <div class="invalid-feedback" th:errors="*{email}">Invalid email</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="contactPhone" class="form-label">
+                                                <span th:text="#{contact.phone}">Phone</span>
+                                                <small class="text-muted" th:text="#{contact.optional}">(optional)</small>
+                                            </label>
+                                            <input id="contactPhone" type="tel" class="form-control"
+                                                   th:errorclass="is-invalid" th:field="*{phone}"
+                                                   autocomplete="tel" maxlength="30">
+                                            <div class="invalid-feedback" th:errors="*{phone}">Invalid phone</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="contactSubject" class="form-label" th:text="#{contact.subject}">Subject</label>
+                                            <input id="contactSubject" type="text" class="form-control"
+                                                   th:errorclass="is-invalid" th:field="*{subject}"
+                                                   maxlength="160">
+                                            <div class="invalid-feedback" th:errors="*{subject}">Invalid subject</div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="contactMessage" class="form-label" th:text="#{contact.message}">Message</label>
+                                            <textarea id="contactMessage" class="form-control" rows="7"
+                                                      th:errorclass="is-invalid" th:field="*{message}"
+                                                      minlength="10" maxlength="5000"></textarea>
+                                            <div class="invalid-feedback" th:errors="*{message}">Invalid message</div>
+                                        </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary">Submit</button>
+
+                                    <div class="position-absolute start-0 top-0 opacity-0 pe-none" aria-hidden="true">
+                                        <label for="contactWebsite">Website</label>
+                                        <input id="contactWebsite" type="text" th:field="*{website}" tabindex="-1" autocomplete="off">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary px-4 mt-3">
+                                        <i class="bi bi-send me-1"></i>
+                                        <span th:text="#{contact.submit}">Send message</span>
+                                    </button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30703620.672472216!2d64.4139098985941!3d20.050418843029934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1642570609485!5m2!1sen!2sin" width="100%" height="700px" style="border:0;" allowfullscreen loading="lazy"></iframe>
+                    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=106.558%2C10.745%2C106.702%2C10.901&amp;layer=mapnik&amp;marker=10.8231%2C106.6297"
+                            title="EduFlow - Ho Chi Minh City"
+                            width="100%" height="700" style="border:0;" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -143,7 +198,7 @@
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">

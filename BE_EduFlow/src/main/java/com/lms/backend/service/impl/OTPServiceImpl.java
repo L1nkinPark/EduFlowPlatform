@@ -9,12 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Random;
+import java.security.SecureRandom;
 
 @Service
 public class OTPServiceImpl {
 //
     private static final long OTP_EXPIRY_DURATION = 5 * 60 * 1000; // OTP hết hạn sau 5 phút
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired
     private OTPRepository otpRepository;
@@ -37,25 +38,20 @@ public class OTPServiceImpl {
 
     // Phương thức tạo và gửi OTP
     public String generateAndSendOtp(String email) {
-        String otp = String.format("%06d", new Random().nextInt(999999)); // Tạo OTP ngẫu nhiên 6 chữ số
+        String otp = String.format("%06d", SECURE_RANDOM.nextInt(1_000_000));
 
         OTP otpEntity = new OTP();
         otpEntity.setEmail(email);
         otpEntity.setOtpCode(otp);
         otpEntity.setExpirationTime(System.currentTimeMillis() + OTP_EXPIRY_DURATION); // Đặt thời gian hết hạn
         otpRepository.save(otpEntity);
-        System.out.println("[OTP_LOG] GENERATED OTP FOR " + email + " IS: " + otp);
-
-        // Gửi OTP qua email với xử lý lỗi
         try {
             emailService.sendOtpEmail(email, otp);
         } catch (Exception e) {
-            e.printStackTrace(); // In lỗi ra log để theo dõi
-            System.out.println("DEBUG: EMAIL DELIVERY FAILED. GENERATED OTP FOR " + email + " IS: " + otp);
-            // Không throw exception trong môi trường phát triển/thử nghiệm để cho phép tiếp tục đăng ký bằng cách đọc OTP từ logs
+            throw new IllegalStateException("Unable to deliver OTP email", e);
         }
 
-        return otp; // Có thể trả về OTP để kiểm thử, nhưng không nên để lộ trong môi trường sản xuất
+        return otp;
     }
 
     // Phương thức xác minh OTP

@@ -11,8 +11,14 @@ Thumbs.db
 # Terraform
 .terraform/
 *.tfstate
+*.tfstate.*
 *.tfstate.backup
 *.tfplan
 terraform/environments/*.auto.tfvars
 *.tfvars
+*.tfvars.*
 terraform.tfvars
+
+# Local diagnostics and generated test output
+scratch/
+test_results.txt

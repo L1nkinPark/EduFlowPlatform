@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Earnings - Edutree Instructor</title>
+    <title th:text="#{instructor.earnings}">Earnings</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
@@ -15,8 +15,8 @@
 
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
-        <h4 class="mb-0">Earnings</h4>
-        <p class="text-muted mb-0">Tổng quan doanh thu từ các khóa học của bạn</p>
+        <h4 class="mb-0" th:text="#{instructor.earnings}">Earnings</h4>
+        <p class="text-muted mb-0" th:text="#{instructor.earnings_desc}">Revenue overview for your courses</p>
     </div>
 </section>
 
@@ -26,7 +26,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card border-light h-100">
                     <div class="card-body">
-                        <span class="fs-6 text-uppercase fw-semi-bold text-muted">Total Revenue</span>
+                        <span class="fs-6 text-uppercase fw-semi-bold text-muted" th:text="#{instructor.total_revenue}">Total Revenue</span>
                         <h2 class="mt-3 fw-bold mb-0" th:text="${#numbers.formatDecimal(dashboard.totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' VND'">0 VND</h2>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card border-light h-100">
                     <div class="card-body">
-                        <span class="fs-6 text-uppercase fw-semi-bold text-muted">Total Sales</span>
+                        <span class="fs-6 text-uppercase fw-semi-bold text-muted" th:text="#{instructor.total_sales}">Total Sales</span>
                         <h2 class="mt-3 fw-bold mb-0" th:text="${dashboard.totalSales}">0</h2>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card border-light h-100">
                     <div class="card-body">
-                        <span class="fs-6 text-uppercase fw-semi-bold text-muted">Total Students</span>
+                        <span class="fs-6 text-uppercase fw-semi-bold text-muted" th:text="#{instructor.total_students}">Total Students</span>
                         <h2 class="mt-3 fw-bold mb-0" th:text="${dashboard.totalStudents}">0</h2>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card border-light h-100">
                     <div class="card-body">
-                        <span class="fs-6 text-uppercase fw-semi-bold text-muted">Total Courses</span>
+                        <span class="fs-6 text-uppercase fw-semi-bold text-muted" th:text="#{instructor.total_courses}">Total Courses</span>
                         <h2 class="mt-3 fw-bold mb-0" th:text="${dashboard.totalCourses}">0</h2>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
 
         <div class="mt-4 card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Chi tiết đơn hàng</h5>
-                <a class="btn btn-sm btn-outline-primary" th:href="@{/instructor/order}">Xem tất cả đơn hàng</a>
+                <h5 class="mb-0" th:text="#{instructor.order_details}">Order Details</h5>
+                <a class="btn btn-sm btn-outline-primary" th:href="@{/instructor/order}" th:text="#{instructor.view_orders}">View all orders</a>
             </div>
         </div>
     </div>

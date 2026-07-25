@@ -16,6 +16,7 @@ public class SubCategoryMapper {
         }
 
         SubCategoryResponse subCategoryResponse = new SubCategoryResponse();
+        subCategoryResponse.setSubCategoryId(subCategory.getSubCategoryId());
         subCategoryResponse.setSubCategoryName(subCategory.getSubCategoryName());
         subCategoryResponse.setSubCategoryDescription(subCategory.getSubCategoryDescription());
         subCategoryResponse.setStatus(subCategory.isStatus());

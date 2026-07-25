@@ -7,6 +7,8 @@ import com.lms.frontend.service.AccountService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,9 @@ public class SignInController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping
     public String viewPage(Model model) {
@@ -37,14 +42,17 @@ public class SignInController {
                               BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", loginRequest);
-            model.addAttribute("error", "Please enter username and password.");
+            model.addAttribute("error", messageSource.getMessage(
+                    "auth.login_required", null, LocaleContextHolder.getLocale()));
             return "signin";
         }
 
         ApiResponse<AuthResponse> apiResponse = accountService.login(loginRequest);
-        if (apiResponse == null) {
+        if (apiResponse == null || !"SUCCESS".equals(apiResponse.getStatus())
+                || apiResponse.getPayload() == null) {
             model.addAttribute("user", loginRequest);
-            model.addAttribute("error", "The username or password is incorrect.");
+            model.addAttribute("error", messageSource.getMessage(
+                    "auth.login_invalid", null, LocaleContextHolder.getLocale()));
             return "signin";
         }
 

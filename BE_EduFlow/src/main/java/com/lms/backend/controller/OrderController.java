@@ -11,6 +11,7 @@ import com.lms.backend.repository.AccountRepository;
 import com.lms.backend.security.CustomUserDetails;
 import com.lms.backend.service.OrderService;
 import com.lms.backend.service.PromoCodeService;
+import com.lms.backend.util.VnPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,12 +35,14 @@ public class OrderController {
         public String courseId;
         public long accountId;
         public String promoCode;
+        public long expectedAmount;
         public long timestamp;
 
-        public PendingPayment(String courseId, long accountId, String promoCode) {
+        public PendingPayment(String courseId, long accountId, String promoCode, long expectedAmount) {
             this.courseId = courseId;
             this.accountId = accountId;
             this.promoCode = promoCode;
+            this.expectedAmount = expectedAmount;
             this.timestamp = System.currentTimeMillis();
         }
     }
@@ -57,6 +61,9 @@ public class OrderController {
 
     @Autowired
     private PromoCodeService promoCodeService;
+
+    @Autowired
+    private VnPayUtil vnPayUtil;
 
     @PostMapping("/promo/validate")
     public ResponseEntity<ApiResponse> validatePromoCode(@RequestParam String courseId,
@@ -79,26 +86,6 @@ public class OrderController {
         } catch (InvalidPromoCodeException ex) {
             response.error(ex.getMessage());
             return ResponseEntity.badRequest().body(response);
-        } catch (Exception ex) {
-            response.error(ex.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createOrder(@RequestParam String courseId,
-                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
-        ApiResponse response = new ApiResponse();
-        if (userDetails == null) {
-            response.error("User not authenticated");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
-
-        try {
-            Account account = userDetails.getAccount();
-            Order order = orderService.createOrder(account, courseId);
-            response.ok("Order created successfully", order.getId());
-            return ResponseEntity.ok(response);
         } catch (Exception ex) {
             response.error(ex.getMessage());
             return ResponseEntity.badRequest().body(response);
@@ -144,12 +131,13 @@ public class OrderController {
             pendingPayments.entrySet().removeIf(entry -> (now - entry.getValue().timestamp) > 1800000); // 30 mins
 
             String txnRef = "EP" + System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
-            pendingPayments.put(txnRef, new PendingPayment(courseId, account.getAccountId(), promoCode));
+            pendingPayments.put(txnRef,
+                    new PendingPayment(courseId, account.getAccountId(), promoCode, vnpAmount));
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", "2.1.0");
             vnp_Params.put("vnp_Command", "pay");
-            vnp_Params.put("vnp_TmnCode", com.lms.backend.util.VnPayUtil.TMN_CODE);
+            vnp_Params.put("vnp_TmnCode", vnPayUtil.getTmnCode());
             vnp_Params.put("vnp_Amount", String.valueOf(vnpAmount));
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", txnRef);
@@ -164,7 +152,7 @@ public class OrderController {
             String vnp_CreateDate = formatter.format(new Date());
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 
-            String secureHash = com.lms.backend.util.VnPayUtil.hashAllFields(vnp_Params);
+            String secureHash = vnPayUtil.hashAllFields(vnp_Params);
 
             // Build final query string
             List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
@@ -179,8 +167,7 @@ public class OrderController {
                     query.append("&");
                 }
             }
-            String queryUrl = com.lms.backend.util.VnPayUtil.VNP_URL + "?" + query.toString() + "vnp_SecureHash=" + secureHash;
-            System.out.println("[VNPAY_URL_LOG] " + queryUrl);
+            String queryUrl = vnPayUtil.getPaymentUrl() + "?" + query + "vnp_SecureHash=" + secureHash;
             response.ok("VNPAY URL generated", queryUrl);
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
@@ -198,19 +185,33 @@ public class OrderController {
             hashParams.remove("vnp_SecureHash");
             hashParams.remove("vnp_SecureHashType");
 
-            String calculatedHash = com.lms.backend.util.VnPayUtil.hashAllFields(hashParams);
-            if (!calculatedHash.equals(vnp_SecureHash)) {
+            String calculatedHash = vnPayUtil.hashAllFields(hashParams);
+            if (vnp_SecureHash == null || !MessageDigest.isEqual(
+                    calculatedHash.getBytes(StandardCharsets.UTF_8),
+                    vnp_SecureHash.getBytes(StandardCharsets.UTF_8))) {
                 response.error("Invalid secure hash signature");
                 return ResponseEntity.badRequest().body(response);
             }
 
             String responseCode = params.get("vnp_ResponseCode");
+            String transactionStatus = params.get("vnp_TransactionStatus");
             String txnRef = params.get("vnp_TxnRef");
 
-            if ("00".equals(responseCode)) {
-                PendingPayment pending = pendingPayments.remove(txnRef);
+            if ("00".equals(responseCode) && "00".equals(transactionStatus)) {
+                PendingPayment pending = pendingPayments.get(txnRef);
                 if (pending == null) {
                     response.error("Transaction mapping not found or expired");
+                    return ResponseEntity.badRequest().body(response);
+                }
+                long paidAmount;
+                try {
+                    paidAmount = Long.parseLong(params.getOrDefault("vnp_Amount", ""));
+                } catch (NumberFormatException ex) {
+                    response.error("Invalid payment amount");
+                    return ResponseEntity.badRequest().body(response);
+                }
+                if (paidAmount != pending.expectedAmount) {
+                    response.error("Payment amount does not match the order");
                     return ResponseEntity.badRequest().body(response);
                 }
 
@@ -221,6 +222,7 @@ public class OrderController {
                 if (pending.promoCode != null && !pending.promoCode.isBlank()) {
                     promoCodeService.markCodeAsUsed(pending.promoCode);
                 }
+                pendingPayments.remove(txnRef, pending);
 
                 response.ok("Payment successful and order created", pending.courseId);
                 return ResponseEntity.ok(response);

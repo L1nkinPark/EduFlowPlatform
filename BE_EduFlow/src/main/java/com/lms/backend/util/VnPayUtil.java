@@ -1,18 +1,37 @@
 package com.lms.backend.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@Component
 public class VnPayUtil {
 
-    public static final String TMN_CODE = "2XDLASD9";
-    public static final String HASH_SECRET = "XWL0ZHWTVRJ2N7PATQXR9WZ1JX9R5QAM";
-    public static final String VNP_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    @Value("${vnpay.tmn-code}")
+    private String tmnCode;
 
-    public static String hashAllFields(Map<String, String> fields) {
+    @Value("${vnpay.hash-secret}")
+    private String hashSecret;
+
+    @Value("${vnpay.url:https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}")
+    private String paymentUrl;
+
+    public String getTmnCode() {
+        requireConfigured(tmnCode, "VNPAY_TMN_CODE");
+        return tmnCode;
+    }
+
+    public String getPaymentUrl() {
+        return paymentUrl;
+    }
+
+    public String hashAllFields(Map<String, String> fields) {
+        requireConfigured(hashSecret, "VNPAY_HASH_SECRET");
         List<String> fieldNames = new ArrayList<>(fields.keySet());
         Collections.sort(fieldNames);
         StringBuilder sb = new StringBuilder();
@@ -27,10 +46,10 @@ public class VnPayUtil {
                 sb.append(URLEncoder.encode(fieldValue, StandardCharsets.UTF_8));
             }
         }
-        return hmacSHA512(HASH_SECRET, sb.toString());
+        return hmacSHA512(hashSecret, sb.toString());
     }
 
-    public static String hmacSHA512(String key, String data) {
+    private String hmacSHA512(String key, String data) {
         try {
             if (key == null || data == null) {
                 throw new NullPointerException();
@@ -47,7 +66,13 @@ public class VnPayUtil {
             }
             return sb.toString();
         } catch (Exception ex) {
-            return "";
+            throw new IllegalStateException("Unable to calculate VNPay signature", ex);
+        }
+    }
+
+    private void requireConfigured(String value, String environmentVariable) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(environmentVariable + " is not configured");
         }
     }
 }

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    ApiResponse<Void> createOrder(String courseId);
     ApiResponse<List<CourseResponse>> getUserCourses();
     boolean hasPurchased(String courseId);
     ApiResponse<String> getVnPayUrl(String courseId, String redirectOrigin);

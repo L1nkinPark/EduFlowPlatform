@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Order History - Edutree</title>
+    <title th:text="#{student.invoice}">Order History</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
@@ -15,8 +15,8 @@
 
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
-        <h4 class="mb-0">Order History</h4>
-        <p class="text-muted mb-0">Danh sách các đơn hàng bạn đã thanh toán thành công</p>
+        <h4 class="mb-0" th:text="#{student.invoice}">Order History</h4>
+        <p class="text-muted mb-0" th:text="#{student.invoice_desc}">Orders you have successfully paid</p>
     </div>
 </section>
 
@@ -29,19 +29,19 @@
             <div class="col-lg-9 col-md-8 col-sm-12">
                 <div class="border-0 card">
                     <div class="card-header">
-                        <h3 class="mb-0">Invoices</h3>
-                        <p class="mb-0 text-muted small">Danh sách các đơn hàng đã thanh toán thành công.</p>
+                        <h3 class="mb-0" th:text="#{student.invoices}">Invoices</h3>
+                        <p class="mb-0 text-muted small" th:text="#{student.invoice_list_desc}">Your successfully paid orders.</p>
                     </div>
                     <div class="p-0 card-body">
                         <div class="table-invoice table-responsive border-0" th:if="${not #lists.isEmpty(orders)}">
                             <table class="table mb-0 text-nowrap table">
                                 <thead class="table-light">
                                     <tr>
-                                        <th scope="col" class="border-bottom-0">ORDER ID</th>
-                                        <th scope="col" class="border-bottom-0">DATE</th>
-                                        <th scope="col" class="border-bottom-0">COURSES</th>
-                                        <th scope="col" class="border-bottom-0">AMOUNT</th>
-                                        <th scope="col" class="border-bottom-0">STATUS</th>
+                                        <th scope="col" class="border-bottom-0" th:text="#{student.order_id}">ORDER ID</th>
+                                        <th scope="col" class="border-bottom-0" th:text="#{student.date}">DATE</th>
+                                        <th scope="col" class="border-bottom-0" th:text="#{common.courses}">COURSES</th>
+                                        <th scope="col" class="border-bottom-0" th:text="#{student.amount}">AMOUNT</th>
+                                        <th scope="col" class="border-bottom-0" th:text="#{common.status}">STATUS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,14 +50,14 @@
                                         <td th:text="${#dates.format(order.orderDate, 'dd MMM yyyy, HH:mm')}">17 April 2022, 10:45pm</td>
                                         <td th:text="${#strings.listJoin(order.courseNames, ', ')}">Course names</td>
                                         <td th:text="${#numbers.formatDecimal(order.totalAmount, 1, 0) + ' VND'}">39</td>
-                                        <td><span class="badge bg-success">Complete</span></td>
+                                        <td><span class="badge bg-success" th:text="#{student.complete}">Complete</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="text-center py-5" th:if="${#lists.isEmpty(orders)}">
-                            <p class="text-muted mb-3">Bạn chưa có đơn hàng nào.</p>
-                            <a th:href="@{/course/all}" class="btn btn-outline-primary btn-sm">Khám phá khóa học</a>
+                            <p class="text-muted mb-3" th:text="#{student.no_orders}">You do not have any orders yet.</p>
+                            <a th:href="@{/course/all}" class="btn btn-outline-primary btn-sm" th:text="#{student.explore_courses}">Explore courses</a>
                         </div>
                     </div>
                 </div>

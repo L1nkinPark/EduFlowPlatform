@@ -23,7 +23,11 @@ public class CourseResponse {
 
     private String status;
 
-//    private SubCategory category;
+    private Long subCategoryId;
+
+    // Kept as "category" for API compatibility; this object represents the
+    // selected subcategory and contains its parent category.
+    private SubCategoryResponse category;
 
     private String image;
 

@@ -21,7 +21,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String apiUrl = ConstantUtil.HOST_URL + "/api/categories";
+    private String apiUrl = ConstantUtil.HOST_URL + "/api/subcategories";
 
     @Override
     public ApiResponse<List<SubCategoryResponse>> getAllCategories(int currentPage, int size) {

@@ -7,6 +7,8 @@ import com.lms.backend.model.response.AccountResponse;
 import com.lms.backend.model.response.CourseResponse;
 import com.lms.backend.model.response.ChapterResponse;
 import com.lms.backend.model.response.LessonResponse;
+import com.lms.backend.model.response.SubCategoryResponse;
+import com.lms.backend.model.response.CategoryResponse;
 import com.lms.backend.repository.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,22 @@ public class CourseMapper {
         courseResponse.setImage(course.getImage());
         courseResponse.setThumbnail(course.getThumbnail());
         courseResponse.setEnrollmentCount(orderItemRepository.countByCourse(course));
+
+        if (course.getSubCategory() != null) {
+            courseResponse.setSubCategoryId(course.getSubCategory().getSubCategoryId());
+            SubCategoryResponse subCategoryResponse = new SubCategoryResponse();
+            subCategoryResponse.setSubCategoryId(course.getSubCategory().getSubCategoryId());
+            subCategoryResponse.setSubCategoryName(course.getSubCategory().getSubCategoryName());
+            subCategoryResponse.setSubCategoryDescription(course.getSubCategory().getSubCategoryDescription());
+
+            if (course.getSubCategory().getCategory() != null) {
+                CategoryResponse categoryResponse = new CategoryResponse();
+                categoryResponse.setCategoryId(course.getSubCategory().getCategory().getCategoryId());
+                categoryResponse.setCategoryName(course.getSubCategory().getCategory().getCategoryName());
+                subCategoryResponse.setCategory(categoryResponse);
+            }
+            courseResponse.setCategory(subCategoryResponse);
+        }
 
         // Mapping chapters
         if (course.getChapters() != null) {

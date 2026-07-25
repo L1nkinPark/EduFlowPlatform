@@ -2,6 +2,7 @@ package com.lms.backend.model.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -19,6 +20,6 @@ public class CourseRequest implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    //Category
-//    private String subCategoryName;
+    @NotNull(message = "Course subcategory is required")
+    private Long subCategoryId;
 }

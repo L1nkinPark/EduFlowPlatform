@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:18 GMT -->
 
@@ -7,7 +7,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" th:href="@{/img/icon.}">
+    <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
     <title>Edutree – Online Course & Education HTML5 Template</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
@@ -57,10 +57,25 @@
                         <div class="navbar-collapse collapse" id="navbarNav">
                             <div class="side-nav me-auto flex-column navbar-nav">
                                 <p class="navbar-header nav-item mb-2 p-0 text-dark" th:text="#{courses.filter.categories}">CATEGORIES</p>
-                                <div class="my-1" th:each="category : ${categories}">
-                                    <a class="text-decoration-none link-dark" th:href="@{/course/all}" th:text="${category.categoryName}">Category</a>
+                                <div class="my-1">
+                                    <a class="text-decoration-none link-dark"
+                                       th:classappend="${selectedCategoryId == null and selectedSubCategoryId == null} ? ' fw-bold text-primary'"
+                                       th:href="@{/course/all(keyword=${keyword})}" th:text="#{courses.all}">All courses</a>
                                 </div>
-                                <div class="text-muted small" th:if="${#lists.isEmpty(categories)}">Chưa có danh mục nào.</div>
+                                <div class="my-2" th:each="category : ${categories}">
+                                    <a class="text-decoration-none link-dark d-block"
+                                       th:classappend="${selectedCategoryId == category.categoryId} ? ' fw-bold text-primary'"
+                                       th:href="@{/course/all(categoryId=${category.categoryId},keyword=${keyword})}"
+                                       th:text="${category.categoryName}">Category</a>
+                                    <div class="ms-3 mt-1" th:each="subCategory : ${subCategories}"
+                                         th:if="${subCategory.category != null and subCategory.category.categoryId == category.categoryId}">
+                                        <a class="text-decoration-none text-muted small d-block py-1"
+                                           th:classappend="${selectedSubCategoryId == subCategory.subCategoryId} ? ' fw-bold text-primary'"
+                                           th:href="@{/course/all(subCategoryId=${subCategory.subCategoryId},keyword=${keyword})}"
+                                           th:text="${subCategory.subCategoryName}">Subcategory</a>
+                                    </div>
+                                </div>
+                                <div class="text-muted small" th:if="${#lists.isEmpty(categories)}" th:text="#{courses.no_categories}">No categories available.</div>
                             </div>
                         </div>
                     </nav>
@@ -80,10 +95,16 @@
                                 <h6 class="card-title pb-3 text-black mb-0">
                                     <span th:text="${course?.courseName}"></span>
                                 </h6>
+                                <div class="mb-2" th:if="${course?.category != null}">
+                                    <span class="badge bg-light text-primary border"
+                                          th:text="${course.category.category != null
+                                          ? course.category.category.categoryName + ' · ' + course.category.subCategoryName
+                                          : course.category.subCategoryName}">Category</span>
+                                </div>
                                 <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                                 <div class="card-text text-muted small" th:text="${course?.description}"></div>
                                 <div class="text-muted gap-2 pt-2 small d-flex">
-                                    <span><i class="bi bi-person"></i> <span th:text="${course?.enrollmentCount}">0</span> học viên</span>
+                                    <span><i class="bi bi-person"></i> <span th:text="${course?.enrollmentCount}">0</span> <span th:text="#{courses.students_suffix}">students</span></span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-white border-top p-3">
@@ -98,13 +119,13 @@
                     </div>
                 </div>
                 <div class="text-center text-muted py-5" th:if="${#lists.isEmpty(courses)}">
-                    Không tìm thấy khóa học nào phù hợp.
+                    <span th:text="#{courses.empty}">No matching courses found.</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -121,14 +142,14 @@
                 <div class="row">
                     <div class="col-6 col-lg-3 col-md-3 mb-2" th:each="category : ${categories}">
                         <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                           th:href="@{'/course/all'}" th:text="${category.categoryName}">Category Name</a>
+                           th:href="@{/course/all(categoryId=${category.categoryId})}" th:text="${category.categoryName}">Category Name</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">

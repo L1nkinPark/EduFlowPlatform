@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>My Courses - Edutree Instructor</title>
+    <title th:text="#{instructor.my_courses}">My Courses</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
@@ -16,8 +16,8 @@
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container d-flex justify-content-between align-items-center">
         <div>
-            <h4 class="mb-0">My Courses</h4>
-            <p class="text-muted mb-0">Các khóa học của bạn</p>
+            <h4 class="mb-0" th:text="#{instructor.my_courses}">My Courses</h4>
+            <p class="text-muted mb-0" th:text="#{instructor.my_courses_desc}">Courses you teach</p>
         </div>
         <a class="btn btn-primary" th:href="@{/instructor/courses/add}">
             <i class="bi bi-plus-lg"></i> New Course
@@ -33,17 +33,18 @@
                     <table class="mb-0 text-nowrap table">
                         <thead class="table-light">
                         <tr>
-                            <th scope="col" class="border-0">Course</th>
-                            <th scope="col" class="border-0">Price</th>
-                            <th scope="col" class="border-0">Chapters</th>
-                            <th scope="col" class="border-0">Status</th>
-                            <th scope="col" class="border-0">Actions</th>
+                            <th scope="col" class="border-0" th:text="#{common.course}">Course</th>
+                            <th scope="col" class="border-0" th:text="#{common.price}">Price</th>
+                            <th scope="col" class="border-0" th:text="#{common.chapters}">Chapters</th>
+                            <th scope="col" class="border-0" th:text="#{common.status}">Status</th>
+                            <th scope="col" class="border-0" th:text="#{common.actions}">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:if="${courseList.isEmpty()}">
                             <td colspan="5" class="text-center text-muted py-5">
-                                Bạn chưa có khóa học nào. <a th:href="@{/instructor/courses/add}">Tạo khóa học đầu tiên</a>
+                                <span th:text="#{instructor.course_empty}">You do not have any courses yet.</span>
+                                <a th:href="@{/instructor/courses/add}" th:text="#{instructor.create_first}">Create your first course</a>
                             </td>
                         </tr>
                         <tr th:each="course : ${courseList}">

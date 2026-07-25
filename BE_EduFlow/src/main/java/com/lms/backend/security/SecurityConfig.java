@@ -3,11 +3,13 @@ package com.lms.backend.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -23,16 +25,21 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthFilter;
 
-    private final String[] ENDPOINT_WHITELIST = {
+    private static final String[] PUBLIC_ENDPOINTS = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/public",
             "/api/auth/**",
+            "/api/otp/**",
+            "/api/password/**",
+            "/api/contact-messages",
+            "/api/orders/vnpay-callback",
             "/css/**",
             "/js/**",
             "/images/**",
-            "/api/**",
-            "/actuator/**"
+            "/error",
+            "/actuator/health",
+            "/actuator/info"
     };
 
     @Bean
@@ -41,9 +48,29 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Bật CORS với cấu hình tùy chỉnh
                 .csrf(csrf -> csrf.disable()) // Tắt CSRF nếu không cần
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**").permitAll() // Cho phép truy cập không cần xác thực vào endpoint này
-                        .requestMatchers(ENDPOINT_WHITELIST).permitAll() // Cho phép tất cả mọi người truy cập vào những URL này
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/categories", "/api/subcategories",
+                                "/api/courses", "/api/courses/course",
+                                "/api/orders/check-purchase").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/orders/promo/validate").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/categories", "/api/subcategories")
+                                .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/categories/**", "/api/subcategories/**")
+                                .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/categories/**", "/api/subcategories/**")
+                                .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/courses")
+                                .hasAnyRole("INSTRUCTOR", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/courses/**")
+                                .hasAnyRole("INSTRUCTOR", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/courses/**")
+                                .hasAnyRole("INSTRUCTOR", "ADMIN")
                         .anyRequest().authenticated()) // Tất cả các request còn lại cần phải xác thực mới được truy cập
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(org.springframework.http.HttpStatus.UNAUTHORIZED)))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Thêm lớp Filter kiểm tra JWT
 
