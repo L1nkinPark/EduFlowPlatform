@@ -109,18 +109,21 @@
                             </div>
                             <div class="card-footer border-0 bg-white border-top p-3">
                                 <div class="d-grid">
-                                    <button class="btn btn-primary">
+                                    <button th:if="${!enrolledCourseIds.contains(course.courseId)}" class="btn btn-primary">
                                         <i class="bi bi-cart-fill"></i> <span th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                     </button>
+                                    <button th:if="${enrolledCourseIds.contains(course.courseId)}" class="btn btn-success">
+                                        <i class="bi bi-play-circle-fill"></i> <span th:text="#{courses.continue_learning}">Continue learning</span>
+                                    </button>
                                 </div>
-                                <a th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="stretched-link"></a>
+                                <a th:if="${!enrolledCourseIds.contains(course.courseId)}" th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="stretched-link"></a>
+                                <a th:if="${enrolledCourseIds.contains(course.courseId)}" th:href="@{/course/learn(courseId=${course.courseId})}" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="text-center text-muted py-5" th:if="${#lists.isEmpty(courses)}">
                     <span th:text="#{courses.empty}">No matching courses found.</span>
-                </div>
             </div>
         </div>
     </div>
