@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${course.courseName + ' · Learning'}">Learning · EduFlow</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
+    <link th:href="@{/css/course-learning.css}" rel="stylesheet">
+</head>
+<body class="learning-body">
+<header class="learning-header">
+    <a th:href="@{/student/subscription}" class="learning-brand" aria-label="My courses">
+        <img th:src="@{/img/logo.png}" alt="EduFlow">
+        <span>EduFlow</span>
+    </a>
+    <div class="learning-course-title">
+        <span class="text-muted">Khóa học</span>
+        <strong th:text="${course.courseName}">Course name</strong>
+    </div>
+    <div class="learning-progress-summary">
+        <span th:text="${completedCount + '/' + totalLessons + ' bài'}">0/0 bài</span>
+        <strong th:text="${progressPercentage + '%'}">0%</strong>
+    </div>
+</header>
+
+<main class="learning-shell">
+    <section class="learning-content">
+        <div class="learning-empty" th:if="${currentLesson == null}">
+            <i class="bi bi-journal-x"></i>
+            <h2>Khóa học chưa có bài học</h2>
+            <p>Giảng viên đang chuẩn bị nội dung. Bạn có thể quay lại sau.</p>
+            <a th:href="@{/student/subscription}" class="btn btn-primary">Về khóa học của tôi</a>
+        </div>
+
+        <th:block th:if="${currentLesson != null}">
+            <div class="lesson-stage">
+                <div class="video-frame"
+                     th:if="${currentLesson.lessonType == null || currentLesson.lessonType == 'VIDEO'}">
+                    <video th:if="${currentVideoIsFile}" controls preload="metadata"
+                           th:src="${currentVideoUrl}">
+                        Trình duyệt của bạn không hỗ trợ video.
+                    </video>
+                    <iframe th:if="${!currentVideoIsFile && currentVideoUrl != null && !#strings.isEmpty(currentVideoUrl)}"
+                            th:src="${currentVideoUrl}"
+                            th:title="${currentLesson.title}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    <div class="video-unavailable"
+                         th:if="${currentVideoUrl == null || #strings.isEmpty(currentVideoUrl)}">
+                        <i class="bi bi-camera-video-off"></i>
+                        <strong>Video chưa sẵn sàng</strong>
+                        <span>Giảng viên chưa thêm nguồn video cho bài học này.</span>
+                    </div>
+                </div>
+
+                <article class="reading-stage" th:if="${currentLesson.lessonType == 'DOCUMENT'}">
+                    <div class="reading-label"><i class="bi bi-file-earmark-text"></i> Bài đọc</div>
+                    <div class="reading-content" th:utext="${currentLesson.content}">
+                        Nội dung bài học sẽ hiển thị tại đây.
+                    </div>
+                </article>
+            </div>
+
+            <div class="lesson-toolbar">
+                <div>
+                    <div class="lesson-kicker" th:text="${'Bài ' + (currentIndex + 1) + ' / ' + totalLessons}">Bài 1</div>
+                    <h1 th:text="${currentLesson.title}">Lesson title</h1>
+                    <div class="lesson-meta">
+                        <span><i class="bi bi-clock"></i> <span th:text="${currentLesson.duration + ' phút'}">10 phút</span></span>
+                        <span th:if="${currentLesson.lessonType == 'DOCUMENT'}"><i class="bi bi-book"></i> Bài đọc</span>
+                        <span th:unless="${currentLesson.lessonType == 'DOCUMENT'}"><i class="bi bi-play-circle"></i> Video</span>
+                    </div>
+                </div>
+                <button id="completeLessonButton"
+                        class="btn btn-lg"
+                        th:classappend="${#lists.contains(completedLessonIds, currentLesson.lessonId)} ? 'btn-success' : 'btn-outline-success'"
+                        th:data-lesson-id="${currentLesson.lessonId}"
+                        th:data-completed="${#lists.contains(completedLessonIds, currentLesson.lessonId)}">
+                    <i class="bi"
+                       th:classappend="${#lists.contains(completedLessonIds, currentLesson.lessonId)} ? 'bi-check-circle-fill' : 'bi-circle'"></i>
+                    <span th:text="${#lists.contains(completedLessonIds, currentLesson.lessonId)} ? 'Đã hoàn thành' : 'Đánh dấu hoàn thành'">
+                        Đánh dấu hoàn thành
+                    </span>
+                </button>
+            </div>
+
+            <nav class="lesson-navigation" aria-label="Lesson navigation">
+                <a th:if="${previousLesson != null}"
+                   th:href="@{/course/learn(courseId=${course.courseId},lessonId=${previousLesson.lessonId})}"
+                   class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Bài trước
+                </a>
+                <span th:if="${previousLesson == null}"></span>
+                <a th:if="${nextLesson != null}"
+                   th:href="@{/course/learn(courseId=${course.courseId},lessonId=${nextLesson.lessonId})}"
+                   class="btn btn-primary">
+                    Bài tiếp theo <i class="bi bi-arrow-right"></i>
+                </a>
+                <a th:if="${nextLesson == null}"
+                   th:href="@{/student/subscription}"
+                   class="btn btn-primary">
+                    Về khóa học của tôi <i class="bi bi-grid"></i>
+                </a>
+            </nav>
+
+            <section class="course-about">
+                <h3>Về bài học này</h3>
+                <p th:text="${course.description}">Course description</p>
+            </section>
+        </th:block>
+    </section>
+
+    <aside class="curriculum-panel">
+        <div class="curriculum-heading">
+            <div>
+                <span>Nội dung khóa học</span>
+                <strong th:text="${progressPercentage == 100 ? 'Hoàn thành' : progressPercentage + '% hoàn thành'}">0% hoàn thành</strong>
+            </div>
+            <a th:href="@{/course/detail(courseId=${course.courseId})}" title="Course details">
+                <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+        </div>
+        <div class="learning-progress">
+            <div th:style="'width:' + ${progressPercentage} + '%'"></div>
+        </div>
+
+        <div class="curriculum-scroll">
+            <section class="chapter-block" th:each="chapter, chapterStat : ${course.chapters}">
+                <div class="chapter-heading">
+                    <span th:text="${'Phần ' + (chapterStat.index + 1)}">Phần 1</span>
+                    <strong th:text="${chapter.title}">Chapter</strong>
+                </div>
+                <a class="lesson-row"
+                   th:each="lesson, lessonStat : ${chapter.lessons}"
+                   th:classappend="${currentLesson != null && currentLesson.lessonId == lesson.lessonId} ? 'active' : ''"
+                   th:href="@{/course/learn(courseId=${course.courseId},lessonId=${lesson.lessonId})}">
+                    <span class="lesson-status">
+                        <i class="bi bi-check-circle-fill completed"
+                           th:if="${#lists.contains(completedLessonIds, lesson.lessonId)}"></i>
+                        <i class="bi bi-circle" th:unless="${#lists.contains(completedLessonIds, lesson.lessonId)}"></i>
+                    </span>
+                    <span class="lesson-copy">
+                        <strong th:text="${lesson.title}">Lesson</strong>
+                        <small>
+                            <i class="bi" th:classappend="${lesson.lessonType == 'DOCUMENT'} ? 'bi-file-text' : 'bi-play-circle'"></i>
+                            <span th:text="${lesson.duration + ' phút'}">10 phút</span>
+                        </small>
+                    </span>
+                </a>
+            </section>
+        </div>
+    </aside>
+</main>
+
+<div id="learningToast" class="learning-toast" role="status" aria-live="polite"></div>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const button = document.getElementById('completeLessonButton');
+        if (!button) return;
+
+        button.addEventListener('click', async function () {
+            const originalHtml = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang lưu...';
+
+            try {
+                const formData = new FormData();
+                formData.append('lessonId', button.dataset.lessonId);
+                const response = await fetch(/*[[@{/student/progress/toggle}]]*/ '/student/progress/toggle', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {'X-Requested-With': 'XMLHttpRequest'}
+                });
+                const rawBody = await response.text();
+                const data = rawBody ? JSON.parse(rawBody) : null;
+                if (!response.ok || !data || data.status !== 'SUCCESS') {
+                    throw new Error(data && data.message ? data.message : 'Không thể lưu tiến độ');
+                }
+
+                const nextLessonUrl = /*[[${nextLesson != null ? '/course/learn?courseId=' + course.courseId + '&lessonId=' + nextLesson.lessonId : ''}]]*/ '';
+                showToast(data.payload ? 'Đã hoàn thành bài học' : 'Đã bỏ đánh dấu hoàn thành');
+                if (data.payload && nextLessonUrl) {
+                    window.setTimeout(() => window.location.assign(nextLessonUrl), 450);
+                } else {
+                    window.setTimeout(() => window.location.reload(), 450);
+                }
+            } catch (error) {
+                console.error('Error toggling progress:', error);
+                showToast(error.message || 'Lỗi kết nối server', true);
+                button.disabled = false;
+                button.innerHTML = originalHtml;
+            }
+        });
+
+        function showToast(message, isError) {
+            const toast = document.getElementById('learningToast');
+            toast.textContent = message;
+            toast.className = 'learning-toast show' + (isError ? ' error' : '');
+        }
+    });
+</script>
+</body>
+</html>

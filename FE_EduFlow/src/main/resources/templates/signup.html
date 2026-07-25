@@ -27,10 +27,9 @@
         <div class="container py-5">
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-5">
-                    <div class="h5 text-muted text-uppercase">Sign up to <span class="text-primary">Edutree</span></div>
-                    <div class="fw-bold display-5 py-2 text-black mb-2">Connect with the best professionals</div>
-                    <p class="lead text-dark-50 mb-0">Learn from expert professionals and<br> join
-                        the largest online community for creatives.
+                    <div class="h5 text-muted text-uppercase"><span th:text="#{auth.signup}">Sign up to</span> <span class="text-primary">Edutree</span></div>
+                    <div class="fw-bold display-5 py-2 text-black mb-2" th:text="#{auth.signup_headline}">Join the largest online community for creatives</div>
+                    <p class="lead text-dark-50 mb-0" th:text="#{auth.signup_sub}">Learn from expert professionals and grow your skills.
                     </p>
                 </div>
                 <div class="col-lg-5">
@@ -39,29 +38,29 @@
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
                             <!-- Trường nhập email -->
                             <div class="input-group">
-                                <input type="email" id="email" class="form-control" placeholder="Nhập Email" required>
-                                <button type="button" onclick="sendOtp()" class="btn btn-primary">Gửi OTP</button>
+                                <input type="email" id="email" class="form-control" th:placeholder="#{auth.enter_email}" required>
+                                <button type="button" onclick="sendOtp()" class="btn btn-primary" th:text="#{auth.send_otp}">Send OTP</button>
                             </div>
 
                             <!-- Trường nhập OTP -->
                             <div class="input-group mt-3">
-                                <input type="text" id="otp" class="form-control" placeholder="Nhập OTP" required>
-                                <button type="button" onclick="verifyOtp()" class="btn btn-success">Xác thực OTP</button>
+                                <input type="text" id="otp" class="form-control" th:placeholder="#{auth.enter_otp}" required>
+                                <button type="button" onclick="verifyOtp()" class="btn btn-success" th:text="#{auth.verify_otp}">Verify OTP</button>
                             </div>
                         </form>
                         <form action="#" th:action="@{/register/process}" th:object="${userRegister}" method="POST" class="d-grid gap-3 mb-2">
                             <input type="hidden" th:field="*{email}" id="hiddenEmail">
                             <div class="d-grid d-md-flex gap-3">
                                 <input type="text" th:field="*{firstName}" class="form-control" th:placeholder="#{auth.fullname}" required>
-                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Last Name" required>
+                                <input type="text" th:field="*{lastName}" class="form-control" th:placeholder="#{auth.lastname}" required>
                             </div>
                             
                             <input type="password" th:field="*{password}" class="form-control" th:placeholder="#{auth.password}" required>
-                            <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Xác nhận mật khẩu" required>
+                            <input type="password" th:field="*{confirmPassword}" class="form-control" th:placeholder="#{auth.confirm_password}" required>
                             <div class="form-check text-start">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
-                                <label class="form-check-label small text-muted" for="exampleCheck1">I agree to the <a
-                                        th:href="@{/term-condition}" class="text-mdinfo">Terms &amp;
+                                <label class="form-check-label small text-muted" for="exampleCheck1"><span th:text="#{auth.agree_terms}">I agree to the</span> <a
+                                        th:href="@{/term-condition}" class="text-mdinfo" th:text="#{footer.terms}">Terms &amp;
                                         Conditions</a></label>
                             </div>
                             <button type="submit" id="signUpBtn" class="btn btn-primary" th:text="#{auth.signup}" disabled>Sign Up</button>

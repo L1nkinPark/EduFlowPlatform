@@ -75,10 +75,24 @@
                                         <div class="gap-2">
                                             <div class="col mb-5">
                                                 <div class="card border-0 shadow-sm overflow-hidden rounded-3">
-                                                    <iframe height="415" src="https://www.youtube.com/embed/auLQsVu8QW4"
-                                                        title="YouTube video player" frameborder="0"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowfullscreen></iframe>
+                                                    <div class="position-relative bg-dark" style="min-height: 360px;">
+                                                        <img th:src="${courses.thumbnail != null && !#strings.isEmpty(courses.thumbnail) ? courses.thumbnail : courses.image}"
+                                                             th:alt="${courses.courseName}"
+                                                             class="w-100 h-100 position-absolute top-0 start-0"
+                                                             style="object-fit: cover; opacity: .82;">
+                                                        <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                                            <a th:if="${isPurchased}"
+                                                               th:href="@{/course/learn(courseId=${courses.courseId})}"
+                                                               class="btn btn-primary btn-lg rounded-pill px-4 shadow">
+                                                                <i class="bi bi-play-fill me-1"></i> Vào học
+                                                            </a>
+                                                            <a th:unless="${isPurchased}"
+                                                               href="#coursePurchaseCard"
+                                                               class="btn btn-light btn-lg rounded-pill px-4 shadow">
+                                                                <i class="bi bi-journal-play me-1"></i> Xem nội dung khóa học
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                     <div class="card-body p-3">
                                                         <div class="float-end gap-3 d-flex">
                                                             <div class="gap-2">
@@ -98,7 +112,7 @@
                                                 </div>
                                             </div>
                                             <div class="mb-4">
-                                                <h5 class="mb-4 text-dark" >Why you need this course</h5>
+                                                <h5 class="mb-4 text-dark" th:text="#{detail.why_need}">Why you need this course</h5>
                                                 <p th:text="${courses.description}">description</p>
 
                                             </div>
@@ -166,12 +180,12 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <section>
-                                            <h4 class="pb-2 text-dark">Course Curriculum</h4>
+                                            <h4 class="pb-2 text-dark" th:text="#{detail.curriculum}">Course Curriculum</h4>
                                             
                                             <!-- If chapters are empty -->
                                             <div class="text-center py-5 bg-white rounded-3 shadow-sm mb-4" th:if="${courses.chapters == null || #lists.isEmpty(courses.chapters)}">
                                                 <i class="bi bi-journal-x fs-1 text-muted"></i>
-                                                <p class="text-muted mt-2 mb-0">No chapters or lessons available for this course yet.</p>
+                                                <p class="text-muted mt-2 mb-0" th:text="#{detail.no_chapters}">No chapters or lessons available for this course yet.</p>
                                             </div>
 
                                             <!-- If chapters exist -->
@@ -193,7 +207,7 @@
                                                          th:aria-labelledby="'heading' + ${chapter.chapterId}">
                                                         <div class="accordion-body bg-light p-0">
                                                             <!-- If lessons are empty -->
-                                                            <div class="p-3 text-center text-muted" th:if="${chapter.lessons == null || #lists.isEmpty(chapter.lessons)}">
+                                                            <div class="p-3 text-center text-muted" th:if="${chapter.lessons == null || #lists.isEmpty(chapter.lessons)}" th:text="#{detail.no_lessons}">
                                                                 No lessons in this chapter.
                                                             </div>
                                                             <!-- If lessons exist -->
@@ -210,69 +224,16 @@
                                                                             </div>
                                                                         </div>
                                                                         <div th:if="${isPurchased}">
-                                                                            <button class="btn btn-sm btn-outline-primary px-3" type="button" 
-                                                                                    data-bs-toggle="collapse" 
-                                                                                    th:data-bs-target="'#videoPlayer' + ${lesson.lessonId}">
-                                                                                Vào Học <i class="bi bi-chevron-down ms-1"></i>
-                                                                            </button>
+                                                                            <a class="btn btn-sm btn-outline-primary px-3"
+                                                                               th:href="@{/course/learn(courseId=${courses.courseId},lessonId=${lesson.lessonId})}">
+                                                                                Vào học <i class="bi bi-arrow-right ms-1"></i>
+                                                                            </a>
                                                                         </div>
                                                                         <div th:if="${!isPurchased}">
                                                                             <span class="badge bg-secondary">Locked</span>
                                                                         </div>
                                                                     </div>
                                                                     
-                                                                    <!-- Content for purchased lesson -->
-                                                                    <div th:if="${isPurchased}" 
-                                                                         th:id="'videoPlayer' + ${lesson.lessonId}" 
-                                                                         class="collapse mt-3">
-                                                                        <div class="card card-body border border-light-subtle bg-light shadow-sm p-4 rounded-3">
-                                                                            <h5 class="fw-bold text-primary mb-3">
-                                                                                <i class="bi bg-primary text-white p-1 rounded bi-journal-text me-2"></i> Bài học: <span th:text="${lesson.title}">Lesson Title</span>
-                                                                            </h5>
-                                                                            <div class="border rounded-3 p-3 bg-white shadow-sm border-success mb-3">
-                                                                                 <div class="form-check form-switch m-0 d-flex align-items-center">
-                                                                                     <input class="form-check-input progress-checkbox me-3 fs-5 cursor-pointer" type="checkbox" role="switch"
-                                                                                            th:checked="${#lists.contains(completedLessonIds, lesson.lessonId)}" 
-                                                                                            th:data-lesson-id="${lesson.lessonId}"
-                                                                                            th:id="'checkLesson' + ${lesson.lessonId}"
-                                                                                            style="margin-left: 0;">
-                                                                                     <label class="form-check-label fw-bold text-success cursor-pointer" th:for="'checkLesson' + ${lesson.lessonId}">
-                                                                                         <span th:text="${#lists.contains(completedLessonIds, lesson.lessonId) ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này'}">Đánh dấu hoàn thành bài học này</span>
-                                                                                     </label>
-                                                                                 </div>
-                                                                             </div>
-                                                                             <!-- VIDEO lesson -->
-                                                                             <div th:if="${lesson.lessonType == null || lesson.lessonType == 'VIDEO'}" class="row align-items-center g-4">
-                                                                                 <div class="col-12" th:if="${lesson.video != null && !#strings.isEmpty(lesson.video)}">
-                                                                                     <div class="ratio ratio-16x9">
-                                                                                         <video th:if="${lesson.video.endsWith('.mp4')}" controls class="rounded-3 shadow-sm w-100">
-                                                                                             <source th:src="${lesson.video}" type="video/mp4">
-                                                                                         </video>
-                                                                                         <iframe th:unless="${lesson.video.endsWith('.mp4')}" th:src="${lesson.video}"
-                                                                                                 class="rounded-3 shadow-sm" frameborder="0" allowfullscreen></iframe>
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <div class="col-12">
-                                                                                     <ul class="list-unstyled mb-0 text-muted small mt-3">
-                                                                                         <li><i class="bi bi-check-circle-fill text-success me-2"></i> Thời lượng: <strong th:text="${lesson.duration}">10</strong> phút.</li>
-                                                                                     </ul>
-                                                                                 </div>
-                                                                             </div>
-
-                                                                             <!-- DOCUMENT (reading) lesson -->
-                                                                             <div th:if="${lesson.lessonType == 'DOCUMENT'}" class="row g-4">
-                                                                                 <div class="col-12">
-                                                                                     <div class="p-3 bg-white border rounded-3 lh-lg" style="text-align: justify; white-space: pre-line;"
-                                                                                          th:utext="${lesson.content}">
-                                                                                         Nội dung bài đọc sẽ hiển thị ở đây.
-                                                                                     </div>
-                                                                                     <ul class="list-unstyled mb-0 text-muted small mt-3">
-                                                                                         <li><i class="bi bi-book-half text-success me-2"></i> Thời lượng đọc ước tính: <strong th:text="${lesson.duration}">10</strong> phút.</li>
-                                                                                     </ul>
-                                                                                 </div>
-                                                                             </div>
-                                                                        </div>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -289,20 +250,27 @@
                 </div>
                 <div class="col-lg-4 d-none d-md-block">
                     <div class="sidebar-fixed">
-                        <div class="card border-0 bg-white rounded-3 shadow-sm overflow-hidden mb-3 p-3">
+                        <div id="coursePurchaseCard" class="card border-0 bg-white rounded-3 shadow-sm overflow-hidden mb-3 p-3">
                             <div class="card-body p-4">
-                                <div class="mb-3">
-                                    <span class="fs-1 text-black fw-bold" th:text="${'$' + courses.price}">$439</span>
+                                <div class="mb-3" th:if="${!isPurchased}">
+                                    <span class="fs-1 text-black fw-bold" th:text="${#numbers.formatDecimal(courses.price, 0, 'COMMA', 0, 'POINT') + ' VND'}">439.000 VND</span>
                                 </div>
                                 <div class="d-grid my-2" th:if="${isPurchased}">
-                                    <a th:href="@{/student/subscription}" class="btn btn-success py-3">
-                                        <i class="bi bi-play-circle-fill"></i> <span th:text="#{detail.unlocked}">START LEARNING</span>
+                                    <div class="text-center mb-3">
+                                        <span class="badge rounded-pill px-3 py-2"
+                                              th:classappend="${progressPercentage == 100} ? 'bg-success' : 'bg-primary'"
+                                              th:text="${progressPercentage == 100} ? 'Đã hoàn thành' : 'Đã mua'">Đã mua</span>
+                                        <div class="small text-muted mt-2" th:text="${progressPercentage + '% hoàn thành'}">0% hoàn thành</div>
+                                    </div>
+                                    <a th:href="@{/course/learn(courseId=${courses.courseId})}" class="btn btn-success py-3">
+                                        <i class="bi bi-play-circle-fill"></i>
+                                        <span th:text="${progressPercentage > 0 && progressPercentage < 100} ? 'Tiếp tục học' : (${progressPercentage == 100} ? 'Xem lại khóa học' : 'Bắt đầu học')">Bắt đầu học</span>
                                     </a>
                                 </div>
                                 <div th:if="${!isPurchased}">
                                     <div class="input-group mb-2">
-                                        <input type="text" id="promoCodeInput" class="form-control" placeholder="Nhập mã giảm giá">
-                                        <button type="button" id="applyPromoBtn" class="btn btn-outline-primary">Áp dụng</button>
+                                        <input type="text" id="promoCodeInput" class="form-control" th:placeholder="#{detail.promo_placeholder}">
+                                        <button type="button" id="applyPromoBtn" class="btn btn-outline-primary" th:text="#{detail.apply}">Apply</button>
                                     </div>
                                     <div id="promoCodeMessage" class="small mb-2"></div>
                                     <div class="d-grid my-2">
@@ -367,7 +335,7 @@
                         </div>
                         <div class="card-footer border-0 bg-white border-top p-3">
                             <div class="d-grid"><button class="btn btn-primary">
-                                    <i class="bi bi-cart-fill"></i> <span th:text="${'$' + course.price}"></span>
+                                    <i class="bi bi-cart-fill"></i> <span th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                 </button>
                             </div>
                         </div>
@@ -555,19 +523,26 @@
             const checkoutLink = document.getElementById('checkoutLink');
             const courseId = /*[[${courses.courseId}]]*/ '';
             const baseCheckoutUrl = /*[[@{/course/checkout(courseId=${courses.courseId})}]]*/ '';
+            const i18n = {
+                promoEmpty: /*[[#{detail.promo_empty}]]*/ 'Please enter a promo code',
+                promoChecking: /*[[#{detail.promo_checking}]]*/ 'Checking promo code...',
+                promoSuccess: /*[[#{detail.promo_success}]]*/ 'Promo code applied! Discount',
+                promoInvalid: /*[[#{detail.promo_invalid}]]*/ 'Invalid promo code',
+                promoError: /*[[#{detail.promo_error}]]*/ 'Server connection error, please try again'
+            };
 
             if (applyPromoBtn) {
                 applyPromoBtn.addEventListener('click', function() {
                     const promoCode = promoCodeInput.value.trim();
                     if (!promoCode) {
                         promoCodeMessage.className = 'small mb-2 text-danger';
-                        promoCodeMessage.textContent = 'Vui lòng nhập mã giảm giá';
+                        promoCodeMessage.textContent = i18n.promoEmpty;
                         return;
                     }
 
                     applyPromoBtn.disabled = true;
                     promoCodeMessage.className = 'small mb-2 text-muted';
-                    promoCodeMessage.textContent = 'Đang kiểm tra mã giảm giá...';
+                    promoCodeMessage.textContent = i18n.promoChecking;
 
                     const formData = new FormData();
                     formData.append('courseId', courseId);
@@ -582,11 +557,11 @@
                         applyPromoBtn.disabled = false;
                         if (data && data.status === 'SUCCESS') {
                             promoCodeMessage.className = 'small mb-2 text-success';
-                            promoCodeMessage.textContent = 'Áp dụng mã thành công! Giảm ' + data.payload.discountAmount.toLocaleString('vi-VN') + ' VND.';
+                            promoCodeMessage.textContent = i18n.promoSuccess + ' ' + data.payload.discountAmount.toLocaleString('vi-VN') + ' VND.';
                             checkoutLink.href = baseCheckoutUrl + '&promoCode=' + encodeURIComponent(promoCode);
                         } else {
                             promoCodeMessage.className = 'small mb-2 text-danger';
-                            promoCodeMessage.textContent = (data && data.message) ? data.message : 'Mã giảm giá không hợp lệ';
+                            promoCodeMessage.textContent = (data && data.message) ? data.message : i18n.promoInvalid;
                             checkoutLink.href = baseCheckoutUrl;
                         }
                     })
@@ -594,7 +569,7 @@
                         applyPromoBtn.disabled = false;
                         console.error('Error validating promo code:', error);
                         promoCodeMessage.className = 'small mb-2 text-danger';
-                        promoCodeMessage.textContent = 'Lỗi kết nối server. Vui lòng thử lại!';
+                        promoCodeMessage.textContent = i18n.promoError;
                     });
                 });
             }

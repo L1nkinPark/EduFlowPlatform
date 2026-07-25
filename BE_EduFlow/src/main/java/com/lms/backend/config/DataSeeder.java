@@ -122,7 +122,7 @@ public class DataSeeder implements CommandLineRunner {
         Course animationCourse = new Course();
         animationCourse.setCourseName("Bring Your Creations to Life (2D Animation)");
         animationCourse.setDescription("Học cách tạo chuyển động sinh động cho nhân vật 2D của bạn bằng các nguyên lý hoạt họa kinh điển. Khóa học thực tế từ cơ bản đến nâng cao.");
-        animationCourse.setPrice(49.0);
+        animationCourse.setPrice(490000.0);
         animationCourse.setStartDate(LocalDate.now());
         animationCourse.setEndDate(LocalDate.now().plusMonths(3));
         animationCourse.setStatus("ACTIVE");
@@ -183,7 +183,7 @@ public class DataSeeder implements CommandLineRunner {
         Course webCourse = new Course();
         webCourse.setCourseName("Web Development Bootcamp: Zero to Hero");
         webCourse.setDescription("Trở thành lập trình viên Fullstack Web chuyên nghiệp. Học HTML, CSS, JavaScript, Spring Boot và ReactJS qua các dự án thực tế.");
-        webCourse.setPrice(99.0);
+        webCourse.setPrice(990000.0);
         webCourse.setStartDate(LocalDate.now());
         webCourse.setEndDate(LocalDate.now().plusMonths(6));
         webCourse.setStatus("ACTIVE");
@@ -236,7 +236,7 @@ public class DataSeeder implements CommandLineRunner {
         Course engCourse = new Course();
         engCourse.setCourseName("Mastering English Speaking & Pronunciation");
         engCourse.setDescription("Luyện phát âm tiếng Anh chuẩn IPA và phản xạ giao tiếp tự nhiên trong công việc và cuộc sống hàng ngày.");
-        engCourse.setPrice(29.0);
+        engCourse.setPrice(290000.0);
         engCourse.setStartDate(LocalDate.now());
         engCourse.setEndDate(LocalDate.now().plusMonths(2));
         engCourse.setStatus("ACTIVE");
