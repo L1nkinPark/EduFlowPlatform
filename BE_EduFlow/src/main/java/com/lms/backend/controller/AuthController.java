@@ -1,12 +1,12 @@
 package com.lms.backend.controller;
 
-import com.lms.backend.exception.ForbiddenException;
 import com.lms.backend.model.request.AuthRequest;
 import com.lms.backend.model.request.LoginRequest;
 import com.lms.backend.model.request.RegisterRequest;
 import com.lms.backend.model.response.ApiResponse;
 import com.lms.backend.model.response.AuthResponse;
 import com.lms.backend.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,45 +23,27 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody RegisterRequest request) {
-        try {
-            AuthResponse authResponse = authService.register(request);
-
-            ApiResponse apiResponse = new ApiResponse();
-            apiResponse.ok(authResponse);
-            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-        } catch (ForbiddenException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
-        }
+    public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse authResponse = authService.register(request);
+        ApiResponse<AuthResponse> apiResponse = new ApiResponse<>();
+        apiResponse.ok(authResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody LoginRequest request) {
-        try {
-            AuthResponse authResponse = authService.login(request);
-
-            ApiResponse apiResponse = new ApiResponse();
-            apiResponse.ok(authResponse);
-            System.out.println("AuthResponse created with accessToken: " + authResponse.getAccessToken());
-            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
-        }
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
+        AuthResponse authResponse = authService.login(request);
+        ApiResponse<AuthResponse> apiResponse = new ApiResponse<>();
+        apiResponse.ok(authResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(@RequestBody AuthRequest request) {
-        try {
-            AuthResponse authResponse = authService.refreshToken(request);
-
-            ApiResponse apiResponse = new ApiResponse();
-            apiResponse.ok(authResponse);
-            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
-        }
+        AuthResponse authResponse = authService.refreshToken(request);
+        ApiResponse<AuthResponse> apiResponse = new ApiResponse<>();
+        apiResponse.ok(authResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
 }

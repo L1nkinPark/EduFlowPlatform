@@ -54,10 +54,15 @@ fly secrets set \
   DATABASE_URL="jdbc:mysql://<host>:3306/eduflow_db?useSSL=true" \
   DATABASE_USERNAME="<db_user>" \
   DATABASE_PASSWORD="<db_password>" \
-  MAIL_USERNAME="voduchieu42@gmail.com" \
+  MAIL_USERNAME="<smtp_email>" \
   MAIL_PASSWORD="<app_password>" \
+  CONTACT_NOTIFICATION_EMAIL="<support_inbox>" \
   CORS_ALLOWED_ORIGINS="https://eduflow-fe-dev.fly.dev,https://eduflow-be-dev.fly.dev" \
-  JWT_SECRET="<your-jwt-secret>"
+  JWT_SECRET="<base64-encoded-32-byte-secret>" \
+  VNPAY_TMN_CODE="<vnpay-merchant-code>" \
+  VNPAY_HASH_SECRET="<vnpay-hash-secret>" \
+  VNPAY_URL="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html" \
+  DEMO_INSTRUCTOR_PASSWORD="<strong-demo-password>"
 
 # Deploy
 fly deploy
@@ -80,11 +85,10 @@ fly launch --name eduflow-fe-dev --region sin --no-deploy
 # Set secrets
 fly secrets set \
   BACKEND_URL="https://eduflow-be-dev.fly.dev" \
-  MAIL_USERNAME="voduchieu42@gmail.com" \
-  MAIL_PASSWORD="<app_password>" \
-  CLOUDINARY_CLOUD_NAME="deu3ur8w9" \
-  CLOUDINARY_API_KEY="641671634634565" \
-  CLOUDINARY_API_SECRET="<cloudinary_secret>"
+  CLOUDINARY_CLOUD_NAME="<cloudinary-cloud-name>" \
+  CLOUDINARY_API_KEY="<cloudinary-api-key>" \
+  CLOUDINARY_API_SECRET="<cloudinary-secret>" \
+  JWT_SECRET="<same-secret-as-backend>"
 
 # Deploy
 fly deploy

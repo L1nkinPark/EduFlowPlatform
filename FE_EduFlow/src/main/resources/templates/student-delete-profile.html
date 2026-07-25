@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Delete Profile - Edutree</title>
+    <title th:text="#{student.delete_profile}">Delete Profile</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
@@ -15,8 +15,8 @@
 
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
-        <h4 class="mb-0">Delete your account</h4>
-        <p class="text-muted mb-0">Đóng tài khoản vĩnh viễn</p>
+        <h4 class="mb-0" th:text="#{student.delete_profile}">Delete Profile</h4>
+        <p class="text-muted mb-0" th:text="#{student.delete_profile_desc}">Permanently close your account</p>
     </div>
 </section>
 
@@ -30,14 +30,12 @@
                 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
                 <div class="border-0 card">
                     <div class="card-body">
-                        <span class="text-danger h4">Warning</span>
-                        <p>
-                            Nếu bạn đóng tài khoản, bạn sẽ mất quyền truy cập vào
-                            <strong th:text="${purchasedCount}">0</strong> khóa học đã mua. Hành động này có thể được
-                            admin khôi phục nếu cần, nhưng bạn sẽ không thể tự đăng nhập lại sau khi xác nhận.
-                        </p>
-                        <form th:action="@{/student/delete}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn đóng tài khoản này?');">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">Close My Account</button>
+                        <span class="text-danger h4" th:text="#{student.delete_warning_title}">Warning</span>
+                        <p th:text="#{student.delete_warning(${purchasedCount})}">Closing your account removes access to purchased courses.</p>
+                        <form th:action="@{/student/delete}" method="post"
+                              th:attr="data-confirm=#{student.delete_confirm}"
+                              onsubmit="return confirm(this.dataset.confirm);">
+                            <button type="submit" class="btn btn-outline-danger btn-sm" th:text="#{student.close_account}">Close My Account</button>
                         </form>
                     </div>
                 </div>

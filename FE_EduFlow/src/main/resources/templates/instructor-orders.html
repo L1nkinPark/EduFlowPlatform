@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
         <h4 class="mb-0">Orders</h4>
-        <p class="text-muted mb-0">Danh sách đơn hàng của các khóa học bạn giảng dạy</p>
+        <p class="text-muted mb-0" th:text="#{instructor.orders_desc}">Orders for courses you teach</p>
     </div>
 </section>
 
@@ -37,7 +37,7 @@
                         </thead>
                         <tbody>
                         <tr th:if="${orders.isEmpty()}">
-                            <td colspan="5" class="text-center text-muted py-5">Chưa có đơn hàng nào.</td>
+                            <td colspan="5" class="text-center text-muted py-5" th:text="#{instructor.no_orders}">No orders found.</td>
                         </tr>
                         <tr th:each="order : ${orders}">
                             <td th:text="'#' + ${order.orderId}">#1</td>

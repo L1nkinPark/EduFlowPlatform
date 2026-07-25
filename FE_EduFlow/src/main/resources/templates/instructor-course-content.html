@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
         <h4 class="mb-0" th:text="${course != null ? course.courseName : 'Course'}">Course Name</h4>
-        <p class="text-muted mb-0">Quản lý chương và bài học</p>
+        <p class="text-muted mb-0" th:text="#{instructor.content_desc}">Manage chapters and lessons</p>
     </div>
 </section>
 
@@ -30,11 +30,11 @@
             <div class="col-lg-7">
                 <div class="card border-light">
                     <div class="card-header">
-                        <h5 class="mb-0">Nội dung khóa học</h5>
+                        <h5 class="mb-0" th:text="#{instructor.content}">Course Content</h5>
                     </div>
                     <div class="card-body">
                         <div th:if="${course == null or course.chapters == null or course.chapters.isEmpty()}" class="text-muted text-center py-4">
-                            Chưa có chương nào. Thêm chương đầu tiên ở bên phải.
+                            <span th:text="#{instructor.no_chapters}">No chapters yet.</span>
                         </div>
                         <div class="accordion" id="chapterAccordion" th:unless="${course == null or course.chapters == null or course.chapters.isEmpty()}">
                             <div class="accordion-item" th:each="chapter, chIdx : ${course?.chapters}">
@@ -56,7 +56,7 @@
                                                 <span class="badge bg-secondary" th:text="${lesson.lessonType}">VIDEO</span>
                                             </li>
                                         </ul>
-                                        <p class="text-muted small mb-0" th:if="${chapter.lessons == null or chapter.lessons.isEmpty()}">Chưa có bài học nào trong chương này.</p>
+                                        <p class="text-muted small mb-0" th:if="${chapter.lessons == null or chapter.lessons.isEmpty()}" th:text="#{instructor.no_lessons}">No lessons in this chapter.</p>
                                     </div>
                                 </div>
                             </div>
@@ -69,48 +69,48 @@
             <div class="col-lg-5">
                 <div class="card border-light mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-folder-plus"></i> Thêm chương mới</h5>
+                        <h5 class="mb-0"><i class="bi bi-folder-plus"></i> <span th:text="#{instructor.add_chapter}">Add chapter</span></h5>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/instructor/courses/content/chapters}" th:object="${newChapter}" method="post">
                             <input type="hidden" name="courseId" th:value="${courseId}">
                             <div class="mb-3">
-                                <label class="form-label">Tên chương</label>
+                                <label class="form-label" th:text="#{instructor.chapter_name}">Chapter name</label>
                                 <input type="text" class="form-control" th:field="*{title}" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Mô tả</label>
+                                <label class="form-label" th:text="#{common.description}">Description</label>
                                 <textarea class="form-control" rows="2" th:field="*{description}"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Thêm chương</button>
+                            <button type="submit" class="btn btn-primary w-100" th:text="#{instructor.add_chapter}">Add chapter</button>
                         </form>
                     </div>
                 </div>
 
                 <div class="card border-light">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-file-earmark-plus"></i> Thêm bài học mới</h5>
+                        <h5 class="mb-0"><i class="bi bi-file-earmark-plus"></i> <span th:text="#{instructor.add_lesson}">Add lesson</span></h5>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/instructor/courses/content/lessons}" th:object="${newLesson}" method="post" id="lessonForm">
                             <input type="hidden" name="courseId" th:value="${courseId}">
                             <div class="mb-3">
-                                <label class="form-label">Chương</label>
+                                <label class="form-label" th:text="#{common.chapter}">Chapter</label>
                                 <select class="form-select" th:field="*{chapterId}" required>
-                                    <option value="" disabled selected>-- Chọn chương --</option>
+                                    <option value="" disabled selected th:text="#{instructor.select_chapter}">-- Select chapter --</option>
                                     <option th:each="chapter : ${course?.chapters}"
                                             th:value="${chapter.chapterId}" th:text="${chapter.title}">Chapter</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Tên bài học</label>
+                                <label class="form-label" th:text="#{instructor.lesson_name}">Lesson name</label>
                                 <input type="text" class="form-control" th:field="*{title}" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Loại bài học</label>
+                                <label class="form-label" th:text="#{instructor.lesson_type}">Lesson type</label>
                                 <select class="form-select" th:field="*{lessonType}" id="lessonTypeSelect" onchange="toggleLessonFields()">
                                     <option value="VIDEO">VIDEO</option>
-                                    <option value="DOCUMENT">DOCUMENT (đọc tài liệu)</option>
+                                    <option value="DOCUMENT" th:text="#{instructor.document_type}">DOCUMENT (reading)</option>
                                 </select>
                             </div>
                             <div class="mb-3" id="videoField">
@@ -118,14 +118,14 @@
                                 <input type="text" class="form-control" th:field="*{video}" placeholder="https://www.youtube.com/embed/...">
                             </div>
                             <div class="mb-3" id="contentField" style="display:none;">
-                                <label class="form-label">Nội dung tài liệu (Markdown/Text)</label>
+                                <label class="form-label" th:text="#{instructor.document_content}">Document content</label>
                                 <textarea class="form-control" rows="6" th:field="*{content}"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Thời lượng (giây, để 0 nếu là tài liệu)</label>
+                                <label class="form-label" th:text="#{instructor.duration_hint}">Duration in seconds</label>
                                 <input type="number" class="form-control" th:field="*{duration}" min="0">
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Thêm bài học</button>
+                            <button type="submit" class="btn btn-primary w-100" th:text="#{instructor.add_lesson}">Add lesson</button>
                         </form>
                     </div>
                 </div>

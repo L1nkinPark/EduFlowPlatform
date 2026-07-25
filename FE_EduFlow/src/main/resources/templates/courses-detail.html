@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/courses-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:19 GMT -->
 
@@ -48,8 +48,8 @@
                         <p class="fs-4"><span th:text="#{detail.author}">A course by</span> <strong th:text="${courses?.teacher?.fullName}">Abhay Rai</strong> </p>
                     </div>
                     <small class="bg-light pt-3 gap-2 d-block d-md-flex">
-                        <div class="gap-1"><i class="bi bi-person"></i> <span th:text="${courses.enrollmentCount}">0</span> học viên</div>
-                        <div class="gap-1"><i class="bi bi-journal-text"></i> <span th:text="${courses.chapters != null ? #lists.size(courses.chapters) : 0}">0</span> chương</div>
+                        <div class="gap-1"><i class="bi bi-person"></i> <span th:text="${courses.enrollmentCount}">0</span> <span th:text="#{detail.students}">students</span></div>
+                        <div class="gap-1"><i class="bi bi-journal-text"></i> <span th:text="${courses.chapters != null ? #lists.size(courses.chapters) : 0}">0</span> <span th:text="#{detail.chapters_count}">chapters</span></div>
                     </small>
                     <div class="pt-5">
                         <ul class="nav courses-links mb-4 sidebar-fixed bg-white rounded-3 px-3 shadow-sm"
@@ -84,12 +84,12 @@
                                                             <a th:if="${isPurchased}"
                                                                th:href="@{/course/learn(courseId=${courses.courseId})}"
                                                                class="btn btn-primary btn-lg rounded-pill px-4 shadow">
-                                                                <i class="bi bi-play-fill me-1"></i> Vào học
+                                                                <i class="bi bi-play-fill me-1"></i> <span th:text="#{detail.enter_course}">Start learning</span>
                                                             </a>
                                                             <a th:unless="${isPurchased}"
                                                                href="#coursePurchaseCard"
                                                                class="btn btn-light btn-lg rounded-pill px-4 shadow">
-                                                                <i class="bi bi-journal-play me-1"></i> Xem nội dung khóa học
+                                                                <i class="bi bi-journal-play me-1"></i> <span th:text="#{detail.view_curriculum}">View course curriculum</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -226,7 +226,7 @@
                                                                         <div th:if="${isPurchased}">
                                                                             <a class="btn btn-sm btn-outline-primary px-3"
                                                                                th:href="@{/course/learn(courseId=${courses.courseId},lessonId=${lesson.lessonId})}">
-                                                                                Vào học <i class="bi bi-arrow-right ms-1"></i>
+                                                                                <span th:text="#{detail.enter_course}">Start learning</span> <i class="bi bi-arrow-right ms-1"></i>
                                                                             </a>
                                                                         </div>
                                                                         <div th:if="${!isPurchased}">
@@ -259,12 +259,12 @@
                                     <div class="text-center mb-3">
                                         <span class="badge rounded-pill px-3 py-2"
                                               th:classappend="${progressPercentage == 100} ? 'bg-success' : 'bg-primary'"
-                                              th:text="${progressPercentage == 100} ? 'Đã hoàn thành' : 'Đã mua'">Đã mua</span>
-                                        <div class="small text-muted mt-2" th:text="${progressPercentage + '% hoàn thành'}">0% hoàn thành</div>
+                                              th:text="${progressPercentage == 100} ? #{detail.completed} : #{detail.purchased}">Purchased</span>
+                                        <div class="small text-muted mt-2" th:text="${progressPercentage + '% ' + #messages.msg('detail.progress')}">0% complete</div>
                                     </div>
                                     <a th:href="@{/course/learn(courseId=${courses.courseId})}" class="btn btn-success py-3">
                                         <i class="bi bi-play-circle-fill"></i>
-                                        <span th:text="${progressPercentage > 0 && progressPercentage < 100} ? 'Tiếp tục học' : (${progressPercentage == 100} ? 'Xem lại khóa học' : 'Bắt đầu học')">Bắt đầu học</span>
+                                        <span th:text="${progressPercentage > 0 && progressPercentage < 100} ? #{detail.continue_learning} : (${progressPercentage == 100} ? #{detail.review_course} : #{detail.start_learning})">Start learning</span>
                                     </a>
                                 </div>
                                 <div th:if="${!isPurchased}">
@@ -281,16 +281,16 @@
                                 </div>
                                 <ul class="list-unstyled mb-4">
                                     <li class="mb-2">
-                                        <i class="bi bi-person me-2"></i> <span th:text="${courses.enrollmentCount}">0</span> học viên đã đăng ký
+                                        <i class="bi bi-person me-2"></i> <span th:text="${courses.enrollmentCount}">0</span> <span th:text="#{detail.enrolled}">students enrolled</span>
                                     </li>
                                     <li class="mb-2">
-                                        <i class="bi bi-journal-text me-2"></i> <span th:text="${courses.chapters != null ? #lists.size(courses.chapters) : 0}">0</span> chương học
+                                        <i class="bi bi-journal-text me-2"></i> <span th:text="${courses.chapters != null ? #lists.size(courses.chapters) : 0}">0</span> <span th:text="#{detail.chapters_count}">chapters</span>
                                     </li>
                                     <li class="mb-2">
-                                        <i class="bi bi-emoji-smile me-2"></i> Học online, chủ động theo tốc độ của bạn
+                                        <i class="bi bi-emoji-smile me-2"></i> <span th:text="#{detail.self_paced}">Learn online at your own pace</span>
                                     </li>
                                     <li class="mb-2">
-                                        <i class="bi bi-infinity me-2"></i> Truy cập không giới hạn
+                                        <i class="bi bi-infinity me-2"></i> <span th:text="#{detail.unlimited_access}">Unlimited access</span>
                                     </li>
                                 </ul>
                                 <hr>
@@ -330,7 +330,7 @@
                             <span class="card-text mb-0">A course by <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                             <div class="card-text text-muted small" th:text="${course?.description}"></div>
                             <div class="text-muted gap-2 pt-2 small d-flex">
-                                <span><i class="bi bi-person"></i> <span th:text="${course?.enrollmentCount}">0</span> học viên</span>
+                                <span><i class="bi bi-person"></i> <span th:text="${course?.enrollmentCount}">0</span> <span th:text="#{detail.students}">students</span></span>
                             </div>
                         </div>
                         <div class="card-footer border-0 bg-white border-top p-3">
@@ -344,7 +344,7 @@
                 </div>
             </div>
             <div class="text-center text-muted py-4" th:if="${#lists.isEmpty(relatedCourses)}">
-                Chưa có khóa học khác để gợi ý.
+                <span th:text="#{courses.recommendations_empty}">No other courses are available to recommend.</span>
             </div>
             <div class="text-center mt-5">
                 <a th:href="@{/course/all}">
@@ -356,7 +356,7 @@
         </div>
     </section>
 
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -373,14 +373,14 @@
                 <div class="row">
                     <div class="col-6 col-lg-3 col-md-3 mb-2" th:each="category : ${categories}">
                         <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                           th:href="@{'/course/all'}" th:text="${category.categoryName}">Category Name</a>
+                           th:href="@{/course/all(categoryId=${category.categoryId})}" th:text="${category.categoryName}">Category Name</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">
@@ -475,13 +475,20 @@
         crossorigin="anonymous"></script>
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", function() {
+            const progressI18n = {
+                updating: /*[[#{detail.updating_progress}]]*/ 'Updating progress...',
+                completed: /*[[#{detail.lesson_completed}]]*/ 'Lesson completed!',
+                markComplete: /*[[#{detail.mark_complete}]]*/ 'Mark this lesson as complete',
+                saveError: /*[[#{detail.progress_save_error}]]*/ 'Unable to save learning progress.',
+                connectionError: /*[[#{detail.connection_error}]]*/ 'Server connection error.'
+            };
             document.querySelectorAll('.progress-checkbox').forEach(function(chk) {
                 chk.addEventListener('change', function() {
                     const lessonId = this.getAttribute('data-lesson-id');
                     const label = document.querySelector('label[for="checkLesson' + lessonId + '"]');
                     
                     if (label) {
-                        label.innerHTML = 'Đang cập nhật tiến độ... <span class="spinner-border spinner-border-sm" role="status"></span>';
+                        label.innerHTML = progressI18n.updating + ' <span class="spinner-border spinner-border-sm" role="status"></span>';
                     }
                     
                     const formData = new FormData();
@@ -496,23 +503,23 @@
                         if (data && data.status === 'SUCCESS') {
                             const isCompleted = data.payload;
                             if (isCompleted) {
-                                if (label) label.textContent = 'Bài học đã hoàn thành!';
+                                if (label) label.textContent = progressI18n.completed;
                                 this.checked = true;
                             } else {
-                                if (label) label.textContent = 'Đánh dấu hoàn thành bài học này';
+                                if (label) label.textContent = progressI18n.markComplete;
                                 this.checked = false;
                             }
                         } else {
-                            alert('Không thể lưu tiến độ học tập. Vui lòng thử lại!');
+                            alert(progressI18n.saveError);
                             this.checked = !this.checked;
-                            if (label) label.textContent = this.checked ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này';
+                            if (label) label.textContent = this.checked ? progressI18n.completed : progressI18n.markComplete;
                         }
                     })
                     .catch(error => {
                         console.error('Error toggling progress:', error);
-                        alert('Lỗi kết nối server. Vui lòng thử lại!');
+                        alert(progressI18n.connectionError);
                         this.checked = !this.checked;
-                        if (label) label.textContent = this.checked ? 'Bài học đã hoàn thành!' : 'Đánh dấu hoàn thành bài học này';
+                        if (label) label.textContent = this.checked ? progressI18n.completed : progressI18n.markComplete;
                     });
                 });
             });
@@ -523,6 +530,7 @@
             const checkoutLink = document.getElementById('checkoutLink');
             const courseId = /*[[${courses.courseId}]]*/ '';
             const baseCheckoutUrl = /*[[@{/course/checkout(courseId=${courses.courseId})}]]*/ '';
+            const numberLocale = /*[[${#locale.toLanguageTag()}]]*/ 'vi-VN';
             const i18n = {
                 promoEmpty: /*[[#{detail.promo_empty}]]*/ 'Please enter a promo code',
                 promoChecking: /*[[#{detail.promo_checking}]]*/ 'Checking promo code...',
@@ -557,11 +565,11 @@
                         applyPromoBtn.disabled = false;
                         if (data && data.status === 'SUCCESS') {
                             promoCodeMessage.className = 'small mb-2 text-success';
-                            promoCodeMessage.textContent = i18n.promoSuccess + ' ' + data.payload.discountAmount.toLocaleString('vi-VN') + ' VND.';
+                            promoCodeMessage.textContent = i18n.promoSuccess + ' ' + data.payload.discountAmount.toLocaleString(numberLocale) + ' VND.';
                             checkoutLink.href = baseCheckoutUrl + '&promoCode=' + encodeURIComponent(promoCode);
                         } else {
                             promoCodeMessage.className = 'small mb-2 text-danger';
-                            promoCodeMessage.textContent = (data && data.message) ? data.message : i18n.promoInvalid;
+                            promoCodeMessage.textContent = i18n.promoInvalid;
                             checkoutLink.href = baseCheckoutUrl;
                         }
                     })

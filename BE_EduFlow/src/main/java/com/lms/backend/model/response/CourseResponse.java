@@ -31,6 +31,8 @@ public class CourseResponse {
 
     private AccountResponse teacher;
 
+    private Long subCategoryId;
+
     //Sub Category
     private SubCategoryResponse category;
 

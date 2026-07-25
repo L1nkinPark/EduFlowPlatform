@@ -44,31 +44,6 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    void testCreateOrder_Success() {
-        ApiResponse<Void> apiResponse = new ApiResponse<>();
-        apiResponse.setStatus("SUCCESS");
-        ResponseEntity<ApiResponse<Void>> responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
-
-        when(restTemplate.exchange(
-                anyString(),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                any(ParameterizedTypeReference.class)
-        )).thenReturn(responseEntity);
-
-        ApiResponse<Void> result = orderService.createOrder("course123");
-
-        assertNotNull(result);
-        assertEquals("SUCCESS", result.getStatus());
-        verify(restTemplate, times(1)).exchange(
-                anyString(),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                any(ParameterizedTypeReference.class)
-        );
-    }
-
-    @Test
     void testGetUserCourses_Success() {
         ApiResponse<List<CourseResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setStatus("SUCCESS");

@@ -4,15 +4,12 @@ import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
@@ -46,23 +43,6 @@ public class AppConfig implements WebMvcConfigurer {
         return new Cloudinary(config);
     }
 
-    @Bean
-    public JavaMailSender javaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername("voduchieu42@gmail.com");
-        mailSender.setPassword("oesr rsnh nall cxyh"); // Mật khẩu ứng dụng Gmail
-
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-
-        return mailSender;
-    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
@@ -74,15 +54,18 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public org.springframework.web.servlet.LocaleResolver localeResolver() {
-        org.springframework.web.servlet.i18n.SessionLocaleResolver slr = new org.springframework.web.servlet.i18n.SessionLocaleResolver();
-        slr.setDefaultLocale(java.util.Locale.ENGLISH);
-        return slr;
+        org.springframework.web.servlet.i18n.CookieLocaleResolver resolver =
+                new org.springframework.web.servlet.i18n.CookieLocaleResolver("EDUFLOW_LOCALE");
+        resolver.setDefaultLocale(java.util.Locale.forLanguageTag("vi"));
+        resolver.setCookieMaxAge(java.time.Duration.ofDays(365));
+        return resolver;
     }
 
     @Bean
     public org.springframework.web.servlet.i18n.LocaleChangeInterceptor localeChangeInterceptor() {
         org.springframework.web.servlet.i18n.LocaleChangeInterceptor lci = new org.springframework.web.servlet.i18n.LocaleChangeInterceptor();
         lci.setParamName("lang");
+        lci.setIgnoreInvalidLocale(true);
         return lci;
     }
 

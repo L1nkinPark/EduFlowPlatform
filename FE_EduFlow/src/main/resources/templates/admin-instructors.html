@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Manage Instructors - Edutree Admin</title>
+    <title th:text="#{admin.instructors}">Instructor Management</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
@@ -15,8 +15,8 @@
 
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
-        <h4 class="mb-0">Instructor Accounts</h4>
-        <p class="text-muted mb-0">Tạo và quản lý tài khoản instructor</p>
+        <h4 class="mb-0" th:text="#{admin.instructors}">Instructor Management</h4>
+        <p class="text-muted mb-0" th:text="#{admin.instructors_desc}">Create and manage instructor accounts</p>
     </div>
 </section>
 
@@ -29,27 +29,27 @@
             <div class="col-lg-5">
                 <div class="card border-light">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-person-plus"></i> Create Instructor Account</h5>
+                        <h5 class="mb-0"><i class="bi bi-person-plus"></i> <span th:text="#{admin.create_instructor}">Create Instructor Account</span></h5>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/instructors/create}" th:object="${newInstructor}" method="post">
                             <div class="mb-3">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label" th:text="#{common.full_name}">Full Name</label>
                                 <input type="text" class="form-control" th:field="*{fullName}" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Email</label>
+                                <label class="form-label" th:text="#{common.email}">Email</label>
                                 <input type="email" class="form-control" th:field="*{email}" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" class="form-control" th:field="*{username}" placeholder="Để trống sẽ dùng email" >
+                                <label class="form-label" th:text="#{common.username}">Username</label>
+                                <input type="text" class="form-control" th:field="*{username}" th:placeholder="#{admin.username_hint}" >
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Password</label>
+                                <label class="form-label" th:text="#{admin.password}">Password</label>
                                 <input type="password" class="form-control" th:field="*{password}" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Create Instructor</button>
+                            <button type="submit" class="btn btn-primary w-100" th:text="#{admin.create_instructor}">Create Instructor</button>
                         </form>
                     </div>
                 </div>
@@ -57,22 +57,22 @@
             <div class="col-lg-7">
                 <div class="card border-light">
                     <div class="card-header">
-                        <h5 class="mb-0">Existing Instructors</h5>
+                        <h5 class="mb-0" th:text="#{admin.existing_instructors}">Existing Instructors</h5>
                     </div>
                     <div class="p-0 card-body">
                         <div class="table-responsive border-0">
                             <table class="mb-0 text-nowrap table">
                                 <thead class="table-light">
                                 <tr>
-                                    <th scope="col" class="border-0">Full Name</th>
-                                    <th scope="col" class="border-0">Username</th>
-                                    <th scope="col" class="border-0">Email</th>
-                                    <th scope="col" class="border-0">Status</th>
+                                    <th scope="col" class="border-0" th:text="#{common.full_name}">Full Name</th>
+                                    <th scope="col" class="border-0" th:text="#{common.username}">Username</th>
+                                    <th scope="col" class="border-0" th:text="#{common.email}">Email</th>
+                                    <th scope="col" class="border-0" th:text="#{common.status}">Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:if="${instructors.isEmpty()}">
-                                    <td colspan="4" class="text-center text-muted py-4">Chưa có instructor nào</td>
+                                    <td colspan="4" class="text-center text-muted py-4" th:text="#{admin.no_instructors}">No instructors found.</td>
                                 </tr>
                                 <tr th:each="instructor : ${instructors}">
                                     <td th:text="${instructor.fullName}">-</td>
@@ -80,7 +80,7 @@
                                     <td th:text="${instructor.email}">-</td>
                                     <td>
                                             <span class="badge" th:classappend="${instructor.status} ? 'bg-success' : 'bg-secondary'"
-                                                  th:text="${instructor.status} ? 'Active' : 'Inactive'">Active</span>
+                                                  th:text="${instructor.status} ? #{common.active} : #{common.inactive}">Active</span>
                                     </td>
                                 </tr>
                                 </tbody>

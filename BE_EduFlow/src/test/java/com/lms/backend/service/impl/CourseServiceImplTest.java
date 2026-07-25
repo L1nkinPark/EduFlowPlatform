@@ -1,8 +1,10 @@
 package com.lms.backend.service.impl;
 
 import com.lms.backend.model.entity.Course;
+import com.lms.backend.model.entity.SubCategory;
 import com.lms.backend.model.request.CourseRequest;
 import com.lms.backend.repository.CourseRepository;
+import com.lms.backend.service.SubCategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,10 +29,14 @@ public class CourseServiceImplTest {
     @Mock
     private CourseRepository courseRepository;
 
+    @Mock
+    private SubCategoryService subCategoryService;
+
     @InjectMocks
     private CourseServiceImpl courseService;
 
     private Course course;
+    private SubCategory subCategory;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +45,10 @@ public class CourseServiceImplTest {
         course.setCourseName("Java Programming");
         course.setPrice(100.0);
         course.setStatus("Active");
+        subCategory = new SubCategory();
+        subCategory.setSubCategoryId(1L);
+        subCategory.setSubCategoryName("Programming");
+        course.setSubCategory(subCategory);
     }
 
     @Test
@@ -69,6 +79,18 @@ public class CourseServiceImplTest {
     }
 
     @Test
+    void testFilterCoursesByCategoryAndSubCategory() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Course> page = new PageImpl<>(Collections.singletonList(course));
+        when(courseRepository.filterCourses(pageable, "Java", 2L, 1L)).thenReturn(page);
+
+        Page<Course> result = courseService.filterCourses(pageable, " Java ", 2L, 1L);
+
+        assertEquals(1, result.getTotalElements());
+        verify(courseRepository).filterCourses(pageable, "Java", 2L, 1L);
+    }
+
+    @Test
     void testGetCourseById_Found() {
         when(courseRepository.findById("course1")).thenReturn(Optional.of(course));
 
@@ -95,7 +117,9 @@ public class CourseServiceImplTest {
         request.setCourseName("New Course");
         request.setPrice(150.0);
         request.setStatus("Active");
+        request.setSubCategoryId(1L);
 
+        when(subCategoryService.findById(1L)).thenReturn(subCategory);
         when(courseRepository.save(any(Course.class))).thenAnswer(inv -> inv.getArgument(0));
 
         Course result = courseService.saveCourse(request, null);
@@ -103,6 +127,7 @@ public class CourseServiceImplTest {
         assertNotNull(result);
         assertEquals("New Course", result.getCourseName());
         assertEquals(150.0, result.getPrice());
+        assertEquals(subCategory, result.getSubCategory());
         verify(courseRepository, times(1)).save(any(Course.class));
     }
 
@@ -113,8 +138,10 @@ public class CourseServiceImplTest {
         request.setCourseName("Updated Course");
         request.setPrice(120.0);
         request.setStatus("Active");
+        request.setSubCategoryId(1L);
 
         when(courseRepository.findById("course1")).thenReturn(Optional.of(course));
+        when(subCategoryService.findById(1L)).thenReturn(subCategory);
         when(courseRepository.save(any(Course.class))).thenAnswer(inv -> inv.getArgument(0));
 
         Course result = courseService.saveCourse(request, null);

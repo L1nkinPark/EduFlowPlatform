@@ -2,6 +2,7 @@
 package com.lms.backend.controller;
 
 
+import com.lms.backend.exception.ForbiddenException;
 import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.mapper.CourseMapper;
 import com.lms.backend.model.request.CourseRequest;
@@ -9,11 +10,11 @@ import com.lms.backend.model.response.ApiResponse;
 import com.lms.backend.repository.CourseRepository;
 import com.lms.backend.security.CustomUserDetails;
 import com.lms.backend.service.CourseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +37,13 @@ public class CourseController {
     // API hiển thị danh sách tất cả khóa học
     @GetMapping
     public ResponseEntity<ApiResponse> getAllCourses(@RequestParam(defaultValue = "1") Integer currentPage,
-              @RequestParam(defaultValue = "10") Integer size, @RequestParam(required = false) String keyword) {
+              @RequestParam(defaultValue = "10") Integer size,
+              @RequestParam(required = false) String keyword,
+              @RequestParam(required = false) Long categoryId,
+              @RequestParam(required = false) Long subCategoryId) {
         Pageable pageable = PageRequest.of(currentPage - 1, size);
-        Page<Course> coursePage = null;
-
-        if (keyword == null || keyword.trim().equalsIgnoreCase("")) {
-            coursePage = courseSevice.getAllCourses(pageable);
-        } else {
-            coursePage = courseSevice.searchCourse(pageable, keyword);
-        }
+        Page<Course> coursePage = courseSevice.filterCourses(
+                pageable, keyword, categoryId, subCategoryId);
 
         ApiResponse response = new ApiResponse();
 
@@ -82,10 +81,11 @@ public class CourseController {
 
     //Add new Course
     @PostMapping
-    public ResponseEntity<ApiResponse> saveCourse(@RequestBody CourseRequest courseRequest,
+    public ResponseEntity<ApiResponse> saveCourse(@Valid @RequestBody CourseRequest courseRequest,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails){
 
-        com.lms.backend.model.entity.Account instructor = userDetails != null ? userDetails.getAccount() : null;
+        courseRequest.setCourseId(null);
+        com.lms.backend.model.entity.Account instructor = userDetails.getAccount();
         Course course = courseSevice.saveCourse(courseRequest, instructor);
 
         ApiResponse response = new ApiResponse();
@@ -98,12 +98,14 @@ public class CourseController {
 
     //Update
     @PutMapping("/{courseId}")
-    public ResponseEntity<ApiResponse> updateCourse(@RequestBody CourseRequest courseRequest, @PathVariable String courseId,
+    public ResponseEntity<ApiResponse> updateCourse(@Valid @RequestBody CourseRequest courseRequest, @PathVariable String courseId,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails){
 
         ApiResponse response = new ApiResponse();
 
-        com.lms.backend.model.entity.Account instructor = userDetails != null ? userDetails.getAccount() : null;
+        assertCanManageCourse(courseId, userDetails);
+        courseRequest.setCourseId(courseId);
+        com.lms.backend.model.entity.Account instructor = userDetails.getAccount();
         Course course = courseSevice.saveCourse(courseRequest, instructor);
 
         response.ok("OK", courseMapper.convertToDTO(course));
@@ -114,7 +116,9 @@ public class CourseController {
 
     //Delete
     @DeleteMapping(value = "/{courseId}")
-    public ResponseEntity<ApiResponse> deleteCourse(@PathVariable String courseId){
+    public ResponseEntity<ApiResponse> deleteCourse(@PathVariable String courseId,
+                                                     @AuthenticationPrincipal CustomUserDetails userDetails){
+        assertCanManageCourse(courseId, userDetails);
         boolean temp = courseSevice.deleteById(courseId);
         ApiResponse response = new ApiResponse();
         if(temp){
@@ -124,5 +128,15 @@ public class CourseController {
         response.error("BAD_REQUEST", null);
         return ResponseEntity.ok(response);
     }
-}
 
+    private void assertCanManageCourse(String courseId, CustomUserDetails userDetails) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + courseId));
+        boolean isAdmin = "ADMIN".equalsIgnoreCase(userDetails.getAccount().getRole());
+        boolean isOwner = course.getAccount() != null
+                && course.getAccount().getAccountId() == userDetails.getAccount().getAccountId();
+        if (!isAdmin && !isOwner) {
+            throw new ForbiddenException("You do not own this course.");
+        }
+    }
+}

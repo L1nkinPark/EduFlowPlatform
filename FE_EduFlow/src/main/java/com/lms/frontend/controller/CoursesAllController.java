@@ -20,8 +20,12 @@ public class CoursesAllController {
     CourseService courseService;
 
     @GetMapping("/all")
-    public String showAllCourse(Model model, @RequestParam(required = false) String keyword) {
-        ApiResponse<List<CourseResponse>> apiResponse = courseService.getAllCourses(1, 9, keyword);
+    public String showAllCourse(Model model,
+                                @RequestParam(required = false) String keyword,
+                                @RequestParam(required = false) Long categoryId,
+                                @RequestParam(required = false) Long subCategoryId) {
+        ApiResponse<List<CourseResponse>> apiResponse =
+                courseService.getAllCourses(1, 60, keyword, categoryId, subCategoryId);
 
         if (apiResponse == null || apiResponse.getPayload() == null) {
             model.addAttribute("courses", Collections.emptyList());
@@ -29,6 +33,8 @@ public class CoursesAllController {
             model.addAttribute("courses", apiResponse.getPayload());
         }
         model.addAttribute("keyword", keyword);
+        model.addAttribute("selectedCategoryId", categoryId);
+        model.addAttribute("selectedSubCategoryId", subCategoryId);
 
         return "courses";
     }

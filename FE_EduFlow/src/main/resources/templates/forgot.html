@@ -1,5 +1,5 @@
 ?<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/forgot.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:42 GMT -->
 
@@ -72,7 +72,7 @@
         </div>
     </section>
 
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">
@@ -237,6 +237,17 @@
 
 <script th:inline="javascript">
     const backendUrl = /*[[${backendUrl}]]*/ 'http://localhost:8888';
+    const resetMessages = {
+        emailInvalid: /*[[#{auth.email_invalid}]]*/ 'Please enter a valid email address.',
+        emailExists: /*[[#{auth.email_exists}]]*/ 'Email exists.',
+        emailNotFound: /*[[#{auth.email_not_found}]]*/ 'Email not found.',
+        otpSent: /*[[#{auth.otp_sent_success}]]*/ 'OTP sent successfully!',
+        otpSendFailed: /*[[#{auth.otp_send_failed}]]*/ 'Failed to send OTP.',
+        otpVerified: /*[[#{auth.otp_verified}]]*/ 'OTP verified successfully!',
+        otpVerifyError: /*[[#{auth.otp_verify_error}]]*/ 'OTP verification failed',
+        resetSuccess: /*[[#{auth.password_reset_success}]]*/ 'Password reset successfully!',
+        resetError: /*[[#{auth.password_reset_error}]]*/ 'Failed to reset password'
+    };
 
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -248,7 +259,7 @@
 
         // Kiểm tra email hợp lệ
         if (!validateEmail(email)) {
-            alert("Please enter a valid email address.");
+            alert(resetMessages.emailInvalid);
             return;
         }
 
@@ -263,10 +274,10 @@
         .then(response => response.json())
         .then(data => {
             if (data === true) {
-                alert("Email exists.");
+                alert(resetMessages.emailExists);
                 sendOtpToEmail(email);  // Gửi OTP nếu email hợp lệ
             } else {
-                alert("Email not found.");
+                alert(resetMessages.emailNotFound);
             }
         })
         .catch(error => {
@@ -289,11 +300,11 @@
             return response.text();
         })
         .then(data => {
-            alert("OTP sent successfully!");
+            alert(resetMessages.otpSent);
         })
         .catch(error => {
             console.error("Error sending OTP:", error);
-            alert("Failed to send OTP. Please try again.");
+            alert(resetMessages.otpSendFailed);
         });
     }
 
@@ -315,13 +326,13 @@
             return response.text();
         })
         .then(data => {
-            alert("OTP verified successfully!");
+            alert(resetMessages.otpVerified);
             // Hiển thị form nhập mật khẩu mới
             document.getElementById("newPasswordForm").style.display = "block";
         })
         .catch(error => {
             console.error("Error verifying OTP:", error);
-            alert(`Failed to verify OTP: ${error.message}`);
+            alert(resetMessages.otpVerifyError);
         });
     }
 
@@ -347,12 +358,12 @@
             return response.text();
         })
         .then(data => {
-            alert("Password reset successfully!");
+            alert(resetMessages.resetSuccess);
             window.location.href = "signin"; // Chuyển hướng đến trang đăng nhập
         })
         .catch(error => {
             console.error("Error resetting password:", error);
-            alert(`Failed to reset password: ${error.message}`);
+            alert(resetMessages.resetError);
         });
     }
 </script>

@@ -11,6 +11,9 @@ public interface CourseService {
 
     ApiResponse<List<CourseResponse>> getAllCourses(int currentPage, int size, String keyword);
 
+    ApiResponse<List<CourseResponse>> getAllCourses(int currentPage, int size, String keyword,
+                                                    Long categoryId, Long subCategoryId);
+
     ApiResponse<CourseResponse> getCourseById(String courseId);
 
     ApiResponse<List<CourseResponse>> getCoursesByAccount(Long accountId);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -52,7 +52,7 @@
                             <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/about'} ? 'active'" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/contact'} ? 'active'" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
@@ -65,8 +65,8 @@
                                 <span th:text="${#locale.language == 'vi' ? 'VI' : 'EN'}">EN</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-1 mt-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')">English</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')">Tiếng Việt</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')" th:text="#{language.english}">English</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')" th:text="#{language.vietnamese}">Vietnamese</a></li>
                             </ul>
                         </div>
                         <script>
@@ -173,7 +173,7 @@
                             <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/about'} ? 'active'" th:href="@{/about}" th:text="#{nav.about}">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/course')} ? 'active'" th:href="@{/course/all}" th:text="#{nav.courses}">Courses</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/contact'} ? 'active'" th:href="@{/contact}" th:text="#{nav.contact}">Contact</a>
@@ -186,8 +186,8 @@
                                 <span th:text="${#locale.language == 'vi' ? 'VI' : 'EN'}">EN</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-1 mt-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')">English</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')">Tiếng Việt</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')" th:text="#{language.english}">English</a></li>
+                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')" th:text="#{language.vietnamese}">Vietnamese</a></li>
                             </ul>
                         </div>
                         <script>
@@ -272,7 +272,7 @@
                             <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/admin'} ? 'active'" th:href="@{/admin}" th:text="#{nav.dashboard}">Dashboard</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/admin/instructors')} ? 'active'" th:href="@{/admin/instructors}" th:text="#{nav.instructors}">Instructors</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/admin/instructors')} ? 'active'" th:href="@{/admin/instructors}" th:text="#{nav.instructors}">Instructors</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-2 align-items-center main-header-nav-right">
@@ -342,19 +342,19 @@
                 <div class="collapse navbar-collapse" id="instructorNavContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/mycourse')} ? 'active'" th:href="@{/instructor/mycourse}" th:text="#{nav.my_courses}">My Courses</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/instructor/mycourse')} ? 'active'" th:href="@{/instructor/mycourse}" th:text="#{nav.my_courses}">My Courses</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/courses/add')} ? 'active'" th:href="@{/instructor/courses/add}" th:text="#{nav.new_course}">New Course</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/instructor/courses/add')} ? 'active'" th:href="@{/instructor/courses/add}" th:text="#{nav.new_course}">New Course</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/earn')} ? 'active'" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/instructor/earn')} ? 'active'" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/order')} ? 'active'" th:href="@{/instructor/order}" th:text="#{nav.orders}">Orders</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/instructor/order')} ? 'active'" th:href="@{/instructor/order}" th:text="#{nav.orders}">Orders</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/student')} ? 'active'" th:href="@{/instructor/student}" th:text="#{nav.students}">Students</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri != null && currentUri.startsWith('/instructor/student')} ? 'active'" th:href="@{/instructor/student}" th:text="#{nav.students}">Students</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-2 align-items-center main-header-nav-right">

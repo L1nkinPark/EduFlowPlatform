@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edit Profile - Edutree</title>
+    <title th:text="#{student.edit_profile}">Edit Profile</title>
     <meta name="description" content="Edutree" />
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
@@ -16,8 +16,8 @@
 
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
-        <h4 class="mb-0">Edit Profile</h4>
-        <p class="text-muted mb-0">Cập nhật thông tin cá nhân của bạn</p>
+        <h4 class="mb-0" th:text="#{student.edit_profile}">Edit Profile</h4>
+        <p class="text-muted mb-0" th:text="#{student.edit_profile_desc}">Update your personal information</p>
     </div>
 </section>
 
@@ -33,34 +33,34 @@
 
                 <div class="border-0 card">
                     <div class="card-header">
-                        <h3 class="mb-0">Personal Details</h3>
-                        <p class="mb-0">Thông tin tài khoản của bạn.</p>
+                        <h3 class="mb-0" th:text="#{student.personal_details}">Personal Details</h3>
+                        <p class="mb-0" th:text="#{student.account_details}">Your account information.</p>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/student/edit}" th:object="${profile}" method="post">
                             <div class="row">
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label">Username</label>
+                                    <label class="form-label" th:text="#{common.username}">Username</label>
                                     <input type="text" class="form-control" th:value="${account.username}" disabled>
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label">Email</label>
+                                    <label class="form-label" th:text="#{common.email}">Email</label>
                                     <input type="text" class="form-control" th:value="${account.email}" disabled>
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label">Họ và tên</label>
+                                    <label class="form-label" th:text="#{common.full_name}">Full name</label>
                                     <input type="text" class="form-control" th:field="*{fullName}" required>
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" th:field="*{phone}" placeholder="Chưa cập nhật">
+                                    <label class="form-label" th:text="#{common.phone}">Phone number</label>
+                                    <input type="text" class="form-control" th:field="*{phone}" th:placeholder="#{common.not_updated}">
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label">Ngày sinh</label>
+                                    <label class="form-label" th:text="#{common.birthday}">Date of birth</label>
                                     <input type="date" class="form-control" th:field="*{birthday}">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{student.update_profile}">Update Profile</button>
                         </form>
                     </div>
                 </div>

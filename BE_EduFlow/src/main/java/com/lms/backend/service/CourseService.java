@@ -13,6 +13,8 @@ public interface CourseService {
 
     Page<Course> searchCourse(Pageable pageable, String keyword);
 
+    Page<Course> filterCourses(Pageable pageable, String keyword, Long categoryId, Long subCategoryId);
+
     Course getCourseById(String courseId);
 
     Course saveCourse(CourseRequest courseRequest, com.lms.backend.model.entity.Account instructor);

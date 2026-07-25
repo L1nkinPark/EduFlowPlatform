@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Course Form - Edutree Instructor</title>
+    <title th:text="#{instructor.course_form}">Course Form</title>
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
@@ -15,8 +15,8 @@
 
 <section class="py-3 border-bottom bg-white shadow-sm">
     <div class="container">
-        <h4 class="mb-0" th:text="${course.courseId != null and !course.courseId.isEmpty()} ? 'Edit Course' : 'New Course'">New Course</h4>
-        <p class="text-muted mb-0">Thông tin cơ bản của khóa học</p>
+        <h4 class="mb-0" th:text="${course.courseId != null and !course.courseId.isEmpty()} ? #{instructor.edit_course} : #{instructor.new_course}">New Course</h4>
+        <p class="text-muted mb-0" th:text="#{instructor.course_form_desc}">Basic course information</p>
     </div>
 </section>
 
@@ -30,53 +30,67 @@
                             <input type="hidden" th:field="*{courseId}">
 
                             <div class="mb-3">
-                                <label class="form-label">Tên khóa học</label>
+                                <label class="form-label" th:text="#{instructor.course_name}">Course name</label>
                                 <input type="text" class="form-control" th:field="*{courseName}" required>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Mô tả</label>
+                                <label class="form-label" th:text="#{common.description}">Description</label>
                                 <textarea rows="3" class="form-control" th:field="*{description}"></textarea>
                             </div>
 
                             <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label" th:text="#{instructor.category}">Course category</label>
+                                    <select class="form-select" th:field="*{subCategoryId}" required>
+                                        <option value="" th:text="#{instructor.select_category}">Select category</option>
+                                        <option th:each="subCategory : ${subCategories}"
+                                                th:value="${subCategory.subCategoryId}"
+                                                th:text="${subCategory.category != null
+                                                ? subCategory.category.categoryName + ' — ' + subCategory.subCategoryName
+                                                : subCategory.subCategoryName}">
+                                            Category
+                                        </option>
+                                    </select>
+                                    <div class="form-text" th:text="#{instructor.category_hint}">Choose the correct category.</div>
+                                </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Ảnh (URL)</label>
+                                    <label class="form-label" th:text="#{instructor.image_url}">Image (URL)</label>
                                     <input type="text" class="form-control" th:field="*{image}" placeholder="/img/globel/b1.jpg">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Thumbnail (URL)</label>
+                                    <label class="form-label" th:text="#{instructor.thumbnail_url}">Thumbnail (URL)</label>
                                     <input type="text" class="form-control" th:field="*{thumbnail}" placeholder="/img/globel/b1.jpg">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Ngày bắt đầu</label>
+                                    <label class="form-label" th:text="#{instructor.start_date}">Start date</label>
                                     <input type="date" class="form-control" th:field="*{startDate}">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Ngày kết thúc</label>
+                                    <label class="form-label" th:text="#{instructor.end_date}">End date</label>
                                     <input type="date" class="form-control" th:field="*{endDate}">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Trạng thái</label>
+                                    <label class="form-label" th:text="#{common.status}">Status</label>
                                     <select class="form-select" th:field="*{status}">
-                                        <option value="ACTIVE">Active</option>
-                                        <option value="INACTIVE">Inactive</option>
-                                        <option value="DRAFT">Draft</option>
+                                        <option value="ACTIVE" th:text="#{common.active}">Active</option>
+                                        <option value="INACTIVE" th:text="#{common.inactive}">Inactive</option>
+                                        <option value="DRAFT" th:text="#{common.draft}">Draft</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Giá (VND)</label>
+                                    <label class="form-label" th:text="#{common.vnd_price}">Price (VND)</label>
                                     <input type="number" step="1000" min="0" class="form-control" th:field="*{price}">
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Lưu khóa học</button>
+                            <button type="submit" class="btn btn-primary w-100" th:text="#{instructor.save_course}">Save course</button>
                         </form>
                     </div>
                 </div>

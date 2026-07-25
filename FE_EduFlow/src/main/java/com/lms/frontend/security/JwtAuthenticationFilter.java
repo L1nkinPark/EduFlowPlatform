@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter implements HandlerInterceptor {
             if ((requestURI.startsWith("/admin") && !userRole.equals("ADMIN")) ||
                     (requestURI.startsWith("/instructor") && !userRole.equals("INSTRUCTOR"))) {
                 // Nếu không có quyền, trả về trang lỗi (ví dụ: trang 401 Unauthorized)
-                response.sendRedirect("/404");
+                response.sendRedirect(request.getContextPath() + "/error/404");
                 return false;
             }
 

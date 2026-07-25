@@ -67,12 +67,7 @@ public class StudentOrderController {
     }
 
     @GetMapping("/vnpay-callback")
-    public String vnpayCallback(HttpServletRequest request, HttpSession session) {
-        AuthResponse userLogin = (AuthResponse) session.getAttribute("userLogin");
-        if (userLogin == null) {
-            return "redirect:/signin";
-        }
-
+    public String vnpayCallback(HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         Map<String, String> params = new HashMap<>();
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {

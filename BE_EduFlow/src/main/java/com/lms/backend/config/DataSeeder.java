@@ -3,6 +3,7 @@ package com.lms.backend.config;
 import com.lms.backend.model.entity.*;
 import com.lms.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,9 @@ public class DataSeeder implements CommandLineRunner {
     @Autowired
     private PromoCodeRepository promoCodeRepository;
 
+    @Value("${demo.instructor-password:}")
+    private String demoInstructorPassword;
+
     @org.springframework.transaction.annotation.Transactional
     @Override
     public void run(String... args) throws Exception {
@@ -59,7 +63,13 @@ public class DataSeeder implements CommandLineRunner {
         seedPromoCodes();
 
         if (courseRepository.count() > 0) {
+            repairLegacyCourseData();
             System.out.println("Database already contains courses. Skipping seeder.");
+            return;
+        }
+
+        if (demoInstructorPassword == null || demoInstructorPassword.isBlank()) {
+            System.err.println("Demo data was not seeded because DEMO_INSTRUCTOR_PASSWORD is not configured.");
             return;
         }
 
@@ -72,7 +82,7 @@ public class DataSeeder implements CommandLineRunner {
             instructor.setUsername("instructor");
             instructor.setFullName("Lê Minh Hướng dẫn viên");
             instructor.setEmail("instructor@eduflow.com");
-            instructor.setPassword(passwordEncoder.encode("123"));
+            instructor.setPassword(passwordEncoder.encode(demoInstructorPassword));
             instructor.setRole("INSTRUCTOR");
             instructor.setStatus(true);
             instructor = accountRepository.save(instructor);
@@ -290,5 +300,40 @@ public class DataSeeder implements CommandLineRunner {
         promoCodeRepository.save(welcome10);
 
         System.out.println("Seeded promo code: WELCOME10 (10% off, max 20,000 VND discount)");
+    }
+
+    private void repairLegacyCourseData() {
+        SubCategory webDevelopment = subCategoryRepository
+                .findBySubCategoryName("Web Development")
+                .orElse(null);
+
+        courseRepository.findAll().forEach(course -> {
+            boolean updated = false;
+
+            if ("Bring Your Creations to Life (2D Animation)".equals(course.getCourseName())
+                    && course.getPrice() == 49.0) {
+                course.setPrice(490000.0);
+                updated = true;
+            } else if ("Web Development Bootcamp: Zero to Hero".equals(course.getCourseName())
+                    && course.getPrice() == 99.0) {
+                course.setPrice(990000.0);
+                updated = true;
+            } else if ("Mastering English Speaking & Pronunciation".equals(course.getCourseName())
+                    && course.getPrice() == 29.0) {
+                course.setPrice(290000.0);
+                updated = true;
+            }
+
+            if (course.getSubCategory() == null
+                    && "Test Course By Instructor UI".equals(course.getCourseName())
+                    && webDevelopment != null) {
+                course.setSubCategory(webDevelopment);
+                updated = true;
+            }
+
+            if (updated) {
+                courseRepository.save(course);
+            }
+        });
     }
 }

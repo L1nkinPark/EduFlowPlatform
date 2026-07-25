@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -74,7 +74,7 @@
                             <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                             <div class="card-text text-muted small" th:text="${course.description}"></div>
                             <div class="text-muted gap-2 pt-2 small d-flex">
-                                <span><i class="bi bi-person"></i> <span th:text="${course.enrollmentCount}">0</span> học viên</span>
+                                <span><i class="bi bi-person"></i> <span th:text="${course.enrollmentCount}">0</span> <span th:text="#{courses.students_suffix}">students</span></span>
                             </div>
                         </div>
                         <div class="card-footer border-0 bg-white border-top p-3">
@@ -90,7 +90,7 @@
 
             </div>
             <div class="text-center text-muted py-4" th:if="${#lists.isEmpty(courses)}">
-                Chưa có khóa học nào được đăng.
+                <span th:text="#{courses.empty}">No courses found.</span>
             </div>
         </div>
         <div class="text-center mt-3 pb-4">
@@ -183,16 +183,16 @@
                         <div class="card-body p-3">
                             <h6 class="card-title m-0" th:text="${category.categoryName}">Category</h6>
                         </div>
-                        <a th:href="@{/course/all}" class="stretched-link"></a>
+                        <a th:href="@{/course/all(categoryId=${category.categoryId})}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
             <div class="text-muted text-center py-4" th:if="${#lists.isEmpty(categories)}">
-                Chưa có danh mục nào.
+                <span th:text="#{courses.no_categories}">No categories available.</span>
             </div>
         </div>
     </main>
-    <div class="bg-white border-top border-bottom cities-footer">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -209,14 +209,14 @@
                 <div class="row">
                     <div class="col-6 col-lg-3 col-md-3 mb-2" th:each="category : ${categories}">
                         <a class="py-1 text-decoration-none d-block w-100 link-dark"
-                           th:href="@{'/course/all'}" th:text="${category.categoryName}">Category Name</a>
+                           th:href="@{/course/all(categoryId=${category.categoryId})}" th:text="${category.categoryName}">Category Name</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="py-5 footer bg-white">
+    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
         <div>
             <div class="container py-3">
                 <div class="row">
