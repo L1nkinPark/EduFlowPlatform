@@ -101,7 +101,7 @@
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">My Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Order History</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}" th:text="#{nav.order_history}">Order History</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}" th:text="#{nav.edit_profile}">Edit Profile</a>
@@ -115,10 +115,10 @@
                                 </li>
                                 <!-- Admin links -->
                                 <li th:if="${session.userLogin.role == 'ADMIN'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin}">Admin Dashboard</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin}" th:text="#{nav.admin_dashboard}">Admin Dashboard</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'ADMIN'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin/instructors}">Manage Instructors</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin/instructors}" th:text="#{nav.manage_instructors}">Manage Instructors</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -222,7 +222,7 @@
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/subscription}" th:text="#{nav.my_courses}">My Courses</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}">Order History</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/invoice}" th:text="#{nav.order_history}">Order History</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'STUDENT'}">
                                     <a class="dropdown-item px-3 py-2 rounded" th:href="@{/student/edit}" th:text="#{nav.edit_profile}">Edit Profile</a>
@@ -236,10 +236,10 @@
                                 </li>
                                 <!-- Admin links -->
                                 <li th:if="${session.userLogin.role == 'ADMIN'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin}">Admin Dashboard</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin}" th:text="#{nav.admin_dashboard}">Admin Dashboard</a>
                                 </li>
                                 <li th:if="${session.userLogin.role == 'ADMIN'}">
-                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin/instructors}">Manage Instructors</a>
+                                    <a class="dropdown-item px-3 py-2 rounded" th:href="@{/admin/instructors}" th:text="#{nav.manage_instructors}">Manage Instructors</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
@@ -269,15 +269,15 @@
                 <div class="collapse navbar-collapse" id="adminNavContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/admin'} ? 'active'" th:href="@{/admin}">Dashboard</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri == '/admin'} ? 'active'" th:href="@{/admin}" th:text="#{nav.dashboard}">Dashboard</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/admin/instructors')} ? 'active'" th:href="@{/admin/instructors}">Instructors</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/admin/instructors')} ? 'active'" th:href="@{/admin/instructors}" th:text="#{nav.instructors}">Instructors</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-2 align-items-center main-header-nav-right">
                         <span class="text-white-50 small" th:if="${session.userLogin != null}" th:text="${session.userLogin.fullName}">Admin</span>
-                        <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}">Log Out</a>
+                        <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}" th:text="#{nav.logout}">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -291,7 +291,7 @@
         <div class="sidebar-fixed">
             <nav class="navbar sidebar-dash navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 sidenav navbar navbar-expand-lg navbar-light">
                 <a class="d-xl-none d-lg-none d-md-none text-inherit fw-bold fs-5 float-start py-1"
-                   th:href="@{/student/subscription}">Menu</a>
+                   th:href="@{/student/subscription}" th:text="#{nav.menu}">Menu</a>
                 <button data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation"
                         class="p-0 focus-none border-0 navbar-toggler collapsed">
@@ -301,24 +301,24 @@
                 </button>
                 <div class="navbar-collapse collapse" id="navbarNav">
                     <ul class="me-auto flex-column navbar-nav">
-                        <li class="navbar-header nav-item">SUBSCRIPTION</li>
+                        <li class="navbar-header nav-item" th:text="#{sidebar.subscription}">SUBSCRIPTION</li>
                         <li class="nav-item" th:classappend="${active == 'subscription'} ? 'active'">
-                            <a class="nav-link" th:href="@{/student/subscription}"><i class="fe fe-home nav-icon"></i> My Courses</a>
+                            <a class="nav-link" th:href="@{/student/subscription}"><i class="fe fe-home nav-icon"></i> <span th:text="#{nav.my_courses}">My Courses</span></a>
                         </li>
                         <li class="nav-item" th:classappend="${active == 'invoice'} ? 'active'">
-                            <a class="nav-link" th:href="@{/student/invoice}"><i class="fe fe-pie-chart nav-icon"></i> Order History</a>
+                            <a class="nav-link" th:href="@{/student/invoice}"><i class="fe fe-pie-chart nav-icon"></i> <span th:text="#{nav.order_history}">Order History</span></a>
                         </li>
-                        <li class="navbar-header mt-4 nav-item">ACCOUNT SETTINGS</li>
+                        <li class="navbar-header mt-4 nav-item" th:text="#{sidebar.account_settings}">ACCOUNT SETTINGS</li>
                         <li class="nav-item" th:classappend="${active == 'edit'} ? 'active'">
-                            <a class="nav-link" th:href="@{/student/edit}"><i class="fe fe-settings nav-icon"></i> Edit Profile</a>
+                            <a class="nav-link" th:href="@{/student/edit}"><i class="fe fe-settings nav-icon"></i> <span th:text="#{nav.edit_profile}">Edit Profile</span></a>
                         </li>
                         <li class="nav-item" th:classappend="${active == 'security'} ? 'active'">
-                            <a class="nav-link" th:href="@{/student/security}"><i class="fe fe-lock nav-icon"></i> Security</a>
+                            <a class="nav-link" th:href="@{/student/security}"><i class="fe fe-lock nav-icon"></i> <span th:text="#{nav.security}">Security</span></a>
                         </li>
                         <li class="nav-item" th:classappend="${active == 'delete'} ? 'active'">
-                            <a class="nav-link" th:href="@{/student/delete}"><i class="fe fe-trash nav-icon"></i> Delete Profile</a>
+                            <a class="nav-link" th:href="@{/student/delete}"><i class="fe fe-trash nav-icon"></i> <span th:text="#{nav.delete_profile}">Delete Profile</span></a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/logout}"><i class="fe fe-power nav-icon"></i>Sign Out</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/logout}"><i class="fe fe-power nav-icon"></i><span th:text="#{nav.sign_out}">Sign Out</span></a></li>
                     </ul>
                 </div>
             </nav>
@@ -342,24 +342,24 @@
                 <div class="collapse navbar-collapse" id="instructorNavContent">
                     <ul class="navbar-nav mx-auto gap-2 mb-2 mb-lg-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/mycourse')} ? 'active'" th:href="@{/instructor/mycourse}">My Courses</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/mycourse')} ? 'active'" th:href="@{/instructor/mycourse}" th:text="#{nav.my_courses}">My Courses</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/courses/add')} ? 'active'" th:href="@{/instructor/courses/add}">New Course</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/courses/add')} ? 'active'" th:href="@{/instructor/courses/add}" th:text="#{nav.new_course}">New Course</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/earn')} ? 'active'" th:href="@{/instructor/earn}">Earnings</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/earn')} ? 'active'" th:href="@{/instructor/earn}" th:text="#{nav.earnings}">Earnings</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/order')} ? 'active'" th:href="@{/instructor/order}">Orders</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/order')} ? 'active'" th:href="@{/instructor/order}" th:text="#{nav.orders}">Orders</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/student')} ? 'active'" th:href="@{/instructor/student}">Students</a>
+                            <a class="nav-link px-0 py-4" th:classappend="${currentUri.startsWith('/instructor/student')} ? 'active'" th:href="@{/instructor/student}" th:text="#{nav.students}">Students</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-2 align-items-center main-header-nav-right">
                         <span class="text-white-50 small" th:if="${session.userLogin != null}" th:text="${session.userLogin.fullName}">Instructor</span>
-                        <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}">Log Out</a>
+                        <a class="btn btn-outline-light btn-sm rounded-pill" th:href="@{/logout}" th:text="#{nav.logout}">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -373,14 +373,14 @@
                         <div class="mb-4 mb-md-0">
                             <a th:href="@{/}" class="text-decoration-none link-dark fw-bold"><i
                                     class="icofont-home bg-primary text-white p-1 rounded-pill"></i></a>
-                            <a th:href="@{/term-condition}" class="text-decoration-none link-dark small mx-3">Terms &
+                            <a th:href="@{/term-condition}" class="text-decoration-none link-dark small mx-3" th:text="#{footer.terms}">Terms &
                                 Conditions</a>
-                            <a th:href="@{/privacy/policy}" class="text-decoration-none link-dark small">Privacy Policy</a>
+                            <a th:href="@{/privacy/policy}" class="text-decoration-none link-dark small" th:text="#{footer.privacy}">Privacy Policy</a>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="d-flex align-items-center gap-1">
-                            <a href="#" class="text-decoration-none link-dark pe-2">Download app</a>
+                            <a href="#" class="text-decoration-none link-dark pe-2" th:text="#{footer.download_app}">Download app</a>
                             <a class="me-1" href="#"><img th:src="@{/img/google.png}" class="img-fluid app-icon" alt="#"
                                                           loading="lazy"></a>
                             <a href="#"><img th:src="@{/img/apple.png}" class="img-fluid app-icon" alt="#"
@@ -391,7 +391,7 @@
                 <hr class="m-0">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row py-4">
                     <div class="col-auto order-1 order-md-0">
-                        <span class="small">©2022 <b class="text-primary">Edutree</b>. All rights reserved</span>
+                        <span class="small">©2026 <b class="text-primary">Edutree</b>. <span th:text="#{footer.rights}">All rights reserved</span></span>
                     </div>
                 </div>
             </div>

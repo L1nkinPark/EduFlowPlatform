@@ -27,6 +27,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Account user, String courseId) {
+        if (hasPurchasedCourse(user, courseId)) {
+            throw new IllegalStateException("Course has already been purchased");
+        }
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
 

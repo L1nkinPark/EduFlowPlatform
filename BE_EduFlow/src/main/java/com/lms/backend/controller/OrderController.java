@@ -118,18 +118,23 @@ public class OrderController {
 
         try {
             Account account = userDetails.getAccount();
+            if (orderService.hasPurchasedCourse(account, courseId)) {
+                response.error("Course has already been purchased");
+                return ResponseEntity.badRequest().body(response);
+            }
             Course course = courseRepository.findById(courseId)
                     .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
 
-            // NOTE: This is a sandbox/test flow, so the base payment amount is
-            // fixed at 100,000 VND regardless of the course's stored price
-            // (courses use a USD-style price field that is not yet wired to
-            // VNPay). The promo code discount is applied on top of this test
-            // amount so the feature can be validated end-to-end.
-            double baseTestAmountVnd = 100000;
-            double amount = baseTestAmountVnd;
+            // Giá khóa học (course.price) được lưu bằng VND, khớp với đơn vị
+            // dùng trong PromoCode (minOrderAmount/discountAmount/maxDiscountAmount)
+            // và với các trang quản lý của instructor/admin.
+            double amount = course.getPrice();
             if (promoCode != null && !promoCode.isBlank()) {
-                amount = promoCodeService.calculateDiscountedAmount(promoCode, baseTestAmountVnd);
+                amount = promoCodeService.calculateDiscountedAmount(promoCode, amount);
+            }
+            // VNPay yêu cầu số tiền phải >= 5,000 VND theo quy định sandbox.
+            if (amount < 5000) {
+                amount = 5000;
             }
             // VNPay expects the amount multiplied by 100 (smallest currency unit).
             long vnpAmount = Math.round(amount * 100);

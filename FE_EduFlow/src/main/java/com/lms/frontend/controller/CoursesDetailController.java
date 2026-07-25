@@ -56,6 +56,14 @@ public class CoursesDetailController {
         }
         model.addAttribute("isPurchased", isPurchased);
         model.addAttribute("completedLessonIds", completedLessonIds);
+        int totalLessons = apiResponse.getPayload().getChapters() == null ? 0
+                : apiResponse.getPayload().getChapters().stream()
+                .filter(chapter -> chapter.getLessons() != null)
+                .mapToInt(chapter -> chapter.getLessons().size())
+                .sum();
+        int progressPercentage = totalLessons == 0 ? 0
+                : (int) Math.round(completedLessonIds.size() * 100.0 / totalLessons);
+        model.addAttribute("progressPercentage", progressPercentage);
 
         // Các khóa học khác để gợi ý (loại trừ khóa học hiện tại) — dùng cho mục
         // "Courses you might be interested in", thay cho việc tái sử dụng nhầm

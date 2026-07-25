@@ -15,6 +15,12 @@ public class StudentProgressController {
 
     @PostMapping("/student/progress/toggle")
     public ApiResponse<Boolean> toggleProgress(@RequestParam Long lessonId) {
-        return lessonProgressService.toggleProgress(lessonId);
+        ApiResponse<Boolean> response = lessonProgressService.toggleProgress(lessonId);
+        if (response != null) {
+            return response;
+        }
+        ApiResponse<Boolean> errorResponse = new ApiResponse<>();
+        errorResponse.error("Không thể cập nhật tiến độ học tập lúc này");
+        return errorResponse;
     }
 }
