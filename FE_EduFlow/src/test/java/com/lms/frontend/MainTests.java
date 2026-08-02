@@ -185,6 +185,7 @@ class MainTests {
         assertTrue(template.contains("th:text=\"#{detail.instructor}\""));
         assertFalse(template.contains("Add to a list"));
         assertFalse(template.contains("See more Edutree course"));
+        assertFalse(template.contains("askbootstrap.com"));
     }
 
     @Test
@@ -203,7 +204,8 @@ class MainTests {
                 .andExpect(content().string(containsString("<title>Khóa học kiểm thử - EduFlow</title>")))
                 .andExpect(content().string(containsString("Các khóa học có thể bạn quan tâm")))
                 .andExpect(content().string(containsString("Giảng viên")))
-                .andExpect(content().string(not(containsString("Add to a list"))));
+                .andExpect(content().string(not(containsString("Add to a list"))))
+                .andExpect(content().string(not(containsString("askbootstrap.com"))));
     }
 
     @TestConfiguration(proxyBeanMethods = false)
