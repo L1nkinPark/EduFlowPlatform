@@ -189,6 +189,15 @@ class MainTests {
     }
 
     @Test
+    void sharedStylesDoNotExposeLegacyHostOrFakeFontAssets() throws Exception {
+        String styles = new ClassPathResource("static/css/style.css").getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertFalse(styles.contains("askbootstrap.com"));
+        assertFalse(styles.contains("feather.eb9822a3be07c5110df9.html"));
+        assertFalse(styles.contains("feather.f780c210ecac82116260.html"));
+        assertTrue(styles.contains("var(--bs-breadcrumb-divider,\"/\")"));
+    }
+
+    @Test
     void courseDetailRendersLocalizedVietnameseContentAndTitle() throws Exception {
         CourseResponse course = new CourseResponse();
         course.setCourseId("course-test");
