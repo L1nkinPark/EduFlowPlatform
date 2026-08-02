@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <title th:text="#{page.home_title}">EduFlow - Online Learning Platform</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -39,7 +39,7 @@
                             class="d-flex mt-4 bg-white rounded-3 align-items-center services-search-form overflow-hidden">
                             <div class="form-floating services-search-form-service">
                                 <input type="text" class="form-control border-0" id="sservice" name="keyword"
-                                    placeholder="Enter Service...">
+                                    th:placeholder="#{home.search_label}">
                                 <label for="sservice" th:text="#{home.search_label}">What courses do you need?</label>
                             </div>
                             <button

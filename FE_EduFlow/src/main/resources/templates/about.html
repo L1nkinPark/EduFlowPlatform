@@ -1,4 +1,4 @@
-?<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/about.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:16 GMT -->
@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <title th:text="#{page.about_title}">About EduFlow</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -29,12 +29,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="text-center my-5">
-                        <h1 class="display-4 text-white mb-3">What is <span class="fw-bold">Edutree?</span></h1>
-                        <p class="lead fw-normal text-white-50 mb-4">It is a long established fact that a reader will be
-                            distracted by the readable content of a page when looking at its layout. The point of using
-                            Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to
-                            using.</p>
-                        <a class="btn btn-success text-uppercase" href="#scroll-target">Read Our Story</a>
+                        <h1 class="display-4 text-white mb-3" th:text="#{about.heading}">What is EduFlow?</h1>
+                        <p class="lead fw-normal text-white-50 mb-4" th:text="#{about.intro}">EduFlow connects learners with practical courses and experienced instructors.</p>
+                        <a class="btn btn-success text-uppercase" href="#scroll-target" th:text="#{about.read_story}">Read our story</a>
                     </div>
                 </div>
             </div>
@@ -46,25 +43,25 @@
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
                         <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalCourses}">0</h1>
-                        <h5>Online Courses</h5>
+                        <h5 th:text="#{about.online_courses}">Online courses</h5>
                     </div>
                 </div>
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
                         <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalInstructors}">0</h1>
-                        <h5>Expert Tutors</h5>
+                        <h5 th:text="#{about.expert_tutors}">Expert instructors</h5>
                     </div>
                 </div>
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
                         <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalStudents}">0</h1>
-                        <h5>Online Students</h5>
+                        <h5 th:text="#{about.online_students}">Online students</h5>
                     </div>
                 </div>
                 <div class="col mb-2">
                     <div class="text-center bg-white rounded-3 shadow-sm p-4">
                         <h1 class="fw-bold text-primary display-2 m-0" th:text="${stats.totalEnrollments}">0</h1>
-                        <h5>Course Enrollments</h5>
+                        <h5 th:text="#{about.enrollments}">Course enrollments</h5>
                     </div>
                 </div>
             </div>
@@ -78,10 +75,8 @@
                         alt="..." /></div>
                 <div class="col-lg-6 ps-lg-5">
                     <div class="ps-lg-5">
-                        <h2 class="fw-bold mb-3 text-dark">Our Vision</h2>
-                        <p class="lead fw-normal text-muted mb-0">Contrary to popular belief, Lorem Ipsum is not simply
-                            random text. It has roots in a piece of classical Latin literature from 45 BC, making it
-                            over 2000 years old. Richard McClintock.</p>
+                        <h2 class="fw-bold mb-3 text-dark" th:text="#{about.vision_title}">Our vision</h2>
+                        <p class="lead fw-normal text-muted mb-0" th:text="#{about.vision_desc}">Make high-quality learning accessible to everyone.</p>
                     </div>
                 </div>
             </div>
@@ -95,11 +90,8 @@
                         th:src="@{/img/globel/mission.jpg}" alt="..." /></div>
                 <div class="col-lg-6">
                     <div class="pe-lg-5">
-                        <h2 class="fw-bold mb-3 text-dark">Our Mission</h2>
-                        <p class="lead fw-normal text-muted mb-0">There are many variations of passages of Lorem Ipsum
-                            available, but the majority have suffered alteration in some form, by injected humour, or
-                            randomised words which don't look even slightly believable.
-                        </p>
+                        <h2 class="fw-bold mb-3 text-dark" th:text="#{about.mission_title}">Our mission</h2>
+                        <p class="lead fw-normal text-muted mb-0" th:text="#{about.mission_desc}">Provide reliable, practical courses that help learners build real skills.</p>
                     </div>
                 </div>
             </div>
@@ -109,8 +101,8 @@
     <section class="py-5 bg-white">
         <div class="container mt-5">
             <div class="text-center">
-                <h2 class="fw-bold text-dark">Meet the Team</h2>
-                <p class="lead fw-normal text-muted mb-5">Dedicated to quality and your success</p>
+                <h2 class="fw-bold text-dark" th:text="#{about.team_title}">Meet the team</h2>
+                <p class="lead fw-normal text-muted mb-5" th:text="#{about.team_desc}">Dedicated to quality and your success</p>
             </div>
             <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
                 <div class="col mb-5 mb-5 mb-xl-0">
@@ -118,7 +110,7 @@
                         <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
                             th:src="@{/img/team/team1.jpg}" alt="..." />
                         <h5 class="fw-bold text-body">Ibbie Eckart</h5>
-                        <div class="text-muted">Founder &amp; CEO</div>
+                        <div class="text-muted" th:text="#{about.role_ceo}">Founder &amp; CEO</div>
                     </div>
                 </div>
                 <div class="col mb-5 mb-5 mb-xl-0">
@@ -126,7 +118,7 @@
                         <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
                             th:src="@{/img/team/team2.jpg}" alt="..." />
                         <h5 class="fw-bold text-body">Arden Vasek</h5>
-                        <div class="text-muted">CFO</div>
+                        <div class="text-muted" th:text="#{about.role_cfo}">Chief Financial Officer</div>
                     </div>
                 </div>
                 <div class="col mb-5 mb-5 mb-sm-0">
@@ -134,7 +126,7 @@
                         <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
                             th:src="@{/img/team/team3.jpg}" alt="..." />
                         <h5 class="fw-bold text-body">Toribio Nerthus</h5>
-                        <div class="text-muted">Operations Manager</div>
+                        <div class="text-muted" th:text="#{about.role_operations}">Operations Manager</div>
                     </div>
                 </div>
                 <div class="col mb-5">
@@ -142,7 +134,7 @@
                         <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
                             th:src="@{/img/team/team4.jpg}" alt="..." />
                         <h5 class="fw-bold text-body">Malvina Cilla</h5>
-                        <div class="text-muted">CTO</div>
+                        <div class="text-muted" th:text="#{about.role_cto}">Chief Technology Officer</div>
                     </div>
                 </div>
             </div>
