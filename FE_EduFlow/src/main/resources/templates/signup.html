@@ -242,6 +242,9 @@
 
 <script th:inline="javascript">
     const backendUrl = /*[[${backendUrl}]]*/ 'http://localhost:8888';
+    const otpApiBaseUrl = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+        ? backendUrl
+        : window.location.origin;
     const otpMessages = {
         emailFirst: /*[[#{auth.email_first}]]*/ 'Please enter your email first!',
         sent: /*[[#{auth.otp_sent}]]*/ 'OTP sent',
@@ -257,7 +260,7 @@
             alert(otpMessages.emailFirst);
             return;
         }
-        fetch(`${backendUrl}/api/otp/send-otp-signup?email=${encodeURIComponent(email)}`, {
+        fetch(`${otpApiBaseUrl}/api/otp/send-otp-signup?email=${encodeURIComponent(email)}`, {
             method: "POST"
         })
         .then(response => {
@@ -280,7 +283,7 @@
             alert(otpMessages.required);
             return;
         }
-        fetch(`${backendUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${otp}`, {
+        fetch(`${otpApiBaseUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
             method: "POST"
         })
         .then(response => {

@@ -53,6 +53,11 @@ variable "db_password_arn" {
   type        = string
 }
 
+variable "db_secret_version_id" {
+  description = "Secrets Manager version ID injected into ECS tasks"
+  type        = string
+}
+
 variable "fe_image" {
   description = "Docker image for the Frontend task"
   type        = string

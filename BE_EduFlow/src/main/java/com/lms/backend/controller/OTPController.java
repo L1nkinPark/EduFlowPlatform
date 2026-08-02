@@ -1,25 +1,31 @@
 package com.lms.backend.controller;
 
-import com.lms.backend.service.AccountService;
 import com.lms.backend.service.impl.OTPServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/otp") // Đảm bảo rằng đường dẫn bắt đầu với /api/otp
 public class OTPController {
-//
-    @Autowired
-    private OTPServiceImpl otpService;
 
+    private final OTPServiceImpl otpService;
+
+    public OTPController(OTPServiceImpl otpService) {
+        this.otpService = otpService;
+    }
 
     // Gửi OTP
     @PostMapping("/send-otp")
     public ResponseEntity<String> sendOtp(@RequestParam String email) {
         if (otpService.validateEmail(email)) {
-            otpService.generateAndSendOtp(email);
-            return ResponseEntity.ok("OTP has been sent to your email.");
+            try {
+                otpService.generateAndSendOtp(email);
+                return ResponseEntity.ok("OTP has been sent to your email.");
+            } catch (MailException e) {
+                return emailServiceUnavailable();
+            }
         }
         return ResponseEntity.status(400).body("Email not found.");
     }
@@ -33,9 +39,14 @@ public class OTPController {
         try {
             otpService.generateAndSendOtp(email);
             return ResponseEntity.ok("OTP has been sent to your email.");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to send OTP email.");
+        } catch (MailException e) {
+            return emailServiceUnavailable();
         }
+    }
+
+    private ResponseEntity<String> emailServiceUnavailable() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("Không thể gửi email OTP. Vui lòng thử lại sau.");
     }
 
     // Kiểm tra email hợp lệ

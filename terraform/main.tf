@@ -125,6 +125,7 @@ module "ecs" {
   db_name              = var.rds_db_name
   db_username          = "admin"
   db_password_arn      = module.secrets_manager.db_secret_arn
+  db_secret_version_id = module.secrets_manager.db_secret_version_id
   fe_image             = var.fe_image
   be_image             = var.be_image
   fe_desired_count     = var.fe_desired_count

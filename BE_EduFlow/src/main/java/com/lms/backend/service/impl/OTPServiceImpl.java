@@ -7,9 +7,10 @@ import com.lms.backend.model.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 @Service
 public class OTPServiceImpl {
@@ -36,7 +37,9 @@ public class OTPServiceImpl {
         return account.isPresent();  // Trả về true nếu tồn tại, false nếu không
     }
 
-    // Phương thức tạo và gửi OTP
+    // Lưu OTP và gửi email trong cùng transaction. MailException là runtime
+    // exception nên bản ghi OTP sẽ được rollback nếu gửi mail thất bại.
+    @Transactional
     public String generateAndSendOtp(String email) {
         String otp = String.format("%06d", SECURE_RANDOM.nextInt(1_000_000));
 
@@ -44,12 +47,9 @@ public class OTPServiceImpl {
         otpEntity.setEmail(email);
         otpEntity.setOtpCode(otp);
         otpEntity.setExpirationTime(System.currentTimeMillis() + OTP_EXPIRY_DURATION); // Đặt thời gian hết hạn
+        otpRepository.deleteByEmail(email);
         otpRepository.save(otpEntity);
-        try {
-            emailService.sendOtpEmail(email, otp);
-        } catch (Exception e) {
-            throw new IllegalStateException("Unable to deliver OTP email", e);
-        }
+        emailService.sendOtpEmail(email, otp);
 
         return otp;
     }

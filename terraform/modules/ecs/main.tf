@@ -212,15 +212,15 @@ resource "aws_ecs_task_definition" "backend" {
       secrets = [
         {
           name      = "SPRING_DATASOURCE_PASSWORD"
-          valueFrom = "${var.db_password_arn}:password::"
+          valueFrom = "${var.db_password_arn}:password::${var.db_secret_version_id}"
         },
         {
           name      = "SPRING_MAIL_USERNAME"
-          valueFrom = "${var.db_password_arn}:smtp_username::"
+          valueFrom = "${var.db_password_arn}:smtp_username::${var.db_secret_version_id}"
         },
         {
           name      = "SPRING_MAIL_PASSWORD"
-          valueFrom = "${var.db_password_arn}:smtp_password::"
+          valueFrom = "${var.db_password_arn}:smtp_password::${var.db_secret_version_id}"
         }
       ]
       logConfiguration = {

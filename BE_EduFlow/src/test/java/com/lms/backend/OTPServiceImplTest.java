@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.mail.MailSendException;
 
 import java.util.Optional;
 
@@ -74,8 +75,22 @@ class OTPServiceImplTest {
 
         assertNotNull(otp);
         assertEquals(6, otp.length());
+        verify(otpRepository).deleteByEmail(email);
         verify(otpRepository, times(1)).save(any(OTP.class));
         verify(emailService, times(1)).sendOtpEmail(eq(email), anyString());
+    }
+
+    @Test
+    void testGenerateAndSendOtp_PropagatesEmailFailure() {
+        String email = "user@example.com";
+        doThrow(new MailSendException("SMTP unavailable"))
+                .when(emailService).sendOtpEmail(eq(email), anyString());
+
+        assertThrows(MailSendException.class, () -> otpService.generateAndSendOtp(email));
+
+        verify(otpRepository).deleteByEmail(email);
+        verify(otpRepository).save(any(OTP.class));
+        verify(emailService).sendOtpEmail(eq(email), anyString());
     }
 
     @Test

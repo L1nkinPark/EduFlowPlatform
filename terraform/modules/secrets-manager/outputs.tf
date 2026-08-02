@@ -8,6 +8,11 @@ output "db_secret_id" {
   value       = aws_secretsmanager_secret.db.id
 }
 
+output "db_secret_version_id" {
+  description = "Current secret version ID used to refresh ECS task definitions"
+  value       = aws_secretsmanager_secret_version.db.version_id
+}
+
 output "db_password" {
   description = "Generated database password"
   value       = random_password.db_password.result
