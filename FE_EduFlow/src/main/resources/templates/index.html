@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row flex-lg-row-reverse align-items-center">
                 <div class="col-12 col-lg-6 text-end">
-                    <img th:src="@{/img/hero-img.png}" class="img-fluid" alt="#" loading="lazy">
+                    <img th:src="@{/img/hero-img.png}" class="img-fluid" alt="" loading="lazy">
                 </div>
                 <div class="col-lg-6">
                     <h1 class="fw-bold text-white display-4 mb-3" th:text="#{home.title}">EduFlow is a community <br>for creative people.</h1>
@@ -66,7 +66,7 @@
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" th:if="${not #lists.isEmpty(courses)}">
                 <div class="col" th:each="course : ${courses}">
                     <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
-                        <img th:src="${course?.image}" class="img-fluid" loading="lazy">
+                        <img th:src="${course?.image}" th:alt="${course?.courseName}" class="img-fluid" loading="lazy">
                         <div class="card-body">
                             <h6 class="card-title pb-3 text-black mb-0">
                                 <span th:text="${course.courseName}"></span>
@@ -171,7 +171,8 @@
                 <div class="col" th:each="category, iterStat : ${categories}">
                     <div
                         class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative cat-itemm">
-                        <img th:src="@{'/img/category/' + ${iterStat.index % 8 + 1} + '.jpg'}" class="img-fluid">
+                        <img th:src="@{'/img/category/' + ${iterStat.index % 8 + 1} + '.jpg'}"
+                             th:alt="${category.categoryName}" class="img-fluid" loading="lazy">
                         <div class="card-body p-3">
                             <h6 class="card-title m-0" th:text="${category.categoryName}">Category</h6>
                         </div>

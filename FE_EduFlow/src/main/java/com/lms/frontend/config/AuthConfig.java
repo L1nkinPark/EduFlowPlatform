@@ -16,7 +16,12 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // Áp dụng cho các URL trong danh sách
         registry.addInterceptor(securityInterceptor)
-                .addPathPatterns("/student/**", "/instructor/**", "/admin/**");
+                .addPathPatterns(
+                        "/student/**",
+                        "/instructor/**",
+                        "/admin/**",
+                        "/course/learn",
+                        "/course/checkout");
     }
 
 

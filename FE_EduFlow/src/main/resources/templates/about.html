@@ -70,7 +70,7 @@
         <div class="container my-5">
             <div class="row gx-5 align-items-center">
                 <div class="col-lg-6"><img class="img-fluid rounded-3 mb-5 mb-lg-0" th:src="@{/img/globel/vision.jpg}"
-                        alt="..." /></div>
+                        th:alt="#{about.vision_title}" loading="lazy" /></div>
                 <div class="col-lg-6 ps-lg-5">
                     <div class="ps-lg-5">
                         <h2 class="fw-bold mb-3 text-dark" th:text="#{about.vision_title}">Our vision</h2>
@@ -85,7 +85,7 @@
         <div class="container my-5">
             <div class="row gx-5 align-items-center">
                 <div class="col-lg-6 order-first order-lg-last"><img class="img-fluid rounded-3 mb-5 mb-lg-0"
-                        th:src="@{/img/globel/mission.jpg}" alt="..." /></div>
+                        th:src="@{/img/globel/mission.jpg}" th:alt="#{about.mission_title}" loading="lazy" /></div>
                 <div class="col-lg-6">
                     <div class="pe-lg-5">
                         <h2 class="fw-bold mb-3 text-dark" th:text="#{about.mission_title}">Our mission</h2>
@@ -102,38 +102,15 @@
                 <h2 class="fw-bold text-dark" th:text="#{about.team_title}">Meet the team</h2>
                 <p class="lead fw-normal text-muted mb-5" th:text="#{about.team_desc}">Dedicated to quality and your success</p>
             </div>
-            <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
-                <div class="col mb-5 mb-5 mb-xl-0">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
-                            th:src="@{/img/team/team1.jpg}" alt="..." />
-                        <h5 class="fw-bold text-body">Ibbie Eckart</h5>
-                        <div class="text-muted" th:text="#{about.role_ceo}">Founder &amp; CEO</div>
-                    </div>
-                </div>
-                <div class="col mb-5 mb-5 mb-xl-0">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
-                            th:src="@{/img/team/team2.jpg}" alt="..." />
-                        <h5 class="fw-bold text-body">Arden Vasek</h5>
-                        <div class="text-muted" th:text="#{about.role_cfo}">Chief Financial Officer</div>
-                    </div>
-                </div>
-                <div class="col mb-5 mb-5 mb-sm-0">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
-                            th:src="@{/img/team/team3.jpg}" alt="..." />
-                        <h5 class="fw-bold text-body">Toribio Nerthus</h5>
-                        <div class="text-muted" th:text="#{about.role_operations}">Operations Manager</div>
-                    </div>
-                </div>
-                <div class="col mb-5">
-                    <div class="text-center">
-                        <img class="img-fluid rounded-circle mb-4 px-4" width="200" height="200"
-                            th:src="@{/img/team/team4.jpg}" alt="..." />
-                        <h5 class="fw-bold text-body">Malvina Cilla</h5>
-                        <div class="text-muted" th:text="#{about.role_cto}">Chief Technology Officer</div>
-                    </div>
+            <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+                <div class="col" th:each="team : ${#numbers.sequence(1, 4)}">
+                    <article class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature bg-primary bg-gradient text-white rounded-circle mx-auto mb-3" aria-hidden="true">
+                            <i class="bi" th:classappend="${team == 1 ? 'bi-lightbulb' : (team == 2 ? 'bi-book' : (team == 3 ? 'bi-headset' : 'bi-code-slash'))}"></i>
+                        </div>
+                        <h3 class="h5 fw-bold text-body" th:text="#{__${'about.team' + team + '.title'}__}">Team</h3>
+                        <p class="text-muted mb-0" th:text="#{__${'about.team' + team + '.desc'}__}">Description</p>
+                    </article>
                 </div>
             </div>
         </div>

@@ -98,7 +98,7 @@
                                                 <p th:text="${courses.description}">description</p>
 
                                             </div>
-                                            <img th:src="@{/img/globel/cd1.jpg}" class="img-fluid rounded-3">
+                                            <img th:src="@{/img/globel/cd1.jpg}" th:alt="${courses.courseName}" class="img-fluid rounded-3" loading="lazy">
 
                 <!--                                            Review-->
 <!--                                            <div>-->
@@ -281,8 +281,8 @@
                                             class="text-decoration-none link-dark fw-bold" th:text="${courses?.teacher?.fullName}">Sudhindra Sujan</a><br>
                                         <span th:text="#{detail.instructor}">Instructor</span></small>
                                     <div>
-                                        <img th:src="@{/img/globel/avatar.png}" class="img fluid rounded-circle"
-                                            width="50px">
+                                        <img th:src="@{/img/globel/avatar.png}" th:alt="${courses?.teacher?.fullName}"
+                                             class="img-fluid rounded-circle" width="50" height="50" loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +304,7 @@
                 <div class="col" th:each="course : ${relatedCourses}">
                     <div
                         class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
-                        <img th:src="${course?.image}" class="img-fluid" alt="#" loading="lazy">
+                        <img th:src="${course?.image}" th:alt="${course?.courseName}" class="img-fluid" loading="lazy">
                         <div class="card-body">
                             <h6 class="card-title pb-3 text-black mb-0">
                                 <span th:text="${course?.courseName}"> </span>

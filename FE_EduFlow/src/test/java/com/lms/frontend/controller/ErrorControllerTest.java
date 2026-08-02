@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
+import org.springframework.context.support.StaticMessageSource;
+
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -19,7 +22,10 @@ class ErrorControllerTest {
 
     @BeforeEach
     void setUp() {
-        controller = new ErrorController();
+        StaticMessageSource messageSource = new StaticMessageSource();
+        messageSource.addMessage("error.generic_desc", Locale.ENGLISH, "Temporarily unavailable");
+        messageSource.addMessage("error.forbidden_desc", Locale.ENGLISH, "Access denied");
+        controller = new ErrorController(messageSource);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
     }
@@ -28,7 +34,7 @@ class ErrorControllerTest {
     void renders404PageForMissingRoute() {
         when(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)).thenReturn(404);
 
-        String view = controller.showErrorPage(request, response, new ConcurrentModel());
+        String view = controller.showErrorPage(request, response, new ConcurrentModel(), Locale.ENGLISH);
 
         assertEquals("404", view);
         verify(response).setStatus(404);
@@ -39,10 +45,11 @@ class ErrorControllerTest {
         ConcurrentModel model = new ConcurrentModel();
         when(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)).thenReturn(500);
 
-        String view = controller.showErrorPage(request, response, model);
+        String view = controller.showErrorPage(request, response, model, Locale.ENGLISH);
 
         assertEquals("error", view);
         assertEquals(500, model.getAttribute("statusCode"));
+        assertEquals("Temporarily unavailable", model.getAttribute("errorMessage"));
         verify(response).setStatus(500);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.env.Environment;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
@@ -39,8 +40,14 @@ class MainTests {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private Environment environment;
+
     @Test
     void contextLoads() {
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "cookie",
+                environment.getProperty("server.servlet.session.tracking-modes"));
     }
 
     @Test
@@ -88,12 +95,24 @@ class MainTests {
     }
 
     @Test
+    void forbiddenErrorPageIsLocalized() throws Exception {
+        mockMvc.perform(get("/error")
+                        .requestAttr(jakarta.servlet.RequestDispatcher.ERROR_STATUS_CODE, 403)
+                        .param("lang", "en"))
+                .andExpect(status().isForbidden())
+                .andExpect(view().name("error"))
+                .andExpect(content().string(containsString("You do not have permission to access this page.")))
+                .andExpect(content().string(containsString("Back to home")));
+    }
+
+    @Test
     void homePageUsesVietnameseTitleAndSearchPlaceholder() throws Exception {
         mockMvc.perform(get("/").param("lang", "vi"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("<title>EduFlow - Nền tảng học trực tuyến</title>")))
                 .andExpect(content().string(containsString("placeholder=\"Bạn cần tìm khóa học nào?\"")))
-                .andExpect(content().string(containsString("aria-label=\"Tìm kiếm\"")));
+                .andExpect(content().string(containsString("aria-label=\"Tìm kiếm\"")))
+                .andExpect(content().string(not(containsString("alt=\"#\""))));
     }
 
     @Test
@@ -102,7 +121,10 @@ class MainTests {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("EduFlow là gì?")))
                 .andExpect(content().string(containsString("Tầm nhìn của chúng tôi")))
-                .andExpect(content().string(not(containsString("Lorem Ipsum"))));
+                .andExpect(content().string(containsString("Đội ngũ sản phẩm")))
+                .andExpect(content().string(not(containsString("Lorem Ipsum"))))
+                .andExpect(content().string(not(containsString("Ibbie Eckart"))))
+                .andExpect(content().string(not(containsString("alt=\"...\""))));
     }
 
     @Test
@@ -214,6 +236,7 @@ class MainTests {
                 .andExpect(content().string(containsString("Các khóa học có thể bạn quan tâm")))
                 .andExpect(content().string(containsString("Giảng viên")))
                 .andExpect(content().string(not(containsString("Add to a list"))))
+                .andExpect(content().string(not(containsString("alt=\"#\""))))
                 .andExpect(content().string(not(containsString("askbootstrap.com"))));
     }
 

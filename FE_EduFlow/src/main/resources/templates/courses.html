@@ -88,7 +88,7 @@
                     <div class="col" th:each="course : ${courses}">
                         <div
                             class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
-                            <img th:src="${course?.image}" class="img-fluid"  loading="lazy">
+                            <img th:src="${course?.image}" th:alt="${course?.courseName}" class="img-fluid" loading="lazy">
                             <div class="card-body">
                                 <h6 class="card-title pb-3 text-black mb-0">
                                     <span th:text="${course?.courseName}"></span>

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Locale;
+
 @Component
 public class JwtAuthenticationFilter implements HandlerInterceptor {
 
@@ -16,45 +18,66 @@ public class JwtAuthenticationFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        // Lấy session từ request
-        HttpSession session = httpRequest.getSession(false); // Không tạo session mới nếu chưa có
+        HttpSession session = request.getSession(false);
         if (session == null) {
-            // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
-            response.sendRedirect("/signin");
+            return redirectToSignIn(request, response);
+        }
+
+        AuthResponse userLogin = (AuthResponse) session.getAttribute("userLogin");
+        if (userLogin == null || userLogin.getAccessToken() == null || userLogin.getUsername() == null) {
+            session.invalidate();
+            return redirectToSignIn(request, response);
+        }
+
+        try {
+            if (!jwtUtil.isTokenValid(userLogin.getAccessToken(), userLogin.getUsername())) {
+                session.invalidate();
+                return redirectToSignIn(request, response);
+            }
+        } catch (RuntimeException invalidToken) {
+            // A malformed/expired token is an authentication failure, not a server error.
+            session.invalidate();
+            return redirectToSignIn(request, response);
+        }
+
+        String requiredRole = requiredRole(request.getRequestURI(), request.getContextPath());
+        String userRole = normalizeRole(userLogin.getRole());
+        if (requiredRole != null && !requiredRole.equals(userRole)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }
 
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        AuthResponse userLogin = (AuthResponse) session.getAttribute("userLogin");
-        if (userLogin != null) {
-            // Lấy token từ header
-            String token = userLogin.getAccessToken();
+        return true;
+    }
 
-            // Xác thực token
-            if (token == null || !jwtUtil.isTokenValid(token, userLogin.getUsername())) {
-                response.sendRedirect("/signin");
-                return false;
-            }
-
-            // Kiểm tra quyền truy cập
-            String requestURI = request.getRequestURI();
-            String userRole = userLogin.getRole();
-
-            if ((requestURI.startsWith("/admin") && !userRole.equals("ADMIN")) ||
-                    (requestURI.startsWith("/instructor") && !userRole.equals("INSTRUCTOR"))) {
-                // Nếu không có quyền, trả về trang lỗi (ví dụ: trang 401 Unauthorized)
-                response.sendRedirect(request.getContextPath() + "/error/404");
-                return false;
-            }
-
-            return true;
-        }
-
-        response.sendRedirect("/signin");
+    private boolean redirectToSignIn(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.sendRedirect(request.getContextPath() + "/signin");
         return false;
+    }
+
+    private String normalizeRole(String role) {
+        if (role == null || role.isBlank()) {
+            return null;
+        }
+        String normalized = role.trim().toUpperCase(Locale.ROOT);
+        return normalized.startsWith("ROLE_") ? normalized.substring(5) : normalized;
+    }
+
+    private String requiredRole(String requestUri, String contextPath) {
+        String path = requestUri;
+        if (contextPath != null && !contextPath.isEmpty() && path.startsWith(contextPath)) {
+            path = path.substring(contextPath.length());
+        }
+        if (path.startsWith("/admin")) {
+            return "ADMIN";
+        }
+        if (path.startsWith("/instructor")) {
+            return "INSTRUCTOR";
+        }
+        if (path.startsWith("/student") || path.equals("/course/learn") || path.equals("/course/checkout")) {
+            return "STUDENT";
+        }
+        return null;
     }
 
 }
