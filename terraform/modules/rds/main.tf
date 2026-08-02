@@ -116,10 +116,10 @@ resource "aws_db_instance" "main" {
   ]
 
   # Protection
-  deletion_protection      = var.deletion_protection
-  skip_final_snapshot      = var.environment != "prod"
+  deletion_protection       = var.deletion_protection
+  skip_final_snapshot       = var.environment != "prod"
   final_snapshot_identifier = var.environment == "prod" ? "${var.name_prefix}-mysql-final-snapshot" : null
-  copy_tags_to_snapshot    = true
+  copy_tags_to_snapshot     = true
 
   # Auto minor version upgrade
   auto_minor_version_upgrade = true

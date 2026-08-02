@@ -1,9 +1,20 @@
-name: Deploy to Amazon ECS Fargate
+name: Test and Deploy to Amazon ECS Fargate
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: eduflow-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 env:
   AWS_REGION: ap-southeast-1
@@ -14,48 +25,151 @@ env:
   BE_ECR_REPO: eduflow-dev-backend
 
 jobs:
-  deploy:
-    name: Build, Push, and Deploy
+  backend-test:
+    name: Backend tests
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: eduflow_db
+          MYSQL_ROOT_PASSWORD: test-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -ptest-password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/eduflow_db?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: test-password
+      SPRING_MAIL_USERNAME: ci@example.invalid
+      SPRING_MAIL_PASSWORD: unused-in-tests
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+          cache-dependency-path: BE_EduFlow/pom.xml
 
-    - name: Log in to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
+      - name: Run backend tests
+        working-directory: BE_EduFlow
+        run: mvn --batch-mode --no-transfer-progress test
 
-    # --- Build & Push Frontend ---
-    - name: Build, Tag, and Push Frontend Image to ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: latest
-      run: |
-        docker build -t $ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG ./FE_EduFlow
-        docker push $ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG
+  frontend-test:
+    name: Frontend tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-    # --- Build & Push Backend ---
-    - name: Build, Tag, and Push Backend Image to ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: latest
-      run: |
-        docker build -t $ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG ./BE_EduFlow
-        docker push $ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+          cache-dependency-path: FE_EduFlow/pom.xml
 
-    # --- Trigger ECS Deployments (Force New Deployment) ---
-    - name: Deploy Frontend Task to Amazon ECS
-      run: |
-        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.FE_SERVICE }} --force-new-deployment
+      - name: Run frontend tests
+        working-directory: FE_EduFlow
+        run: mvn --batch-mode --no-transfer-progress test
 
-    - name: Deploy Backend Task to Amazon ECS
-      run: |
-        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.BE_SERVICE }} --force-new-deployment
+  terraform-validate:
+    name: Terraform validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.15.7"
+
+      - name: Check Terraform formatting
+        working-directory: terraform
+        run: terraform fmt -check -recursive
+
+      - name: Initialize Terraform without backend
+        working-directory: terraform
+        run: terraform init -backend=false -input=false
+
+      - name: Validate Terraform
+        working-directory: terraform
+        run: terraform validate
+
+  deploy:
+    name: Build, push, and deploy
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs:
+      - backend-test
+      - frontend-test
+      - terraform-validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push frontend image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t "$ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG" \
+            -t "$ECR_REGISTRY/$FE_ECR_REPO:latest" \
+            ./FE_EduFlow
+          docker push "$ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG"
+          docker push "$ECR_REGISTRY/$FE_ECR_REPO:latest"
+
+      - name: Build and push backend image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t "$ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG" \
+            -t "$ECR_REGISTRY/$BE_ECR_REPO:latest" \
+            ./BE_EduFlow
+          docker push "$ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG"
+          docker push "$ECR_REGISTRY/$BE_ECR_REPO:latest"
+
+      - name: Deploy ECS services
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$FE_SERVICE" \
+            --force-new-deployment
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$BE_SERVICE" \
+            --force-new-deployment
+
+      - name: Wait for ECS services to stabilize
+        run: |
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER" \
+            --services "$FE_SERVICE" "$BE_SERVICE"
