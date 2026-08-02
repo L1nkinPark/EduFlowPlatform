@@ -259,48 +259,29 @@
             return;
         }
 
-        // Gửi yêu cầu kiểm tra email từ phía server
-        fetch(`${otpApiBaseUrl}/api/otp/validate-email?email=` + encodeURIComponent(email), {
+        fetch(`${otpApiBaseUrl}/api/password/send-otp?email=` + encodeURIComponent(email), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: email }),  // Nếu backend yêu cầu body
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data === true) {
-                alert(resetMessages.emailExists);
-                sendOtpToEmail(email);  // Gửi OTP nếu email hợp lệ
-            } else {
-                alert(resetMessages.emailNotFound);
             }
         })
-        .catch(error => {
-            console.log("Error:", error);
-        });
-    }
-
-    // Gửi OTP tới email đã xác thực
-    function sendOtpToEmail(email) {
-        fetch(`${otpApiBaseUrl}/api/password/send-otp?email=${encodeURIComponent(email)}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                throw new Error("Error sending OTP.");
+                const message = await response.text();
+                if (response.status === 400 && message.includes("Email not found")) {
+                    throw new Error("EMAIL_NOT_FOUND");
+                }
+                throw new Error("OTP_SEND_FAILED");
             }
             return response.text();
         })
-        .then(data => {
+        .then(() => {
             alert(resetMessages.otpSent);
         })
         .catch(error => {
-            console.error("Error sending OTP:", error);
-            alert(resetMessages.otpSendFailed);
+            alert(error.message === "EMAIL_NOT_FOUND"
+                ? resetMessages.emailNotFound
+                : resetMessages.otpSendFailed);
         });
     }
 
@@ -328,7 +309,6 @@
             document.getElementById("newPasswordForm").style.display = "block";
         })
         .catch(error => {
-            console.error("Error verifying OTP:", error);
             alert(resetMessages.otpVerifyError);
         });
     }
@@ -365,7 +345,6 @@
             window.location.href = "signin"; // Chuyển hướng đến trang đăng nhập
         })
         .catch(error => {
-            console.error("Error resetting password:", error);
             alert(resetMessages.resetError);
         });
     }

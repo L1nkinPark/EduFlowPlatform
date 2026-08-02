@@ -64,7 +64,9 @@ class MainTests {
                 .andExpect(view().name("forgot"))
                 .andExpect(content().string(containsString("Đặt lại mật khẩu")))
                 .andExpect(content().string(containsString("window.location.origin")))
+                .andExpect(content().string(containsString("/api/password/send-otp")))
                 .andExpect(content().string(containsString("/api/password/verify-otp")))
+                .andExpect(content().string(not(containsString("/api/otp/validate-email"))))
                 .andExpect(content().string(containsString("otpToken: passwordResetToken")));
     }
 
