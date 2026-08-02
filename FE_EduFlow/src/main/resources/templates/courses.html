@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<!-- Mirrored from askbootstrap.com/preview/edutree/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:18 GMT -->
-
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
     <title th:text="#{page.courses_title}">Courses - EduFlow</title>
-    <meta name="description" content="Edutree" />
-    <meta name="keywords" content="Edutree" />
+    <meta name="description" content="EduFlow online courses" />
+    <meta name="keywords" content="EduFlow, online courses" />
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
@@ -29,10 +27,10 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item">
                         <a th:href="@{/}">
-                            <i class="bi bi-house"></i> Home
+                            <i class="bi bi-house"></i> <span th:text="#{nav.home}">Home</span>
                         </a>
                     </li>
-                    <li class="breadcrumb-item" aria-current="page">Courses</li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="#{nav.courses}">Courses</li>
                 </ol>
             </nav>
         </div>
@@ -161,7 +159,7 @@
                             class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h5 text-black">
                             <img th:src="@{/img/logo.png}"
                                 class="img-fluid d-inline-block align-text-center me-2 rounded-pill">
-                            Edutree
+                            EduFlow
                         </a>
                         <div class="text-muted my-3 py-1">
                             <small>All rights reserved</small>
@@ -222,7 +220,7 @@
                     </div>
                     <div class="col-md-12 col-lg-3 col-6 order-1 order-md-0">
                         <h6 class="pb-2">Fancy a cool newsletter?</h6>
-                        <small class="text-muted">Be the first to get Edutree's latest news</small>
+                        <small class="text-muted">Be the first to get EduFlow's latest news</small>
                         <form>
                             <div class="input-group my-3 shadow-sm border rounded-3 overflow-hidden p-1">
                                 <input type="text" class="form-control shadow-none border-0"
@@ -257,6 +255,5 @@
 <script th:src="@{/js/custom.js}" type="82b9482d5eda45b361c26d37-text/javascript"></script>
 <script th:src="@{/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js}"
     data-cf-settings="82b9482d5eda45b361c26d37-|49" defer></script>
-<!-- Mirrored from askbootstrap.com/preview/edutree/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:19 GMT -->
 
 </html>

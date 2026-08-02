@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<!-- Mirrored from askbootstrap.com/preview/edutree/courses-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:19 GMT -->
-
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="img/icon.png">
-    <title th:text="${course != null ? course.courseName + ' - EduFlow' : #messages.msg('page.courses_title')}">Course - EduFlow</title>
-    <meta name="description" content="Edutree" />
-    <meta name="keywords" content="Edutree" />
+    <title th:text="${courses != null ? courses.courseName + ' - EduFlow' : #messages.msg('page.courses_title')}">Course - EduFlow</title>
+    <meta name="description" content="EduFlow online course details" />
+    <meta name="keywords" content="EduFlow, online course" />
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
@@ -29,10 +27,10 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item">
                         <a th:href="@{/}">
-                            <i class="bi bi-house"></i> Home
+                            <i class="bi bi-house"></i> <span th:text="#{nav.home}">Home</span>
                         </a>
                     </li>
-                    <li class="breadcrumb-item" aria-current="page">Courses</li>
+                    <li class="breadcrumb-item" aria-current="page" th:text="#{nav.courses}">Courses</li>
                     <li class="breadcrumb-item active" aria-current="page" th:text="${courses.courseName}">Professional Photography for Instagram</li>
                 </ol>
             </nav>
@@ -91,22 +89,6 @@
                                                                class="btn btn-light btn-lg rounded-pill px-4 shadow">
                                                                 <i class="bi bi-journal-play me-1"></i> <span th:text="#{detail.view_curriculum}">View course curriculum</span>
                                                             </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body p-3">
-                                                        <div class="float-end gap-3 d-flex">
-                                                            <div class="gap-2">
-                                                                <a class="text-muted" href="#">
-                                                                    <i class="bi bi-share me-1"></i>
-                                                                    <span>Share</span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="gap-2">
-                                                                <a class="text-muted" href="#">
-                                                                    <i class="bi bi-plus-lg me-1"></i>
-                                                                    <span>Add to a list</span>
-                                                                </a>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -297,7 +279,7 @@
                                 <div class="d-flex mb-4 justify-content-between align-items-center">
                                     <small class="text-muted"><span th:text="#{detail.author}">A course by</span> <a
                                             class="text-decoration-none link-dark fw-bold" th:text="${courses?.teacher?.fullName}">Sudhindra Sujan</a><br>
-                                        Instructor</small>
+                                        <span th:text="#{detail.instructor}">Instructor</span></small>
                                     <div>
                                         <img th:src="@{/img/globel/avatar.png}" class="img fluid rounded-circle"
                                             width="50px">
@@ -314,8 +296,8 @@
     <section class="bg-light py-5">
         <div class="container">
             <div class="d-flex align-items-center gap-2 mb-4">
-                <h3 class="pb-0 fw-bold text-dark m-0">Courses you might be interested in</h3>
-                <a th:href="@{/course/all}" class="text-decoration-none text-danger ms-auto">See More <i
+                <h3 class="pb-0 fw-bold text-dark m-0" th:text="#{detail.related}">Courses you might be interested in</h3>
+                <a th:href="@{/course/all}" class="text-decoration-none text-danger ms-auto"><span th:text="#{home.see_more}">See more</span> <i
                         class="bi bi-arrow-right-circle"></i></a>
             </div>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" th:if="${not #lists.isEmpty(relatedCourses)}">
@@ -327,7 +309,7 @@
                             <h6 class="card-title pb-3 text-black mb-0">
                                 <span th:text="${course?.courseName}"> </span>
                             </h6>
-                            <span class="card-text mb-0">A course by <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
+                            <span class="card-text mb-0"><span th:text="#{detail.author}">A course by</span> <span class="card-text mb-0" th:text="${course?.teacher?.fullName}"></span></span>
                             <div class="card-text text-muted small" th:text="${course?.description}"></div>
                             <div class="text-muted gap-2 pt-2 small d-flex">
                                 <span><i class="bi bi-person"></i> <span th:text="${course?.enrollmentCount}">0</span> <span th:text="#{detail.students}">students</span></span>
@@ -353,7 +335,7 @@
             </div>
             <div class="text-center mt-5">
                 <a th:href="@{/course/all}">
-                    <button type="button" class="btn btn-primary" >See more Edutree course
+                    <button type="button" class="btn btn-primary"><span th:text="#{home.see_more}">See more</span>
                         <i class="bi bi-arrow-right"></i>
                     </button>
                 </a>
@@ -394,7 +376,7 @@
                             class="brand d-flex align-items-center mb-0 text-decoration-none me-4 fw-bold h5 text-black">
                             <img th:src="@{/img/logo.png}"
                                 class="img-fluid d-inline-block align-text-center me-2 rounded-pill">
-                            Edutree
+                            EduFlow
                         </a>
                         <div class="text-muted my-3 py-1">
                             <small>All rights reserved</small>
@@ -455,7 +437,7 @@
                     </div>
                     <div class="col-md-12 col-lg-3 col-6 order-1 order-md-0">
                         <h6 class="pb-2">Fancy a cool newsletter?</h6>
-                        <small class="text-muted">Be the first to get Edutree's latest news</small>
+                        <small class="text-muted">Be the first to get EduFlow's latest news</small>
                         <form>
                             <div class="input-group my-3 shadow-sm border rounded-3 overflow-hidden p-1">
                                 <input type="text" class="form-control shadow-none border-0"
