@@ -33,6 +33,7 @@ public class SecurityConfig {
             "/api/otp/**",
             "/api/password/**",
             "/api/contact-messages",
+            "/api/public/**",
             "/api/orders/vnpay-callback",
             "/css/**",
             "/js/**",

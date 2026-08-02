@@ -32,7 +32,7 @@ class OTPControllerTest {
         ResponseEntity<String> response = controller.sendOtpSignup(email);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(otpService).generateAndSendOtp(email);
+        verify(otpService).generateAndSendOtp(email, OTPServiceImpl.PURPOSE_SIGNUP);
     }
 
     @Test
@@ -40,7 +40,7 @@ class OTPControllerTest {
         String email = "new-user@example.com";
         when(otpService.validateEmail(email)).thenReturn(false);
         doThrow(new MailAuthenticationException("Invalid SMTP credentials"))
-                .when(otpService).generateAndSendOtp(email);
+                .when(otpService).generateAndSendOtp(email, OTPServiceImpl.PURPOSE_SIGNUP);
 
         ResponseEntity<String> response = controller.sendOtpSignup(email);
 
@@ -55,6 +55,7 @@ class OTPControllerTest {
 
         ResponseEntity<String> response = controller.sendOtpSignup(email);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Email already registered.", response.getBody());
     }
 }

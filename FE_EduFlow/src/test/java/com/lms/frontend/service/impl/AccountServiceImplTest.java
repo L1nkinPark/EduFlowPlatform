@@ -15,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -139,5 +141,45 @@ public class AccountServiceImplTest {
         assertNotNull(result);
         assertEquals("ERROR", result.getStatus());
         assertEquals("Invalid credentials", result.getMessage());
+    }
+
+    @Test
+    void registerBackend500ReturnsApiErrorInsteadOfThrowingToController() {
+        String errorJson = "{\"status\":\"ERROR\",\"message\":\"Internal server error\"}";
+        HttpServerErrorException exception = HttpServerErrorException.create(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Internal Server Error",
+                HttpHeaders.EMPTY,
+                errorJson.getBytes(StandardCharsets.UTF_8),
+                StandardCharsets.UTF_8
+        );
+        when(restTemplate.exchange(
+                eq(ConstantUtil.HOST_URL + "/api/auth/register"),
+                eq(HttpMethod.POST),
+                any(HttpEntity.class),
+                eq(ApiResponse.class)
+        )).thenThrow(exception);
+
+        ApiResponse result = accountService.register(signUpRequest);
+
+        assertNotNull(result);
+        assertEquals("ERROR", result.getStatus());
+        assertEquals("Internal server error", result.getMessage());
+    }
+
+    @Test
+    void loginBackendTimeoutReturnsFriendlyErrorInsteadOfThrowingToController() {
+        when(restTemplate.exchange(
+                eq(ConstantUtil.HOST_URL + "/api/auth/login"),
+                eq(HttpMethod.POST),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class)
+        )).thenThrow(new ResourceAccessException("Read timed out"));
+
+        ApiResponse result = accountService.login(loginRequest);
+
+        assertNotNull(result);
+        assertEquals("ERROR", result.getStatus());
+        assertEquals("Hệ thống đang tạm thời gián đoạn. Vui lòng thử lại sau.", result.getMessage());
     }
 }

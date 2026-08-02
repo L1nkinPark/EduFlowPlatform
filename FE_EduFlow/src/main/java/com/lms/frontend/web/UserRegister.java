@@ -26,6 +26,8 @@ public class UserRegister {
     @Size(min = 6, max = 72, message = "Mật khẩu xác nhận phải có từ 6 đến 72 ký tự")
     private String confirmPassword;
 
+    private String otpToken;
+
     public UserRegister() {
     }
 
@@ -75,5 +77,13 @@ public class UserRegister {
 
     public void setEmail(@NotBlank(message = "Thông tin bắt buộc") @Email(message = "Email không phù hợp") String email) {
         this.email = email;
+    }
+
+    public String getOtpToken() {
+        return otpToken;
+    }
+
+    public void setOtpToken(String otpToken) {
+        this.otpToken = otpToken;
     }
 }

@@ -4,6 +4,7 @@ import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.request.LoginRequest;
 import com.lms.backend.model.request.RegisterRequest;
 import com.lms.backend.model.response.AuthResponse;
+import com.lms.backend.exception.UnauthorizedException;
 import com.lms.backend.security.CustomUserDetails;
 import com.lms.backend.security.JwtToken;
 import com.lms.backend.service.AccountService;
@@ -40,6 +41,9 @@ public class AuthServiceImplTest {
     @Mock
     private AuthenticationManager authenticationManager;
 
+    @Mock
+    private OTPServiceImpl otpService;
+
     @InjectMocks
     private AuthServiceImpl authService;
 
@@ -56,6 +60,7 @@ public class AuthServiceImplTest {
         registerRequest.setRole("STUDENT");
         registerRequest.setPassword("password123");
         registerRequest.setBirthday(LocalDate.of(2000, 1, 1));
+        registerRequest.setOtpToken("verified-email-token");
 
         loginRequest = new LoginRequest();
         loginRequest.setUsername("john");
@@ -75,6 +80,9 @@ public class AuthServiceImplTest {
     void testRegister_Success() {
         when(userService.checkUsername("john")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password123")).thenReturn("encodedPassword");
+        when(userService.findByEmail("john@test.com")).thenReturn(Optional.empty());
+        when(otpService.consumeVerification("john@test.com", OTPServiceImpl.PURPOSE_SIGNUP,
+                "verified-email-token")).thenReturn(true);
         when(userService.saveOrUpdate(any(Account.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         AuthResponse response = authService.register(registerRequest);
@@ -97,6 +105,17 @@ public class AuthServiceImplTest {
         assertThrows(RuntimeException.class, () -> authService.register(registerRequest));
 
         verify(userService, times(1)).checkUsername("john");
+        verify(userService, never()).saveOrUpdate(any(Account.class));
+    }
+
+    @Test
+    void testRegister_RejectsMissingOrExpiredEmailVerification() {
+        when(userService.checkUsername("john")).thenReturn(Optional.empty());
+        when(userService.findByEmail("john@test.com")).thenReturn(Optional.empty());
+        when(otpService.consumeVerification(anyString(), eq(OTPServiceImpl.PURPOSE_SIGNUP), anyString()))
+                .thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class, () -> authService.register(registerRequest));
         verify(userService, never()).saveOrUpdate(any(Account.class));
     }
 
@@ -127,9 +146,7 @@ public class AuthServiceImplTest {
                 .thenReturn(null);
         when(userService.findByUsername("john")).thenReturn(null);
 
-        AuthResponse response = authService.login(loginRequest);
-
-        assertNull(response);
+        assertThrows(UnauthorizedException.class, () -> authService.login(loginRequest));
         verify(userService, times(1)).findByUsername("john");
     }
 }

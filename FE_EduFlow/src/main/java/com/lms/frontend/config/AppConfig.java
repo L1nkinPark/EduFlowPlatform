@@ -2,6 +2,7 @@ package com.lms.frontend.config;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -10,14 +11,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.time.Duration;
 
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
 //
 //
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public RestTemplate restTemplate(RestTemplateBuilder builder,
+                                     @Value("${backend.connect-timeout:3s}") Duration connectTimeout,
+                                     @Value("${backend.read-timeout:10s}") Duration readTimeout) {
+        return builder
+                .setConnectTimeout(connectTimeout)
+                .setReadTimeout(readTimeout)
+                .build();
     }
 
 

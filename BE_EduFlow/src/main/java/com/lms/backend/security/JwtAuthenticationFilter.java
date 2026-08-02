@@ -1,6 +1,5 @@
 package com.lms.backend.security;
 
-import com.lms.backend.exception.InvalidTokenException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,7 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try {
             // /api/auth/login và /api/auth/refresh-token không cần (và không nên) đọc JWT hiện có.
             // Riêng /api/auth/register vẫn cần xử lý JWT nếu có, để biết người gọi có phải ADMIN
             // hay không (phục vụ việc chỉ cho ADMIN tạo account INSTRUCTOR/ADMIN).
@@ -65,25 +64,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // Lấy thông tin người dùng
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                // Nếu người dùng hợp lệ, set thông tin cho Seturity Context
-                if (jwtToken.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
-                    );
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                } else {
-                    throw new InvalidTokenException("Invalid Token");
+                try {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (jwtToken.isTokenValid(jwt, userDetails)) {
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities()
+                        );
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+                } catch (JwtException | UsernameNotFoundException ex) {
+                    // A stale/deleted-user token is an authentication failure, not a server error.
+                    // Continue anonymously so Spring Security returns 401 on protected endpoints
+                    // while public endpoints remain available.
+                    SecurityContextHolder.clearContext();
                 }
             }
 
             filterChain.doFilter(request, response);
-        } catch (Exception ex) {
-            throw ex;
-        }
     }
 
 }

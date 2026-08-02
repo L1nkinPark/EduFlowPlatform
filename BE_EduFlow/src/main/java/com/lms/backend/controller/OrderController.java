@@ -1,6 +1,7 @@
 package com.lms.backend.controller;
 
 import com.lms.backend.exception.InvalidPromoCodeException;
+import com.lms.backend.exception.ResourceNotFoundException;
 import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.entity.Order;
@@ -71,7 +72,7 @@ public class OrderController {
         ApiResponse response = new ApiResponse();
         try {
             Course course = courseRepository.findById(courseId)
-                    .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
 
             double originalAmount = course.getPrice();
             double finalAmount = promoCodeService.calculateDiscountedAmount(promoCode, originalAmount);
@@ -110,7 +111,7 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(response);
             }
             Course course = courseRepository.findById(courseId)
-                    .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
 
             // Giá khóa học (course.price) được lưu bằng VND, khớp với đơn vị
             // dùng trong PromoCode (minOrderAmount/discountAmount/maxDiscountAmount)
@@ -216,7 +217,7 @@ public class OrderController {
                 }
 
                 Account user = accountRepository.findById(pending.accountId)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
                 Order order = orderService.createOrder(user, pending.courseId);
 
                 if (pending.promoCode != null && !pending.promoCode.isBlank()) {

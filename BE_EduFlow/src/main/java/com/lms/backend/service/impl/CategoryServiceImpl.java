@@ -1,7 +1,6 @@
 package com.lms.backend.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.lms.backend.exception.DataNotFoundException;
 import com.lms.backend.model.request.CategoryRequest;
@@ -38,14 +37,14 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@org.springframework.cache.annotation.CacheEvict(value = "categories", allEntries = true)
 	public Category saveCategory(CategoryRequest categoryRequest) {
-		Category category = null;
-		if (categoryRequest == null || categoryRequest.getCategoryId() == 0) {
+		if (categoryRequest == null) {
+			throw new IllegalArgumentException("Category request is required");
+		}
+		Category category;
+		if (categoryRequest.getCategoryId() == 0) {
 			category = new Category();
 		} else {
 			category = findById(categoryRequest.getCategoryId());
-			if(category == null){
-				throw new DataNotFoundException();
-			}
 		}
 		category.setCategoryName(categoryRequest.getCategoryName());
 		category.setCategoryDescription(categoryRequest.getCategoryDescription());
@@ -57,13 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@org.springframework.cache.annotation.Cacheable(value = "categories", key = "#categoryId")
 	public Category findById(Long categoryId) {
-		// TODO Auto-generated method stub
-		Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
-		if (optionalCategory.isPresent()) {
-			return optionalCategory.get();
-		} else {
-			return null;
-		}
+		return categoryRepository.findById(categoryId)
+				.orElseThrow(() -> new DataNotFoundException("Category not found: " + categoryId));
 	}
 
 	@Override

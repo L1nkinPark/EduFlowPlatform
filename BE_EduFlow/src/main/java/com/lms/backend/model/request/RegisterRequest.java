@@ -32,5 +32,7 @@ public class RegisterRequest {
     @Size(min = 6, max = 72, message = "Password must contain 6 to 72 characters")
     private String password;
 
+    private String otpToken;
+
 
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EduFlow - Tạm thời gián đoạn</title>
+</head>
+<body>
+<main style="max-width: 680px; margin: 12vh auto; padding: 24px; font-family: Arial, sans-serif; text-align: center;">
+    <h1 th:text="${statusCode}">500</h1>
+    <h2>Không thể xử lý yêu cầu lúc này</h2>
+    <p th:text="${errorMessage}">Hệ thống đang tạm thời gián đoạn. Vui lòng thử lại sau.</p>
+    <p><a href="/">Quay lại trang chủ</a></p>
+</main>
+</body>
+</html>

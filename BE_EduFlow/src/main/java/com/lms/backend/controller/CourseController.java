@@ -3,6 +3,8 @@ package com.lms.backend.controller;
 
 
 import com.lms.backend.exception.ForbiddenException;
+import com.lms.backend.exception.ResourceNotFoundException;
+import com.lms.backend.exception.UnauthorizedException;
 import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.mapper.CourseMapper;
 import com.lms.backend.model.request.CourseRequest;
@@ -84,6 +86,7 @@ public class CourseController {
     public ResponseEntity<ApiResponse> saveCourse(@Valid @RequestBody CourseRequest courseRequest,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails){
 
+        requireAuthenticated(userDetails);
         courseRequest.setCourseId(null);
         com.lms.backend.model.entity.Account instructor = userDetails.getAccount();
         Course course = courseSevice.saveCourse(courseRequest, instructor);
@@ -130,13 +133,20 @@ public class CourseController {
     }
 
     private void assertCanManageCourse(String courseId, CustomUserDetails userDetails) {
+        requireAuthenticated(userDetails);
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + courseId));
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
         boolean isAdmin = "ADMIN".equalsIgnoreCase(userDetails.getAccount().getRole());
         boolean isOwner = course.getAccount() != null
                 && course.getAccount().getAccountId() == userDetails.getAccount().getAccountId();
         if (!isAdmin && !isOwner) {
             throw new ForbiddenException("You do not own this course.");
+        }
+    }
+
+    private void requireAuthenticated(CustomUserDetails userDetails) {
+        if (userDetails == null || userDetails.getAccount() == null) {
+            throw new UnauthorizedException("Authentication required.");
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.lms.backend.service.impl;
 
 import com.lms.backend.model.entity.Course;
+import com.lms.backend.exception.ResourceNotFoundException;
 import com.lms.backend.model.entity.SubCategory;
 import com.lms.backend.model.request.CourseRequest;
 import com.lms.backend.repository.CourseRepository;
@@ -105,9 +106,7 @@ public class CourseServiceImplTest {
     void testGetCourseById_NotFound() {
         when(courseRepository.findById("course2")).thenReturn(Optional.empty());
 
-        Course result = courseService.getCourseById("course2");
-
-        assertNull(result);
+        assertThrows(ResourceNotFoundException.class, () -> courseService.getCourseById("course2"));
         verify(courseRepository, times(1)).findById("course2");
     }
 

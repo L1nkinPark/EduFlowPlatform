@@ -1,5 +1,6 @@
 package com.lms.backend.controller;
 
+import com.lms.backend.exception.ResourceNotFoundException;
 import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.mapper.AccountMapper;
 import com.lms.backend.model.request.RegisterRequest;
@@ -94,7 +95,7 @@ public class AdminController {
         ApiResponse response = new ApiResponse();
 
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found: " + accountId));
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found: " + accountId));
         account.setStatus(status);
         accountRepository.save(account);
 

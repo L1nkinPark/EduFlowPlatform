@@ -1,5 +1,7 @@
 package com.lms.backend.service.impl;
 
+import com.lms.backend.exception.ConflictException;
+import com.lms.backend.exception.ResourceNotFoundException;
 import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.entity.Order;
@@ -28,10 +30,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Account user, String courseId) {
         if (hasPurchasedCourse(user, courseId)) {
-            throw new IllegalStateException("Course has already been purchased");
+            throw new ConflictException("Course has already been purchased");
         }
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
 
         Order order = new Order();
         order.setUser(user);

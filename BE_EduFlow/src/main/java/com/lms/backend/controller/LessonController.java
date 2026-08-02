@@ -1,6 +1,8 @@
 package com.lms.backend.controller;
 
 import com.lms.backend.exception.ForbiddenException;
+import com.lms.backend.exception.ResourceNotFoundException;
+import com.lms.backend.exception.UnauthorizedException;
 import com.lms.backend.model.entity.Chapter;
 import com.lms.backend.model.entity.Lesson;
 import com.lms.backend.model.request.LessonRequest;
@@ -59,10 +61,10 @@ public class LessonController {
     // Chỉ chủ khóa học (thông qua chapter) hoặc ADMIN mới được thêm lesson.
     private void assertOwnsChapter(Long chapterId, CustomUserDetails userDetails) {
         if (userDetails == null) {
-            throw new ForbiddenException("Authentication required.");
+            throw new UnauthorizedException("Authentication required.");
         }
         Chapter chapter = chapterRepository.findById(chapterId)
-                .orElseThrow(() -> new RuntimeException("Chapter not found: " + chapterId));
+                .orElseThrow(() -> new ResourceNotFoundException("Chapter not found: " + chapterId));
 
         boolean isAdmin = "ADMIN".equalsIgnoreCase(userDetails.getAccount().getRole());
         boolean isOwner = chapter.getCourse() != null

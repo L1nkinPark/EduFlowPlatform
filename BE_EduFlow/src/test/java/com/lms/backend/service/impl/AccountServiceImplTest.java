@@ -96,9 +96,7 @@ public class AccountServiceImplTest {
     void testFindById_NotFound() {
         when(accountRepository.findById(2L)).thenReturn(Optional.empty());
 
-        Account result = accountService.findById(2L);
-
-        assertNull(result);
+        assertThrows(DataNotFoundException.class, () -> accountService.findById(2L));
     }
 
     @Test

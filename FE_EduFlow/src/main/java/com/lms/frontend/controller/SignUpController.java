@@ -44,6 +44,7 @@ public class SignUpController {
                 .username(userRegister.getEmail())
                 .role("STUDENT")
                 .password(userRegister.getPassword())
+                .otpToken(userRegister.getOtpToken())
                 .build();
 
         ApiResponse apiResponse = accountService.register(signUpRequest);

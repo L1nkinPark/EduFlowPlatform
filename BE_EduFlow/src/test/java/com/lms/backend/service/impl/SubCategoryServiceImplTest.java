@@ -141,9 +141,7 @@ public class SubCategoryServiceImplTest {
     void testFindById_NotFound() {
         when(subCategoryRepository.findById(2L)).thenReturn(Optional.empty());
 
-        SubCategory result = subCategoryService.findById(2L);
-
-        assertNull(result);
+        assertThrows(DataNotFoundException.class, () -> subCategoryService.findById(2L));
     }
 
     @Test

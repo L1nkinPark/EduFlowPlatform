@@ -21,5 +21,7 @@ public class OTP {
     private String email;
     private String otpCode;
     private Long expirationTime;
+    private String purpose;
+    private String verificationToken;
 
 }

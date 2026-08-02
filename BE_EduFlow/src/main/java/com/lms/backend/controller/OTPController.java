@@ -21,7 +21,7 @@ public class OTPController {
     public ResponseEntity<String> sendOtp(@RequestParam String email) {
         if (otpService.validateEmail(email)) {
             try {
-                otpService.generateAndSendOtp(email);
+                otpService.generateAndSendOtp(email, OTPServiceImpl.PURPOSE_PASSWORD_RESET);
                 return ResponseEntity.ok("OTP has been sent to your email.");
             } catch (MailException e) {
                 return emailServiceUnavailable();
@@ -34,10 +34,10 @@ public class OTPController {
     @PostMapping("/send-otp-signup")
     public ResponseEntity<String> sendOtpSignup(@RequestParam String email) {
         if (otpService.validateEmail(email)) {
-            return ResponseEntity.status(400).body("Email already registered.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already registered.");
         }
         try {
-            otpService.generateAndSendOtp(email);
+            otpService.generateAndSendOtp(email, OTPServiceImpl.PURPOSE_SIGNUP);
             return ResponseEntity.ok("OTP has been sent to your email.");
         } catch (MailException e) {
             return emailServiceUnavailable();
@@ -59,13 +59,12 @@ public class OTPController {
 
     // Xác minh OTP
     @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
-        String verificationResult = otpService.verifyOtp(email, otp);
-        if ("OTP đã đúng".equals(verificationResult)) {
-            return ResponseEntity.ok("OTP verified successfully.");
-        } else {
-            return ResponseEntity.status(400).body("Invalid or expired OTP.");
-        }
+    public ResponseEntity<String> verifyOtp(@RequestParam String email,
+                                             @RequestParam String otp,
+                                             @RequestParam(defaultValue = OTPServiceImpl.PURPOSE_SIGNUP) String purpose) {
+        return otpService.verifyOtpAndIssueToken(email, otp, purpose)
+                .map(token -> ResponseEntity.ok(token))
+                .orElseGet(() -> ResponseEntity.badRequest().body("Invalid or expired OTP."));
     }
 
 

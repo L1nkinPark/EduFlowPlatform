@@ -109,8 +109,8 @@
             <div class="row align-items-center py-4">
                 <div class="col-lg-5 col-12">
                     <div>
-                        <h1 class="fw-bold text-black display-4 mb-4">What to expect from a Edutree course</h1>
-                        <a th:href="@{/about}" class="text-decoration-none fw-bold fs-5">Short video link&nbsp;<i
+                        <h1 class="fw-bold text-black display-4 mb-4" th:text="#{home.expect_title}">What to expect from an EduFlow course</h1>
+                        <a th:href="@{/about}" class="text-decoration-none fw-bold fs-5"><span th:text="#{home.short_video}">Short video</span>&nbsp;<i
                                 class="bi bi-chevron-right"></i></a>
                     </div>
                 </div>
@@ -120,11 +120,8 @@
                             <div class="gap-3 d-flex">
                                 <div><i class="bi bi-people text-primary h2"></i></div>
                                 <div>
-                                    <h4 class="fw-bold text-dark">Learn at your own pace</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis ipsa alias
-                                        distinctio blanditiis,
-                                        eveniet impedit? Culpa.
-                                    </p>
+                                    <h4 class="fw-bold text-dark" th:text="#{home.feature_pace_title}">Learn at your own pace</h4>
+                                    <p th:text="#{home.feature_pace_desc}">Study whenever and wherever it suits you.</p>
                                 </div>
                             </div>
                         </div>
@@ -132,11 +129,8 @@
                             <div class="gap-3 d-flex">
                                 <div><i class="bi bi-person-check text-primary h2"></i></div>
                                 <div>
-                                    <h4 class="fw-bold text-dark">Share knowledge and ideas</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis ipsa alias
-                                        distinctio blanditiis,
-                                        eveniet impedit? Culpa.
-                                    </p>
+                                    <h4 class="fw-bold text-dark" th:text="#{home.feature_share_title}">Share knowledge and ideas</h4>
+                                    <p th:text="#{home.feature_share_desc}">Learn with a supportive community.</p>
                                 </div>
                             </div>
                         </div>
@@ -144,11 +138,8 @@
                             <div class="gap-3 d-flex">
                                 <div><i class="bi bi-person-badge text-primary h2"></i></div>
                                 <div>
-                                    <h4 class="fw-bold text-dark">Meet expert instructors</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis ipsa alias
-                                        distinctio blanditiis,
-                                        eveniet impedit? Culpa.
-                                    </p>
+                                    <h4 class="fw-bold text-dark" th:text="#{home.feature_expert_title}">Meet expert instructors</h4>
+                                    <p th:text="#{home.feature_expert_desc}">Receive practical guidance from experienced instructors.</p>
                                 </div>
                             </div>
                         </div>
@@ -156,11 +147,8 @@
                             <div class="gap-3 d-flex">
                                 <div><i class="bi bi-laptop text-primary h2"></i></div>
                                 <div>
-                                    <h4 class="fw-bold text-dark">Get front row seats</h4>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis ipsa alias
-                                        distinctio blanditiis,
-                                        eveniet impedit? Culpa.
-                                    </p>
+                                    <h4 class="fw-bold text-dark" th:text="#{home.feature_access_title}">Learn without distance barriers</h4>
+                                    <p th:text="#{home.feature_access_desc}">Access every lesson online from any device.</p>
                                 </div>
                             </div>
                         </div>
@@ -174,9 +162,9 @@
         <div class="container py-4">
             <div class="d-flex align-items-center gap-2 mb-4">
                 <div>
-                    <h3 class="pb-0 fw-bold text-dark mb-1">Courses By Category</h3>
+                    <h3 class="pb-0 fw-bold text-dark mb-1" th:text="#{home.categories_title}">Courses by category</h3>
                 </div>
-                <a th:href="@{/course/all}" class="text-decoration-none text-primary ms-auto">See More <i
+                <a th:href="@{/course/all}" class="text-decoration-none text-primary ms-auto"><span th:text="#{home.see_more}">See more</span> <i
                         class="bi bi-arrow-right-circle"></i></a>
             </div>
             <div class="row gy-3 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2" th:if="${not #lists.isEmpty(categories)}">
@@ -196,7 +184,7 @@
             </div>
         </div>
     </main>
-    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${false}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -220,7 +208,7 @@
         </div>
     </div>
 
-    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
+    <div class="py-5 footer bg-white" th:if="${false}">
         <div>
             <div class="container py-3">
                 <div class="row">

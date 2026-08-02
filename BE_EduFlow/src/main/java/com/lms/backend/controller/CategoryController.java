@@ -66,6 +66,7 @@ public class CategoryController {
 			return ResponseEntity.ok(response);
 		}
 
+		categoryRequest.setCategoryId(categoryId);
 		Category category = categoryService.saveCategory(categoryRequest);
 
 		response.ok("OK", categoryMapper.convertToDTO(category));

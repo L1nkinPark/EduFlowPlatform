@@ -1,4 +1,4 @@
-?<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <!-- Mirrored from askbootstrap.com/preview/edutree/forgot.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 11:44:42 GMT -->
@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Edutree – Online Course & Education HTML5 Template</title>
+    <title th:text="#{forgot.page_title}">Reset password</title>
     <meta name="description" content="Edutree" />
     <meta name="keywords" content="Edutree" />
 
@@ -31,48 +31,42 @@
         <div class="container py-5">
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-5">
-                    <div class="h5 text-muted text-uppercase">Forgot <span class="text-primary">Password</span></div>
-                    <div class="fw-bold display-5 py-2 text-black mb-2">Connect with the best professionals</div>
-                    <p class="lead text-dark-50 mb-0">Learn from expert professionals and<br> join
-                        the largest online community for creatives.
-                    </p>
+                    <div class="h5 text-muted text-uppercase" th:text="#{forgot.eyebrow}">Forgot password</div>
+                    <div class="fw-bold display-5 py-2 text-black mb-2" th:text="#{forgot.hero_title}">Recover your account</div>
+                    <p class="lead text-dark-50 mb-0" th:text="#{forgot.hero_desc}">Verify your email to choose a new password.</p>
                 </div>
                 <div class="col-lg-5">
                     <div class="rounded-3 bg-white shadow-sm p-5 text-center">
-                        <h3 class="fw-bold text-black mb-3">Forgot password
-                        </h3>
-                        <p class="text-muted fw-light mb-4">Enter the email address you see<br> on Edutree. We'll
-                            send you a link to reset your password
-                        </p>
+                        <h3 class="fw-bold text-black mb-3" th:text="#{forgot.form_title}">Forgot password</h3>
+                        <p class="text-muted fw-light mb-4" th:text="#{forgot.form_desc}">Enter your registered email and we will send an OTP.</p>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
                             <!-- Trường nhập email -->
                             <div class="input-group">
-                                <input type="email" id="email" class="form-control" placeholder="Enter Email" required>
-                                <button type="button" onclick="sendOtp()" class="btn btn-primary">Send OTP</button>
+                                <input type="email" id="email" class="form-control" th:placeholder="#{forgot.email_placeholder}" required>
+                                <button type="button" onclick="sendOtp()" class="btn btn-primary" th:text="#{forgot.send_otp}">Send OTP</button>
                             </div>
 
                             <!-- Trường nhập OTP -->
                             <div class="input-group ">
-                                <input type="text" id="otp" class="form-control" placeholder="Enter OTP" required>
-                                <button type="button" onclick="verifyOtp()" class="btn btn-success">OTP Authentication</button>
+                                <input type="text" id="otp" class="form-control" th:placeholder="#{forgot.otp_placeholder}" required>
+                                <button type="button" onclick="verifyOtp()" class="btn btn-success" th:text="#{forgot.verify_otp}">Verify OTP</button>
                             </div>
 
                             <!-- Form nhập mật khẩu mới (ẩn đi ban đầu) -->
                             <div class="input-group" id="newPasswordForm" style="display:none;">
-                                <input type="password" id="newPassword" class="form-control" placeholder="Enter New Password" required>
-                                <button type="button" onclick="resetPassword()" class="btn btn-primary">Reset Password</button>
+                                <input type="password" id="newPassword" class="form-control" th:placeholder="#{forgot.password_placeholder}" minlength="6" required>
+                                <button type="button" onclick="resetPassword()" class="btn btn-primary" th:text="#{forgot.reset_password}">Reset password</button>
                             </div>
                         </form>
 
-                        <p class="text-muted mt-3 mb-0">Go back to <a th:href="@{/signin}" class="text-mdinfo">Sign
-                                In</a></p>
+                        <p class="text-muted mt-3 mb-0"><span th:text="#{forgot.back_to}">Back to</span> <a th:href="@{/signin}" class="text-mdinfo" th:text="#{forgot.sign_in}">Sign in</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="bg-white border-top border-bottom cities-footer" th:if="${#locale.language == 'en'}">
+    <div class="bg-white border-top border-bottom cities-footer" th:if="${false}">
         <div>
             <div class="container">
                 <a class="w-100 text-body text-decoration-none py-3 d-block" data-bs-toggle="collapse"
@@ -140,7 +134,7 @@
         </div>
     </div>
 
-    <div class="py-5 footer bg-white" th:if="${#locale.language == 'en'}">
+    <div class="py-5 footer bg-white" th:if="${false}">
         <div>
             <div class="container py-3">
                 <div class="row">
@@ -237,6 +231,8 @@
 
 <script th:inline="javascript">
     const backendUrl = /*[[${backendUrl}]]*/ 'http://localhost:8888';
+    const otpApiBaseUrl = window.location.hostname === 'localhost' ? backendUrl : window.location.origin;
+    let passwordResetToken = null;
     const resetMessages = {
         emailInvalid: /*[[#{auth.email_invalid}]]*/ 'Please enter a valid email address.',
         emailExists: /*[[#{auth.email_exists}]]*/ 'Email exists.',
@@ -264,7 +260,7 @@
         }
 
         // Gửi yêu cầu kiểm tra email từ phía server
-        fetch(`${backendUrl}/api/otp/validate-email?email=` + encodeURIComponent(email), {
+        fetch(`${otpApiBaseUrl}/api/otp/validate-email?email=` + encodeURIComponent(email), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -287,7 +283,7 @@
 
     // Gửi OTP tới email đã xác thực
     function sendOtpToEmail(email) {
-        fetch(`${backendUrl}/api/otp/send-otp?email=${encodeURIComponent(email)}`, {
+        fetch(`${otpApiBaseUrl}/api/password/send-otp?email=${encodeURIComponent(email)}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -313,7 +309,7 @@
         const email = document.getElementById("email").value;
         const otp = document.getElementById("otp").value;
 
-        fetch(`${backendUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
+        fetch(`${otpApiBaseUrl}/api/password/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -326,6 +322,7 @@
             return response.text();
         })
         .then(data => {
+            passwordResetToken = data;
             alert(resetMessages.otpVerified);
             // Hiển thị form nhập mật khẩu mới
             document.getElementById("newPasswordForm").style.display = "block";
@@ -341,7 +338,12 @@
         const email = document.getElementById("email").value;
         const newPassword = document.getElementById("newPassword").value;
 
-        fetch(`${backendUrl}/api/password/reset`, {
+        if (!passwordResetToken || newPassword.length < 6) {
+            alert(resetMessages.resetError);
+            return;
+        }
+
+        fetch(`${otpApiBaseUrl}/api/password/reset`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -349,6 +351,7 @@
             body: JSON.stringify({
                 email: email,
                 newPassword: newPassword,
+                otpToken: passwordResetToken,
             }),
         })
         .then(response => {

@@ -1,7 +1,6 @@
 package com.lms.backend.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.lms.backend.exception.DataNotFoundException;
 import com.lms.backend.model.entity.Category;
@@ -39,34 +38,29 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Override
     @org.springframework.cache.annotation.CacheEvict(value = "subcategories", allEntries = true)
     public SubCategory saveSubCategory(SubCategoryRequest subCategoryRequest) {
-        SubCategory subCategory = null;
-        if (subCategoryRequest == null || subCategoryRequest.getSubCategoryId() == 0) {
+        if (subCategoryRequest == null) {
+            throw new IllegalArgumentException("Subcategory request is required");
+        }
+        SubCategory subCategory;
+        if (subCategoryRequest.getSubCategoryId() == 0) {
             subCategory = new SubCategory();
         } else {
             subCategory = findById(subCategoryRequest.getSubCategoryId());
-            if (subCategory == null) {
-                throw new DataNotFoundException();
-            }
         }
         subCategory.setSubCategoryId(subCategoryRequest.getSubCategoryId());
         subCategory.setSubCategoryName(subCategoryRequest.getSubCategoryName());
         subCategory.setSubCategoryDescription(subCategoryRequest.getSubCategoryDescription());
         subCategory.setStatus(subCategoryRequest.isStatus());
         Category category = categoryService.findById(subCategoryRequest.getCategoryId());
-        if (category != null) {
-            subCategory.setCategory(category);
-        }
+        subCategory.setCategory(category);
         return subCategoryRepository.save(subCategory);
     }
 
     @Override
     @org.springframework.cache.annotation.Cacheable(value = "subcategories", key = "#subCategory")
     public SubCategory findById(Long subCategory) {
-        Optional<SubCategory> optionalSubCategory = subCategoryRepository.findById(subCategory);
-        if (optionalSubCategory.isPresent()) {
-            return optionalSubCategory.get();
-        }
-        return null;
+        return subCategoryRepository.findById(subCategory)
+                .orElseThrow(() -> new DataNotFoundException("Subcategory not found: " + subCategory));
     }
 
     @Override

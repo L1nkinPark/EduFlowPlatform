@@ -39,33 +39,39 @@ public class JwtToken {
 
     // Tạo ra JWT từ thông tin user kèm theo Claims
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        // Thời gian hiện tại
+        return buildToken(extraClaims, userDetails, 1000L * 60 * 30);
+    }
+
+    private String buildToken(Map<String, Object> claims, UserDetails userDetails, long validityMillis) {
         long currentTimeMillis = System.currentTimeMillis();
-
-        // Thời gian hết hạn của Token
-        long expirationTimeMillis = currentTimeMillis + (1000 * 60 * 30); // 30 phút
-
-        // Tạo JWT Token
         return Jwts.builder()
-                .setClaims(extraClaims) // Claims (nội dung)
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername()) // Chủ đề (Subject)
                 .setIssuedAt(new Date(currentTimeMillis)) // Thời gian phát hành (Issued At)
-                .setExpiration(new Date(expirationTimeMillis)) // Thời gian hết hạn (Expiration)
+                .setExpiration(new Date(currentTimeMillis + validityMillis))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256) // Ký JWT bằng SECRET_KEY
                 .compact();
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return generateToken(userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("tokenType", "refresh");
+        return buildToken(claims, userDetails, 1000L * 60 * 60 * 24 * 7);
     }
 
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return generateToken(extraClaims, userDetails);
+        Map<String, Object> claims = new HashMap<>(extraClaims);
+        claims.put("tokenType", "refresh");
+        return buildToken(claims, userDetails, 1000L * 60 * 60 * 24 * 7);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public boolean isRefreshToken(String token) {
+        return "refresh".equals(extractClaim(token, claims -> claims.get("tokenType", String.class)));
     }
 
     private boolean isTokenExpired(String token) {

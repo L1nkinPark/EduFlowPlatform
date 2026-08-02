@@ -125,9 +125,7 @@ public class CategoryServiceImplTest {
     void testFindById_NotFound() {
         when(categoryRepository.findById(2L)).thenReturn(Optional.empty());
 
-        Category result = categoryService.findById(2L);
-
-        assertNull(result);
+        assertThrows(DataNotFoundException.class, () -> categoryService.findById(2L));
     }
 
     @Test

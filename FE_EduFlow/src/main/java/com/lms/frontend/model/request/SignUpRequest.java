@@ -25,4 +25,6 @@ public class SignUpRequest {
     @NotBlank
     @Size(min = 6, max = 72)
     private String password;
+
+    private String otpToken;
 }

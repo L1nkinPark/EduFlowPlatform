@@ -48,7 +48,27 @@ class MainTests {
                 .andExpect(model().attributeExists("userRegister"))
                 .andExpect(content().string(containsString("window.location.origin")))
                 .andExpect(content().string(containsString("/api/otp/send-otp-signup")))
+                .andExpect(content().string(containsString("response.status === 409")))
+                .andExpect(content().string(containsString("emailRegistered")))
                 .andExpect(content().string(containsString("/api/otp/verify-otp")));
+    }
+
+    @Test
+    void forgotPasswordUsesOneTimeTokenAndVietnameseTranslations() throws Exception {
+        mockMvc.perform(get("/forgot").param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("forgot"))
+                .andExpect(content().string(containsString("Đặt lại mật khẩu")))
+                .andExpect(content().string(containsString("window.location.origin")))
+                .andExpect(content().string(containsString("/api/password/verify-otp")))
+                .andExpect(content().string(containsString("otpToken: passwordResetToken")));
+    }
+
+    @Test
+    void forgotPasswordRendersEnglishTranslations() throws Exception {
+        mockMvc.perform(get("/forgot").param("lang", "en"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Recover your account securely")));
     }
 
     @TestConfiguration(proxyBeanMethods = false)

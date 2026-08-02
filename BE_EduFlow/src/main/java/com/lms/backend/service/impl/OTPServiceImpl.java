@@ -11,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class OTPServiceImpl {
-//
+    public static final String PURPOSE_SIGNUP = "SIGNUP";
+    public static final String PURPOSE_PASSWORD_RESET = "PASSWORD_RESET";
     private static final long OTP_EXPIRY_DURATION = 5 * 60 * 1000; // OTP hết hạn sau 5 phút
+    private static final long VERIFICATION_EXPIRY_DURATION = 10 * 60 * 1000;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Autowired
@@ -41,51 +44,105 @@ public class OTPServiceImpl {
     // exception nên bản ghi OTP sẽ được rollback nếu gửi mail thất bại.
     @Transactional
     public String generateAndSendOtp(String email) {
+        return generateAndSendOtp(email, PURPOSE_SIGNUP);
+    }
+
+    @Transactional
+    public String generateAndSendOtp(String email, String purpose) {
+        String normalizedEmail = normalizeEmail(email);
+        String normalizedPurpose = requirePurpose(purpose);
         String otp = String.format("%06d", SECURE_RANDOM.nextInt(1_000_000));
 
         OTP otpEntity = new OTP();
-        otpEntity.setEmail(email);
+        otpEntity.setEmail(normalizedEmail);
         otpEntity.setOtpCode(otp);
+        otpEntity.setPurpose(normalizedPurpose);
         otpEntity.setExpirationTime(System.currentTimeMillis() + OTP_EXPIRY_DURATION); // Đặt thời gian hết hạn
-        otpRepository.deleteByEmail(email);
+        otpRepository.deleteByEmailAndPurpose(normalizedEmail, normalizedPurpose);
         otpRepository.save(otpEntity);
-        emailService.sendOtpEmail(email, otp);
+        emailService.sendOtpEmail(normalizedEmail, otp);
 
         return otp;
     }
 
-    // Phương thức xác minh OTP
-    public String verifyOtp(String email, String otp) {
-        Optional<OTP> otpEntityOptional = otpRepository.findByEmailAndOtpCode(email, otp);
+    @Transactional
+    public Optional<String> verifyOtpAndIssueToken(String email, String otp, String purpose) {
+        String normalizedEmail = normalizeEmail(email);
+        String normalizedPurpose = requirePurpose(purpose);
+        Optional<OTP> otpEntityOptional = otpRepository.findByEmailAndOtpCodeAndPurpose(
+                normalizedEmail, otp, normalizedPurpose);
 
-        if (otpEntityOptional.isPresent()) {
-            OTP otpEntity = otpEntityOptional.get();
-
-            // Kiểm tra thời gian hết hạn của OTP
-            if (otpEntity.getExpirationTime() > System.currentTimeMillis()) {
-                otpRepository.delete(otpEntity); // Xóa OTP sau khi xác thực thành công
-                return "OTP đã đúng";
-            } else {
-                return "OTP đã hết hạn";
-            }
+        if (otpEntityOptional.isEmpty()) {
+            return Optional.empty();
         }
 
-        return "OTP sai";
+        OTP otpEntity = otpEntityOptional.get();
+        if (otpEntity.getExpirationTime() == null
+                || otpEntity.getExpirationTime() <= System.currentTimeMillis()) {
+            otpRepository.delete(otpEntity);
+            return Optional.empty();
+        }
+
+        String verificationToken = UUID.randomUUID().toString();
+        otpEntity.setOtpCode(null);
+        otpEntity.setVerificationToken(verificationToken);
+        otpEntity.setExpirationTime(System.currentTimeMillis() + VERIFICATION_EXPIRY_DURATION);
+        otpRepository.save(otpEntity);
+        return Optional.of(verificationToken);
+    }
+
+    @Transactional
+    public boolean consumeVerification(String email, String purpose, String verificationToken) {
+        if (verificationToken == null || verificationToken.isBlank()) {
+            return false;
+        }
+        Optional<OTP> verification = otpRepository.findByEmailAndPurposeAndVerificationToken(
+                normalizeEmail(email), requirePurpose(purpose), verificationToken);
+        if (verification.isEmpty()) {
+            return false;
+        }
+
+        OTP entity = verification.get();
+        otpRepository.delete(entity);
+        return entity.getExpirationTime() != null
+                && entity.getExpirationTime() > System.currentTimeMillis();
+    }
+
+    // Backward-compatible service method used by internal callers and tests.
+    public String verifyOtp(String email, String otp) {
+        return verifyOtpAndIssueToken(email, otp, PURPOSE_SIGNUP).isPresent()
+                ? "OTP đã đúng" : "OTP sai hoặc đã hết hạn";
     }
 
     // Phương thức reset mật khẩu
-    public boolean resetPassword(String email, String newPassword) {
-        Optional<Account> account = accountRepository.findByEmail(email);
-
-        // Mã hóa mật khẩu mới
-        String encodedPassword = passwordEncoder.encode(newPassword);
+    @Transactional
+    public boolean resetPassword(String email, String newPassword, String verificationToken) {
+        String normalizedEmail = normalizeEmail(email);
+        if (!consumeVerification(normalizedEmail, PURPOSE_PASSWORD_RESET, verificationToken)) {
+            return false;
+        }
+        Optional<Account> account = accountRepository.findByEmail(normalizedEmail);
 
         if (account.isPresent()) {
             Account userAccount = account.get();
-            userAccount.setPassword(encodedPassword);  // Cập nhật mật khẩu mới
+            userAccount.setPassword(passwordEncoder.encode(newPassword));
             accountRepository.save(userAccount);   // Lưu lại thông tin người dùng
             return true;
         }
         return false; // Nếu email không tồn tại, trả về false
+    }
+
+    private String normalizeEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+        return email.trim().toLowerCase();
+    }
+
+    private String requirePurpose(String purpose) {
+        if (!PURPOSE_SIGNUP.equals(purpose) && !PURPOSE_PASSWORD_RESET.equals(purpose)) {
+            throw new IllegalArgumentException("Invalid OTP purpose");
+        }
+        return purpose;
     }
 }

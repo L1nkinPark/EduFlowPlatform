@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -50,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
         return new HttpEntity<>(body, headers);
     }
 
-    private <T> ApiResponse<T> parseErrorBody(HttpClientErrorException ex) {
+    private <T> ApiResponse<T> parseErrorBody(RestClientResponseException ex) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(ex.getResponseBodyAsString(), ApiResponse.class);
@@ -59,6 +60,12 @@ public class AccountServiceImpl implements AccountService {
             apiResponse.error("Request failed: " + ex.getStatusCode());
             return apiResponse;
         }
+    }
+
+    private <T> ApiResponse<T> backendUnavailable() {
+        ApiResponse<T> apiResponse = new ApiResponse<>();
+        apiResponse.error("Hệ thống đang tạm thời gián đoạn. Vui lòng thử lại sau.");
+        return apiResponse;
     }
 
     @Override
@@ -72,11 +79,10 @@ public class AccountServiceImpl implements AccountService {
                     }
             );
             return responseEntity.getBody();
-        } catch (HttpClientErrorException ex) {
+        } catch (RestClientResponseException ex) {
             return parseErrorBody(ex);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (RestClientException ex) {
+            return backendUnavailable();
         }
     }
 
@@ -91,11 +97,10 @@ public class AccountServiceImpl implements AccountService {
                     }
             );
             return responseEntity.getBody();
-        } catch (HttpClientErrorException ex) {
+        } catch (RestClientResponseException ex) {
             return parseErrorBody(ex);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (RestClientException ex) {
+            return backendUnavailable();
         }
     }
 
@@ -109,11 +114,10 @@ public class AccountServiceImpl implements AccountService {
                     ApiResponse.class
             );
             return responseEntity.getBody();
-        } catch (HttpClientErrorException ex) {
+        } catch (RestClientResponseException ex) {
             return parseErrorBody(ex);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (RestClientException ex) {
+            return backendUnavailable();
         }
     }
 
@@ -127,11 +131,10 @@ public class AccountServiceImpl implements AccountService {
                     ApiResponse.class
             );
             return responseEntity.getBody();
-        } catch (HttpClientErrorException ex) {
+        } catch (RestClientResponseException ex) {
             return parseErrorBody(ex);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (RestClientException ex) {
+            return backendUnavailable();
         }
     }
 
@@ -151,17 +154,11 @@ public class AccountServiceImpl implements AccountService {
             );
 
             return responseEntity.getBody();
-        } catch (HttpClientErrorException ex) {
-            try {
-                if (ex.getStatusCode() != HttpStatus.OK) {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    return objectMapper.readValue(ex.getResponseBodyAsString(), ApiResponse.class);
-                }
-            } catch (Exception e) {
-                return null;
-            }
+        } catch (RestClientResponseException ex) {
+            return parseErrorBody(ex);
+        } catch (RestClientException ex) {
+            return backendUnavailable();
         }
-        return null;
     }
 
     @Override
@@ -181,19 +178,11 @@ public class AccountServiceImpl implements AccountService {
 
             ApiResponse response = responseEntity.getBody();
             return response;
-        } catch (HttpClientErrorException ex) {
-            try {
-                if (ex.getStatusCode() != HttpStatus.OK) {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    ApiResponse apiResponse = objectMapper.readValue(ex.getResponseBodyAsString(), ApiResponse.class);
-                    return apiResponse;
-                }
-            } catch (Exception e) {
-                return null;
-            }
+        } catch (RestClientResponseException ex) {
+            return parseErrorBody(ex);
+        } catch (RestClientException ex) {
+            return backendUnavailable();
         }
-
-        return null;
     }
 
 }

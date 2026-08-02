@@ -75,7 +75,7 @@ class OTPServiceImplTest {
 
         assertNotNull(otp);
         assertEquals(6, otp.length());
-        verify(otpRepository).deleteByEmail(email);
+        verify(otpRepository).deleteByEmailAndPurpose(email, OTPServiceImpl.PURPOSE_SIGNUP);
         verify(otpRepository, times(1)).save(any(OTP.class));
         verify(emailService, times(1)).sendOtpEmail(eq(email), anyString());
     }
@@ -88,7 +88,7 @@ class OTPServiceImplTest {
 
         assertThrows(MailSendException.class, () -> otpService.generateAndSendOtp(email));
 
-        verify(otpRepository).deleteByEmail(email);
+        verify(otpRepository).deleteByEmailAndPurpose(email, OTPServiceImpl.PURPOSE_SIGNUP);
         verify(otpRepository).save(any(OTP.class));
         verify(emailService).sendOtpEmail(eq(email), anyString());
     }
@@ -101,13 +101,16 @@ class OTPServiceImplTest {
         otpEntity.setOtpCode(otp);
         otpEntity.setExpirationTime(System.currentTimeMillis() + 5000); // OTP chưa hết hạn
 
-        when(otpRepository.findByEmailAndOtpCode(email, otp)).thenReturn(Optional.of(otpEntity));
+        when(otpRepository.findByEmailAndOtpCodeAndPurpose(email, otp, OTPServiceImpl.PURPOSE_SIGNUP))
+                .thenReturn(Optional.of(otpEntity));
 
         String result = otpService.verifyOtp(email, otp);
 
         assertEquals("OTP đã đúng", result);
-        verify(otpRepository, times(1)).findByEmailAndOtpCode(email, otp);
-        verify(otpRepository, times(1)).delete(otpEntity);
+        verify(otpRepository).findByEmailAndOtpCodeAndPurpose(email, otp, OTPServiceImpl.PURPOSE_SIGNUP);
+        verify(otpRepository).save(otpEntity);
+        assertNull(otpEntity.getOtpCode());
+        assertNotNull(otpEntity.getVerificationToken());
     }
 
     @Test
@@ -118,13 +121,14 @@ class OTPServiceImplTest {
         otpEntity.setOtpCode(otp);
         otpEntity.setExpirationTime(System.currentTimeMillis() - 1000); // OTP đã hết hạn
 
-        when(otpRepository.findByEmailAndOtpCode(email, otp)).thenReturn(Optional.of(otpEntity));
+        when(otpRepository.findByEmailAndOtpCodeAndPurpose(email, otp, OTPServiceImpl.PURPOSE_SIGNUP))
+                .thenReturn(Optional.of(otpEntity));
 
         String result = otpService.verifyOtp(email, otp);
 
-        assertEquals("OTP đã hết hạn", result);
-        verify(otpRepository, times(1)).findByEmailAndOtpCode(email, otp);
-        verify(otpRepository, never()).delete(otpEntity);
+        assertEquals("OTP sai hoặc đã hết hạn", result);
+        verify(otpRepository).findByEmailAndOtpCodeAndPurpose(email, otp, OTPServiceImpl.PURPOSE_SIGNUP);
+        verify(otpRepository).delete(otpEntity);
     }
 
     @Test
@@ -132,11 +136,39 @@ class OTPServiceImplTest {
         String email = "user@example.com";
         String otp = "123456";
 
-        when(otpRepository.findByEmailAndOtpCode(email, otp)).thenReturn(Optional.empty());
+        when(otpRepository.findByEmailAndOtpCodeAndPurpose(email, otp, OTPServiceImpl.PURPOSE_SIGNUP))
+                .thenReturn(Optional.empty());
 
         String result = otpService.verifyOtp(email, otp);
 
-        assertEquals("OTP sai", result);
-        verify(otpRepository, times(1)).findByEmailAndOtpCode(email, otp);
+        assertEquals("OTP sai hoặc đã hết hạn", result);
+        verify(otpRepository).findByEmailAndOtpCodeAndPurpose(email, otp, OTPServiceImpl.PURPOSE_SIGNUP);
+    }
+
+    @Test
+    void resetPasswordRequiresAndConsumesPasswordResetToken() {
+        String email = "user@example.com";
+        String token = "one-time-token";
+        OTP verification = new OTP();
+        verification.setEmail(email);
+        verification.setPurpose(OTPServiceImpl.PURPOSE_PASSWORD_RESET);
+        verification.setVerificationToken(token);
+        verification.setExpirationTime(System.currentTimeMillis() + 60_000);
+        Account account = new Account();
+        when(otpRepository.findByEmailAndPurposeAndVerificationToken(
+                email, OTPServiceImpl.PURPOSE_PASSWORD_RESET, token)).thenReturn(Optional.of(verification));
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+        when(passwordEncoder.encode("new-password")).thenReturn("encoded");
+
+        assertTrue(otpService.resetPassword(email, "new-password", token));
+        assertEquals("encoded", account.getPassword());
+        verify(otpRepository).delete(verification);
+        verify(accountRepository).save(account);
+    }
+
+    @Test
+    void resetPasswordRejectsMissingVerificationToken() {
+        assertFalse(otpService.resetPassword("user@example.com", "new-password", null));
+        verifyNoInteractions(accountRepository);
     }
 }

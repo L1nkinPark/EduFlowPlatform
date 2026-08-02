@@ -1,5 +1,6 @@
 package com.lms.backend.controller;
 
+import com.lms.backend.exception.UnauthorizedException;
 import com.lms.backend.model.entity.Account;
 import com.lms.backend.model.entity.Course;
 import com.lms.backend.model.entity.OrderItem;
@@ -39,7 +40,7 @@ public class InstructorController {
 
     private Account requireInstructor(CustomUserDetails userDetails) {
         if (userDetails == null) {
-            throw new RuntimeException("Authentication required.");
+            throw new UnauthorizedException("Authentication required.");
         }
         return userDetails.getAccount();
     }

@@ -66,6 +66,7 @@ public class SubCategoryController {
             response.error("BAD_REQUEST", ValidatorUtil.toErrors(bindingResult.getFieldErrors()));
             return ResponseEntity.ok(response);
         }
+        subCategoryRequest.setSubCategoryId(subCategoryId);
         SubCategory subCategory = subCategoryService.saveSubCategory(subCategoryRequest);
 
         response.ok("OK", subCategoryMapper.convertToDTO(subCategory));
