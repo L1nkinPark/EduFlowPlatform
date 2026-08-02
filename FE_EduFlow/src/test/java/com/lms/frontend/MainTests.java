@@ -94,6 +94,60 @@ class MainTests {
                 .andExpect(content().string(not(containsString("Lorem Ipsum"))));
     }
 
+    @Test
+    void faqPageRendersVietnameseQuestionsWithoutTemplateCopy() throws Exception {
+        mockMvc.perform(get("/faq").param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Câu hỏi thường gặp")))
+                .andExpect(content().string(containsString("Làm thế nào để đăng ký một khóa học?")))
+                .andExpect(content().string(not(containsString("Anim pariatur"))));
+    }
+
+    @Test
+    void careersPageUsesLocalizedRealContactFlow() throws Exception {
+        mockMvc.perform(get("/career").param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Cùng EduFlow xây dựng tương lai giáo dục")))
+                .andExpect(content().string(containsString("Nhà thiết kế UI/UX")))
+                .andExpect(content().string(containsString("href=\"/contact\"")))
+                .andExpect(content().string(not(containsString("Want to join Team Edutree"))))
+                .andExpect(content().string(not(containsString("type=\"number\""))));
+    }
+
+    @Test
+    void privacyPageRendersVietnamesePolicyContent() throws Exception {
+        mockMvc.perform(get("/privacy/policy").param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Chính sách bảo mật")))
+                .andExpect(content().string(containsString("Thông tin chúng tôi thu thập")))
+                .andExpect(content().string(not(containsString("Information we collect"))));
+    }
+
+    @Test
+    void termsPageRendersVietnameseTermsContent() throws Exception {
+        mockMvc.perform(get("/term-condition").param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Điều khoản và điều kiện")))
+                .andExpect(content().string(containsString("Tài khoản")))
+                .andExpect(content().string(not(containsString("Intellectual Property Rights"))));
+    }
+
+    @Test
+    void secondaryPagesAlsoRenderEnglish() throws Exception {
+        mockMvc.perform(get("/faq").param("lang", "en"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("How do I enroll in a course?")));
+        mockMvc.perform(get("/career").param("lang", "en"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("UI/UX Designer")));
+        mockMvc.perform(get("/privacy/policy").param("lang", "en"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Information we collect")));
+        mockMvc.perform(get("/term-condition").param("lang", "en"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Intellectual property")));
+    }
+
     @TestConfiguration(proxyBeanMethods = false)
     static class TestConfig {
 
