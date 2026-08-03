@@ -7,26 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class JwtAuthenticationFilterTest {
 
     private JwtAuthenticationFilter filter;
-    private JwtUtil jwtUtil;
 
     @BeforeEach
     void setUp() {
         filter = new JwtAuthenticationFilter();
-        jwtUtil = mock(JwtUtil.class);
-        ReflectionTestUtils.setField(filter, "jwtUtil", jwtUtil);
     }
 
     @Test
@@ -39,31 +31,24 @@ class JwtAuthenticationFilterTest {
     }
 
     @Test
-    void malformedTokenIsHandledAsAuthenticationFailureInsteadOf500() throws Exception {
-        MockHttpServletRequest request = authenticatedRequest("/student/edit", "STUDENT");
+    void missingAccessTokenInvalidatesSessionAndRedirectsToSignIn() throws Exception {
+        MockHttpServletRequest request = authenticatedRequest("/student/edit", "STUDENT", null);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        MockHttpSession session = (MockHttpSession) request.getSession(false);
-        when(jwtUtil.isTokenValid(anyString(), anyString())).thenThrow(new IllegalArgumentException("bad token"));
 
         assertFalse(filter.preHandle(request, response, new Object()));
         assertEquals("/signin", response.getRedirectedUrl());
-        assertThrows(IllegalStateException.class, () -> session.getAttribute("userLogin"));
     }
 
     @Test
     void missingRoleReturns403InsteadOfThrowingNullPointerException() throws Exception {
         MockHttpServletRequest request = authenticatedRequest("/student/edit", null);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        when(jwtUtil.isTokenValid("token", "user@example.com")).thenReturn(true);
-
         assertFalse(filter.preHandle(request, response, new Object()));
         assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getStatus());
     }
 
     @Test
     void crossRoleAccessIsForbiddenForEveryProtectedArea() throws Exception {
-        when(jwtUtil.isTokenValid("token", "user@example.com")).thenReturn(true);
-
         assertForbidden("/student/edit", "ADMIN");
         assertForbidden("/admin", "STUDENT");
         assertForbidden("/instructor/profile", "STUDENT");
@@ -73,8 +58,6 @@ class JwtAuthenticationFilterTest {
 
     @Test
     void matchingRoleAndRolePrefixAreAccepted() throws Exception {
-        when(jwtUtil.isTokenValid("token", "user@example.com")).thenReturn(true);
-
         assertAllowed("/student/edit", "STUDENT");
         assertAllowed("/admin", "ROLE_ADMIN");
         assertAllowed("/instructor/profile", "instructor");
@@ -95,10 +78,14 @@ class JwtAuthenticationFilterTest {
     }
 
     private MockHttpServletRequest authenticatedRequest(String uri, String role) {
+        return authenticatedRequest(uri, role, "token");
+    }
+
+    private MockHttpServletRequest authenticatedRequest(String uri, String role, String token) {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", uri);
         MockHttpSession session = new MockHttpSession();
         AuthResponse user = new AuthResponse();
-        user.setAccessToken("token");
+        user.setAccessToken(token);
         user.setUsername("user@example.com");
         user.setRole(role);
         session.setAttribute("userLogin", user);

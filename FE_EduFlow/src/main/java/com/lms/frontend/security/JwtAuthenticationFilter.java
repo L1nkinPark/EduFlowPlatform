@@ -4,7 +4,6 @@ import com.lms.frontend.model.response.AuthResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,9 +11,6 @@ import java.util.Locale;
 
 @Component
 public class JwtAuthenticationFilter implements HandlerInterceptor {
-
-    @Autowired
-    private JwtUtil jwtUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -29,17 +25,10 @@ public class JwtAuthenticationFilter implements HandlerInterceptor {
             return redirectToSignIn(request, response);
         }
 
-        try {
-            if (!jwtUtil.isTokenValid(userLogin.getAccessToken(), userLogin.getUsername())) {
-                session.invalidate();
-                return redirectToSignIn(request, response);
-            }
-        } catch (RuntimeException invalidToken) {
-            // A malformed/expired token is an authentication failure, not a server error.
-            session.invalidate();
-            return redirectToSignIn(request, response);
-        }
-
+        // This session is server-side and is populated only after backend login.
+        // The backend remains the authority that validates the bearer token on
+        // every protected API call; the frontend must not require a copy of the
+        // backend signing secret merely to route an existing session.
         String requiredRole = requiredRole(request.getRequestURI(), request.getContextPath());
         String userRole = normalizeRole(userLogin.getRole());
         if (requiredRole != null && !requiredRole.equals(userRole)) {

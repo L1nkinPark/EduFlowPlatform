@@ -89,6 +89,34 @@ class MainTests {
     }
 
     @Test
+    void backendFailureIsNotMisreportedAsWrongPassword() throws Exception {
+        ApiResponse<AuthResponse> response = new ApiResponse<>();
+        response.error("Internal server error");
+        when(accountService.login(any(LoginRequest.class))).thenReturn(response);
+
+        mockMvc.perform(post("/signin")
+                        .param("username", "student@example.com")
+                        .param("password", "valid-looking-password")
+                        .param("lang", "en"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(
+                        "Sign-in is temporarily unavailable. Please try again shortly.")))
+                .andExpect(content().string(not(containsString(
+                        "The email, username, or password is incorrect."))));
+    }
+
+    @Test
+    void successfulRegistrationShowsConfirmationOnSignInPage() throws Exception {
+        mockMvc.perform(get("/signin")
+                        .param("register_success", "true")
+                        .param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data-testid=\"login-success\"")))
+                .andExpect(content().string(containsString(
+                        "Tạo tài khoản thành công. Bạn có thể đăng nhập ngay bây giờ.")));
+    }
+
+    @Test
     void signUpPageUsesSameOriginOtpApiInProduction() throws Exception {
         mockMvc.perform(get("/signup"))
                 .andExpect(status().isOk())
