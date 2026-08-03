@@ -141,12 +141,30 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    void testLogin_NotFound() {
+    void testLogin_AcceptsEmailWhenLegacyUsernameIsDifferent() {
+        loginRequest.setUsername(" JOHN@TEST.COM ");
+        when(userService.findByUsername("john@test.com")).thenReturn(null);
+        when(userService.findByEmail("john@test.com")).thenReturn(Optional.of(account));
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(null);
+        when(jwtToken.generateToken(any(Map.class), any(CustomUserDetails.class))).thenReturn("accessToken123");
+        when(jwtToken.generateRefreshToken(any(CustomUserDetails.class))).thenReturn("refreshToken123");
+
+        AuthResponse response = authService.login(loginRequest);
+
+        assertEquals("john", response.getUsername());
+        verify(authenticationManager).authenticate(argThat(authentication ->
+                "john".equals(authentication.getPrincipal())
+                        && "password123".equals(authentication.getCredentials())));
+    }
+
+    @Test
+    void testLogin_NotFound() {
         when(userService.findByUsername("john")).thenReturn(null);
+        when(userService.findByEmail("john")).thenReturn(Optional.empty());
 
         assertThrows(UnauthorizedException.class, () -> authService.login(loginRequest));
         verify(userService, times(1)).findByUsername("john");
+        verify(authenticationManager, never()).authenticate(any());
     }
 }

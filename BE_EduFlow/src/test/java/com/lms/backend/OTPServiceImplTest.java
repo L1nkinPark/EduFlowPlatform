@@ -64,6 +64,15 @@ class OTPServiceImplTest {
     }
 
     @Test
+    void testValidateEmail_NormalizesCaseAndWhitespace() {
+        when(accountRepository.findByEmail("user@example.com")).thenReturn(Optional.of(new Account()));
+
+        assertTrue(otpService.validateEmail("  USER@EXAMPLE.COM "));
+
+        verify(accountRepository).findByEmail("user@example.com");
+    }
+
+    @Test
     void testGenerateAndSendOtp_Success() {
         String email = "user@example.com";
         OTP otpEntity = new OTP();

@@ -21,20 +21,20 @@
     <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
 </head>
 
-<body class="bg-light">
+<body class="bg-light min-vh-100 d-flex flex-column">
     <div th:replace="~{layouts/layout :: header_2}"></div>
 
 
-    <section class="my-4">
-        <div class="container py-5">
+    <section class="flex-grow-1 d-flex align-items-center py-4">
+        <div class="container py-lg-4">
             <div class="row justify-content-center align-items-center">
-                <div class="col-lg-5">
+                <div class="col-lg-5 mb-4 mb-lg-0">
                     <div class="h5 text-muted text-uppercase" th:text="#{forgot.eyebrow}">Forgot password</div>
                     <div class="fw-bold display-5 py-2 text-black mb-2" th:text="#{forgot.hero_title}">Recover your account</div>
                     <p class="lead text-dark-50 mb-0" th:text="#{forgot.hero_desc}">Verify your email to choose a new password.</p>
                 </div>
                 <div class="col-lg-5">
-                    <div class="rounded-3 bg-white shadow-sm p-5 text-center">
+                    <div class="rounded-3 bg-white shadow-sm p-4 p-md-5 text-center">
                         <h3 class="fw-bold text-black mb-3" th:text="#{forgot.form_title}">Forgot password</h3>
                         <p class="text-muted fw-light mb-4" th:text="#{forgot.form_desc}">Enter your registered email and we will send an OTP.</p>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">

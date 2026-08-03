@@ -3,6 +3,9 @@ package com.lms.frontend;
 import com.lms.frontend.service.CategoryService;
 import com.lms.frontend.service.CourseService;
 import com.lms.frontend.service.PublicStatsService;
+import com.lms.frontend.service.AccountService;
+import com.lms.frontend.model.request.LoginRequest;
+import com.lms.frontend.model.response.AuthResponse;
 import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.model.response.CourseResponse;
 import org.junit.jupiter.api.Test;
@@ -23,7 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +44,9 @@ class MainTests {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private Environment environment;
@@ -58,7 +66,26 @@ class MainTests {
                 .andExpect(model().attribute("currentUri", "/signin"))
                 .andExpect(model().attributeExists("user"))
                 .andExpect(content().string(containsString("action=\"/signin\"")))
+                .andExpect(content().string(containsString("Email hoặc tên đăng nhập")))
+                .andExpect(content().string(containsString("min-vh-100 d-flex flex-column")))
+                .andExpect(content().string(not(containsString("Ghi nhớ đăng nhập"))))
                 .andExpect(content().string(containsString("Đăng nhập vào</span> <span class=\"text-primary\">EduFlow")));
+    }
+
+    @Test
+    void failedSignInShowsLocalizedVisibleError() throws Exception {
+        ApiResponse<AuthResponse> response = new ApiResponse<>();
+        response.error("invalid credentials");
+        when(accountService.login(any(LoginRequest.class))).thenReturn(response);
+
+        mockMvc.perform(post("/signin")
+                        .param("username", "legacy@example.com")
+                        .param("password", "wrong-password")
+                        .param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("signin"))
+                .andExpect(content().string(containsString("data-testid=\"login-error\"")))
+                .andExpect(content().string(containsString("Email, tên đăng nhập hoặc mật khẩu không chính xác.")));
     }
 
     @Test
@@ -259,6 +286,12 @@ class MainTests {
         @Primary
         PublicStatsService publicStatsService() {
             return () -> null;
+        }
+
+        @Bean
+        @Primary
+        AccountService accountService() {
+            return mock(AccountService.class);
         }
     }
 

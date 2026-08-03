@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -97,37 +98,44 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request) {
+        String identifier = request.getUsername().trim().toLowerCase(Locale.ROOT);
+        Account user = userService.findByUsername(identifier);
+        if (user == null) {
+            user = userService.findByEmail(identifier).orElse(null);
+        }
+        if (user == null) {
+            throw new UnauthorizedException("The username or password is incorrect.");
+        }
+
+        // Authenticate with the account's canonical username. Password-reset uses
+        // email, so legacy accounts whose username differs from their email must
+        // still be able to sign in with either identifier.
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
+                        user.getUsername(),
                         request.getPassword()
                 )
         );
 
-        Account user = userService.findByUsername(request.getUsername());
-        if (user != null) {
-            CustomUserDetails userSecurity = new CustomUserDetails(user);
+        CustomUserDetails userSecurity = new CustomUserDetails(user);
 
-            Map<String, Object> extraClaims = new HashMap<>();
-            extraClaims.put("username", user.getUsername());
-            extraClaims.put("authorities", userSecurity.getAuthorities());
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("username", user.getUsername());
+        extraClaims.put("authorities", userSecurity.getAuthorities());
 
-            String accessToken = jwtToken.generateToken(extraClaims, userSecurity);
-            String refreshToken = jwtToken.generateRefreshToken(userSecurity);
+        String accessToken = jwtToken.generateToken(extraClaims, userSecurity);
+        String refreshToken = jwtToken.generateRefreshToken(userSecurity);
 
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setFullname(user.getFullName());
-            authResponse.setEmail(user.getEmail());
-            authResponse.setBirthday(user.getBirthday());
-            authResponse.setUsername(user.getUsername());
-            authResponse.setRole(user.getRole());
-            authResponse.setAccessToken(accessToken);
-            authResponse.setRefreshToken(refreshToken);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setFullname(user.getFullName());
+        authResponse.setEmail(user.getEmail());
+        authResponse.setBirthday(user.getBirthday());
+        authResponse.setUsername(user.getUsername());
+        authResponse.setRole(user.getRole());
+        authResponse.setAccessToken(accessToken);
+        authResponse.setRefreshToken(refreshToken);
 
-            return authResponse;
-        }
-
-        throw new UnauthorizedException("Account is unavailable.");
+        return authResponse;
     }
 
     @Override

@@ -19,19 +19,19 @@
     <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
 </head>
 
-<body class="bg-light">
+<body class="bg-light min-vh-100 d-flex flex-column">
     <div th:replace="~{layouts/layout :: header_2}"></div>
-    <section class="my-4">
-        <div class="container py-5">
+    <section class="flex-grow-1 d-flex align-items-center py-4">
+        <div class="container py-lg-4">
             <div class="row justify-content-center align-items-center">
-                <div class="col-lg-5">
+                <div class="col-lg-5 mb-4 mb-lg-0">
                     <div class="h5 text-muted text-uppercase"><span th:text="#{auth.signup}">Sign up to</span> <span class="text-primary">EduFlow</span></div>
                     <div class="fw-bold display-5 py-2 text-black mb-2" th:text="#{auth.signup_headline}">Join the largest online community for creatives</div>
                     <p class="lead text-dark-50 mb-0" th:text="#{auth.signup_sub}">Learn from expert professionals and grow your skills.
                     </p>
                 </div>
                 <div class="col-lg-5">
-                    <div class="text-center rounded-3 bg-white shadow-sm p-5">
+                    <div class="text-center rounded-3 bg-white shadow-sm p-4 p-md-5">
                         <div th:if="${error}" class="alert alert-danger mb-3" role="alert" th:text="${error}"></div>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
                             <!-- Trường nhập email -->

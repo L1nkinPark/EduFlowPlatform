@@ -36,7 +36,7 @@ public class OTPServiceImpl {
 
     // Phương thức để kiểm tra email tồn tại trong cơ sở dữ liệu
     public boolean validateEmail(String email) {
-        Optional<Account> account = accountRepository.findByEmail(email);
+        Optional<Account> account = accountRepository.findByEmail(normalizeEmail(email));
         return account.isPresent();  // Trả về true nếu tồn tại, false nếu không
     }
 
