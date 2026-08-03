@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,12 +70,10 @@ public class CourseController {
 
     // Danh sách course thuộc về instructor đang đăng nhập (dùng cho trang "My Courses" của instructor).
     @GetMapping("/mine")
+    @PreAuthorize("hasRole('INSTRUCTOR') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getMyCourses(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        requireCourseManager(userDetails);
         ApiResponse response = new ApiResponse();
-        if (userDetails == null) {
-            response.error("User not authenticated");
-            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).body(response);
-        }
 
         List<Course> courses = courseRepository.findByAccount(userDetails.getAccount());
         response.ok("OK", courseMapper.convertToDTO(courses));
@@ -147,6 +146,14 @@ public class CourseController {
     private void requireAuthenticated(CustomUserDetails userDetails) {
         if (userDetails == null || userDetails.getAccount() == null) {
             throw new UnauthorizedException("Authentication required.");
+        }
+    }
+
+    private void requireCourseManager(CustomUserDetails userDetails) {
+        requireAuthenticated(userDetails);
+        String role = userDetails.getAccount().getRole();
+        if (!"INSTRUCTOR".equalsIgnoreCase(role) && !"ADMIN".equalsIgnoreCase(role)) {
+            throw new ForbiddenException("Instructor or admin privileges required.");
         }
     }
 }

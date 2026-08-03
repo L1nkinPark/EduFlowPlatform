@@ -102,14 +102,14 @@ public class GlobalExceptionHandler {
         return error(ex.getMessage());
     }
 
-    // Ném ra bởi @PreAuthorize khi caller không có role phù hợp (ví dụ không phải ADMIN).
+    // Ném ra bởi @PreAuthorize khi caller không có role phù hợp.
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     public ApiResponse handleAccessDeniedException(org.springframework.security.access.AccessDeniedException ex) {
         ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.error("Access denied: admin privileges required.");
+        apiResponse.error("Access denied: insufficient privileges.");
 
         return apiResponse;
     }

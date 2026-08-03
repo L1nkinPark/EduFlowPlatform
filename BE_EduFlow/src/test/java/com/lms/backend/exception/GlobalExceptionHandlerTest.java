@@ -38,6 +38,13 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    void deniedRoleReturnsGeneric403InsteadOfIncorrectAdminMessage() throws Exception {
+        mockMvc.perform(get("/test/forbidden"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("Access denied: insufficient privileges."));
+    }
+
+    @Test
     void expectedBusinessConflictReturns409InsteadOf500() throws Exception {
         mockMvc.perform(get("/test/conflict"))
                 .andExpect(status().isConflict());
@@ -66,6 +73,11 @@ class GlobalExceptionHandlerTest {
         @GetMapping("/test/unauthorized")
         void unauthorized() {
             throw new UnauthorizedException("Authentication required");
+        }
+
+        @GetMapping("/test/forbidden")
+        void forbidden() {
+            throw new org.springframework.security.access.AccessDeniedException("Denied");
         }
 
         @GetMapping("/test/conflict")
