@@ -125,7 +125,8 @@ public class CourseServiceImplTest {
     }
 
     @Test
-    void testSaveCourse_Success() {
+    void testCreateCourseUsesPost() {
+        courseResponse.setCourseId(null);
         ApiResponse<CourseResponse> apiResponse = new ApiResponse<>();
         apiResponse.setStatus("SUCCESS");
         apiResponse.setPayload(courseResponse);
@@ -142,12 +143,35 @@ public class CourseServiceImplTest {
 
         assertNotNull(result);
         assertEquals("SUCCESS", result.getStatus());
-        assertEquals("course123", result.getPayload().getCourseId());
+        assertSame(courseResponse, result.getPayload());
         verify(restTemplate, times(1)).exchange(
                 anyString(),
                 eq(HttpMethod.POST),
                 any(HttpEntity.class),
                 any(ParameterizedTypeReference.class)
         );
+    }
+
+    @Test
+    void testUpdateCourseUsesPutAndExistingId() {
+        ApiResponse<CourseResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setStatus("SUCCESS");
+        apiResponse.setPayload(courseResponse);
+        when(restTemplate.exchange(
+                contains("/api/courses/course123"),
+                eq(HttpMethod.PUT),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class)
+        )).thenReturn(new ResponseEntity<>(apiResponse, HttpStatus.OK));
+
+        ApiResponse<CourseResponse> result = courseService.saveCourse(courseResponse);
+
+        assertNotNull(result);
+        assertEquals("course123", result.getPayload().getCourseId());
+        verify(restTemplate).exchange(
+                contains("/api/courses/course123"),
+                eq(HttpMethod.PUT),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class));
     }
 }

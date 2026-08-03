@@ -6,6 +6,8 @@ import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.service.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,9 @@ public class AdminInstructorController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping
     public String listInstructors(Model model) {
@@ -42,19 +47,25 @@ public class AdminInstructorController {
     public String createInstructor(@Valid @ModelAttribute("newInstructor") SignUpRequest newInstructor,
                                     BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error", "Vui lòng điền đầy đủ thông tin hợp lệ.");
+            model.addAttribute("error", messageSource.getMessage(
+                    "admin.instructor_invalid", null, LocaleContextHolder.getLocale()));
             return listInstructors(model);
         }
 
-        newInstructor.setUsername(newInstructor.getUsername() != null ? newInstructor.getUsername() : newInstructor.getEmail());
+        if (newInstructor.getUsername() == null || newInstructor.getUsername().isBlank()) {
+            newInstructor.setUsername(newInstructor.getEmail());
+        }
         ApiResponse<?> apiResponse = adminService.createInstructor(newInstructor);
 
         if (apiResponse == null || !"SUCCESS".equals(apiResponse.getStatus())) {
-            model.addAttribute("error", apiResponse != null ? apiResponse.getMessage() : "Tạo tài khoản instructor thất bại.");
+            model.addAttribute("error", messageSource.getMessage(
+                    "admin.instructor_create_failed", null, LocaleContextHolder.getLocale()));
             return listInstructors(model);
         }
 
-        model.addAttribute("success", "Tạo tài khoản instructor thành công: " + newInstructor.getUsername());
+        model.addAttribute("success", messageSource.getMessage(
+                "admin.instructor_created", new Object[]{newInstructor.getUsername()},
+                LocaleContextHolder.getLocale()));
         return listInstructors(model);
     }
 }

@@ -4,6 +4,8 @@ import com.lms.frontend.model.response.ApiResponse;
 import com.lms.frontend.model.response.CourseResponse;
 import com.lms.frontend.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class InstructorCourseListController {
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping("/add")
     public String showAddCourseForm(Model model, @RequestParam(required = false) String courseId) {
@@ -34,9 +39,15 @@ public class InstructorCourseListController {
     }
 
     @PostMapping("/add")
-    public String processAddCourse(CourseResponse course) {
-        courseService.saveCourse(course);
-        return "redirect:/instructor/mycourse";
+    public String processAddCourse(CourseResponse course, Model model) {
+        ApiResponse<CourseResponse> response = courseService.saveCourse(course);
+        if (response == null || !"SUCCESS".equals(response.getStatus()) || response.getPayload() == null) {
+            model.addAttribute("course", course);
+            model.addAttribute("error", messageSource.getMessage(
+                    "instructor.course_save_failed", null, LocaleContextHolder.getLocale()));
+            return "instructormng-course-add";
+        }
+        return "redirect:/instructor/mycourse?saved=true";
     }
 
     // Alias for the old /instructor/courses/list route so any stale bookmarks/links

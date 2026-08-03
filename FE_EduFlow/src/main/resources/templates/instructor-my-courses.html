@@ -20,13 +20,14 @@
             <p class="text-muted mb-0" th:text="#{instructor.my_courses_desc}">Courses you teach</p>
         </div>
         <a class="btn btn-primary" th:href="@{/instructor/courses/add}">
-            <i class="bi bi-plus-lg"></i> New Course
+            <i class="bi bi-plus-lg"></i> <span th:text="#{nav.new_course}">New Course</span>
         </a>
     </div>
 </section>
 
 <div class="pt-5 pb-5">
     <div class="container">
+        <div th:if="${success}" class="alert alert-success" role="status" th:text="${success}"></div>
         <div class="card border-light">
             <div class="p-0 card-body">
                 <div class="table-responsive border-0">
@@ -61,10 +62,10 @@
                             </td>
                             <td>
                                 <a class="btn btn-sm btn-outline-primary" th:href="@{/instructor/courses/content(courseId=${course.courseId})}">
-                                    <i class="bi bi-collection-play"></i> Manage Content
+                                    <i class="bi bi-collection-play"></i> <span th:text="#{instructor.manage_content}">Manage Content</span>
                                 </a>
                                 <a class="btn btn-sm btn-outline-secondary" th:href="@{/instructor/courses/add(courseId=${course.courseId})}">
-                                    Edit
+                                    <span th:text="#{common.edit}">Edit</span>
                                 </a>
                             </td>
                         </tr>

@@ -178,9 +178,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ApiResponse<CourseResponse> saveCourse(CourseResponse courseResponse) {
         try {
+            boolean updating = courseResponse.getCourseId() != null
+                    && !courseResponse.getCourseId().isBlank();
+            String targetUrl = updating ? apiUrl + "/" + courseResponse.getCourseId() : apiUrl;
+            HttpMethod method = updating ? HttpMethod.PUT : HttpMethod.POST;
             ResponseEntity<ApiResponse<CourseResponse>> responseEntity = restTemplate.exchange(
-                    apiUrl,
-                    HttpMethod.POST,
+                    targetUrl,
+                    method,
                     getAuthorizedEntity(courseResponse),
                     new ParameterizedTypeReference<ApiResponse<CourseResponse>>() {}
             );
