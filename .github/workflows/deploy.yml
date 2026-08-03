@@ -11,7 +11,10 @@ on:
 
 concurrency:
   group: eduflow-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  # Only the newest main revision should reach production. Keeping stale runs
+  # queued deploys old images before the actual fix and needlessly extends the
+  # period in which users can still hit a known bug.
+  cancel-in-progress: true
 
 permissions:
   contents: read
