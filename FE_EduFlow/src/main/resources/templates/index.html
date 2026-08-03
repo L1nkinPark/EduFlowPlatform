@@ -79,16 +79,18 @@
                         </div>
                         <div class="card-footer border-0 bg-white border-top p-3">
                              <div class="d-grid">
-                                 <button th:if="${!enrolledCourseIds.contains(course.courseId)}" class="btn btn-primary">
+                                 <div th:if="${!enrolledCourseIds.contains(course.courseId)}" class="btn btn-primary" aria-hidden="true">
                                      <i class="bi bi-cart-fill"></i> <span th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
-                                 </button>
-                                 <button th:if="${enrolledCourseIds.contains(course.courseId)}" class="btn btn-success">
+                                 </div>
+                                 <div th:if="${enrolledCourseIds.contains(course.courseId)}" class="btn btn-success" aria-hidden="true">
                                      <i class="bi bi-play-circle-fill"></i> <span th:text="#{courses.continue_learning}">Continue learning</span>
-                                 </button>
+                                 </div>
                              </div>
                         </div>
-                        <a th:if="${!enrolledCourseIds.contains(course.courseId)}" th:href="@{'/course/detail?courseId=' + ${course.courseId}}" class="stretched-link"></a>
-                        <a th:if="${enrolledCourseIds.contains(course.courseId)}" th:href="@{/course/learn(courseId=${course.courseId})}" class="stretched-link"></a>
+                        <a th:if="${!enrolledCourseIds.contains(course.courseId)}" th:href="@{'/course/detail?courseId=' + ${course.courseId}}"
+                           class="stretched-link" th:aria-label="${course.courseName}"></a>
+                        <a th:if="${enrolledCourseIds.contains(course.courseId)}" th:href="@{/course/learn(courseId=${course.courseId})}"
+                           class="stretched-link" th:aria-label="${course.courseName}"></a>
                     </div>
                 </div>
 
@@ -176,7 +178,8 @@
                         <div class="card-body p-3">
                             <h6 class="card-title m-0" th:text="${category.categoryName}">Category</h6>
                         </div>
-                        <a th:href="@{/course/all(categoryId=${category.categoryId})}" class="stretched-link"></a>
+                        <a th:href="@{/course/all(categoryId=${category.categoryId})}" class="stretched-link"
+                           th:aria-label="${category.categoryName}"></a>
                     </div>
                 </div>
             </div>
@@ -297,23 +300,10 @@
         </div>
     </div>
     <div th:replace="~{layouts/layout :: footer}"></div>
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-        data-cf-beacon='{"rayId":"8d693aca9dabdd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
-        crossorigin="anonymous"></script>
-
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/vendor/slick/slick/slick.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
 </body>
-
-<script th:src="@{/vendor/jquery/jquery.min.js}" type="cd13322a61291fada66bc5d3-text/javascript"></script>
-
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}" type="cd13322a61291fada66bc5d3-text/javascript">
-</script>
-
-<script th:src="@{/vendor/slick/slick/slick.min.js}" type="cd13322a61291fada66bc5d3-text/javascript"></script>
-
-<script th:src="@{/js/custom.js}" type="cd13322a61291fada66bc5d3-text/javascript"></script>
-<script th:src="@{/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js}"
-    data-cf-settings="cd13322a61291fada66bc5d3-|49" defer></script>
 
 </html>

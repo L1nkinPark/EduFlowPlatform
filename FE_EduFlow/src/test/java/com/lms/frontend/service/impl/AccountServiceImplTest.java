@@ -123,6 +123,17 @@ public class AccountServiceImplTest {
     }
 
     @Test
+    void authResponseAcceptsBackendFullnameField() throws Exception {
+        AuthResponse response = new ObjectMapper().readValue(
+                "{\"fullname\":\"Student E2E\",\"email\":\"student@example.com\",\"username\":\"student\",\"role\":\"STUDENT\"}",
+                AuthResponse.class
+        );
+
+        assertEquals("Student E2E", response.getFullName());
+        assertEquals("student@example.com", response.getEmail());
+    }
+
+    @Test
     void testLogin_Error() {
         String errorJson = "{\"status\":\"ERROR\",\"message\":\"Invalid credentials\"}";
         HttpClientErrorException exception = new HttpClientErrorException(

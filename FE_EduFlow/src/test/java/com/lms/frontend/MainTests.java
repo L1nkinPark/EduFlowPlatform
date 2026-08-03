@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -127,9 +128,45 @@ class MainTests {
                 .andExpect(content().string(containsString("response.status === 409")))
                 .andExpect(content().string(containsString("emailRegistered")))
                 .andExpect(content().string(containsString("/api/otp/verify-otp")))
+                .andExpect(content().string(containsString("purpose=SIGNUP")))
+                .andExpect(content().string(containsString("data-testid=\"signup-otp-status\"")))
+                .andExpect(content().string(containsString("async function verifyOtp(button)")))
                 .andExpect(content().string(containsString("placeholder=\"Tên\"")))
                 .andExpect(content().string(containsString("placeholder=\"Họ\"")))
+                .andExpect(content().string(not(containsString("alert("))))
+                .andExpect(content().string(not(containsString("rocket-loader"))))
+                .andExpect(content().string(not(containsString("static.cloudflareinsights.com"))))
                 .andExpect(content().string(not(containsString("name=\"firstName\" class=\"form-control\" placeholder=\"Họ và tên\""))));
+    }
+
+    @Test
+    void publicTemplatesDoNotDependOnCopiedCloudflareScriptLoader() throws Exception {
+        for (String template : java.util.List.of(
+                "404.html", "about.html", "contact.html", "courses.html",
+                "index.html", "signin.html", "signup.html", "successful.html")) {
+            String html = new ClassPathResource("templates/" + template)
+                    .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+            assertFalse(html.contains("static.cloudflareinsights.com"), template);
+            assertFalse(html.contains("rocket-loader"), template);
+            assertFalse(html.matches("(?s).*type=\"[0-9a-f]{20,}-text/javascript\".*"), template);
+        }
+    }
+
+    @Test
+    void marketplaceCardsAndAccountMenusHaveAccessibleNames() throws Exception {
+        String home = new ClassPathResource("templates/index.html")
+                .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        String courses = new ClassPathResource("templates/courses.html")
+                .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        String layout = new ClassPathResource("templates/layouts/layout.html")
+                .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+
+        assertTrue(home.contains("class=\"stretched-link\" th:aria-label=\"${course.courseName}\""));
+        assertTrue(courses.contains("class=\"stretched-link\" th:aria-label=\"${course.courseName}\""));
+        assertFalse(home.contains("<button th:if=\"${!enrolledCourseIds.contains(course.courseId)}\""));
+        assertFalse(courses.contains("<button th:if=\"${!enrolledCourseIds.contains(course.courseId)}\""));
+        assertEquals(2, countOccurrences(layout, "th:aria-label=\"#{nav.account_menu}\""));
+        assertEquals(2, countOccurrences(layout, "th:aria-label=\"#{nav.language_menu}\""));
     }
 
     @Test
@@ -350,6 +387,16 @@ class MainTests {
                 .andExpect(content().string(containsString("data-testid=\"checkout-error\"")))
                 .andExpect(content().string(containsString(
                         "Thanh toán trực tuyến đang tạm thời gián đoạn.")));
+    }
+
+    private static int countOccurrences(String source, String needle) {
+        int count = 0;
+        int index = 0;
+        while ((index = source.indexOf(needle, index)) >= 0) {
+            count++;
+            index += needle.length();
+        }
+        return count;
     }
 
     @TestConfiguration(proxyBeanMethods = false)

@@ -33,31 +33,45 @@
                 <div class="col-lg-5">
                     <div class="text-center rounded-3 bg-white shadow-sm p-4 p-md-5">
                         <div th:if="${error}" class="alert alert-danger mb-3" role="alert" th:text="${error}"></div>
+                        <div id="signupOtpStatus" class="d-none text-start mb-3" role="status" aria-live="polite"
+                             data-testid="signup-otp-status"></div>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
                             <!-- Trường nhập email -->
                             <div class="input-group">
-                                <input type="email" id="email" class="form-control" th:placeholder="#{auth.enter_email}" required>
-                                <button type="button" onclick="sendOtp(this)" class="btn btn-primary" th:text="#{auth.send_otp}">Send OTP</button>
+                                <label for="email" class="visually-hidden" th:text="#{auth.enter_email}">Email</label>
+                                <input type="email" id="email" class="form-control" th:placeholder="#{auth.enter_email}"
+                                       autocomplete="email" required>
+                                <button id="sendOtpButton" type="button" onclick="sendOtp(this)" class="btn btn-primary"
+                                        th:text="#{auth.send_otp}">Send OTP</button>
                             </div>
 
                             <!-- Trường nhập OTP -->
                             <div class="input-group mt-3">
-                                <input type="text" id="otp" class="form-control" th:placeholder="#{auth.enter_otp}" required>
-                                <button type="button" onclick="verifyOtp()" class="btn btn-success" th:text="#{auth.verify_otp}">Verify OTP</button>
+                                <label for="otp" class="visually-hidden" th:text="#{auth.enter_otp}">OTP</label>
+                                <input type="text" id="otp" class="form-control" th:placeholder="#{auth.enter_otp}"
+                                       inputmode="numeric" autocomplete="one-time-code" maxlength="6" required>
+                                <button id="verifyOtpButton" type="button" onclick="verifyOtp(this)" class="btn btn-success"
+                                        th:text="#{auth.verify_otp}">Verify OTP</button>
                             </div>
                         </form>
                         <form action="#" th:action="@{/register/process}" th:object="${userRegister}" method="POST" class="d-grid gap-3 mb-2">
                             <input type="hidden" th:field="*{email}" id="hiddenEmail">
                             <input type="hidden" th:field="*{otpToken}" id="otpToken">
                             <div class="d-grid d-md-flex gap-3">
-                                <input type="text" th:field="*{firstName}" class="form-control" th:placeholder="#{auth.firstname}" required>
-                                <input type="text" th:field="*{lastName}" class="form-control" th:placeholder="#{auth.lastname}" required>
+                                <label for="firstName" class="visually-hidden" th:text="#{auth.firstname}">First name</label>
+                                <input id="firstName" type="text" th:field="*{firstName}" class="form-control"
+                                       th:placeholder="#{auth.firstname}" autocomplete="given-name" required>
+                                <label for="lastName" class="visually-hidden" th:text="#{auth.lastname}">Last name</label>
+                                <input id="lastName" type="text" th:field="*{lastName}" class="form-control"
+                                       th:placeholder="#{auth.lastname}" autocomplete="family-name" required>
                             </div>
-                            
-                            <input type="password" th:field="*{password}" class="form-control"
+
+                            <label for="password" class="visually-hidden" th:text="#{auth.password}">Password</label>
+                            <input id="password" type="password" th:field="*{password}" class="form-control"
                                    th:placeholder="#{auth.password}" minlength="6" maxlength="72"
                                    autocomplete="new-password" required>
-                            <input type="password" th:field="*{confirmPassword}" class="form-control"
+                            <label for="confirmPassword" class="visually-hidden" th:text="#{auth.confirm_password}">Confirm password</label>
+                            <input id="confirmPassword" type="password" th:field="*{confirmPassword}" class="form-control"
                                    th:placeholder="#{auth.confirm_password}" minlength="6" maxlength="72"
                                    autocomplete="new-password" required>
                             <div class="form-check text-start">
@@ -232,13 +246,6 @@
         </div>
     </div>
     <div th:replace="~{layouts/layout :: footer}"></div>
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-        data-cf-beacon='{"rayId":"8d693aff5a2cdd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
-        crossorigin="anonymous"></script>
-</body>
-
 <script th:inline="javascript">
     const backendUrl = /*[[${backendUrl}]]*/ 'http://localhost:8888';
     const otpApiBaseUrl = ['localhost', '127.0.0.1'].includes(window.location.hostname)
@@ -254,73 +261,88 @@
         verifyError: /*[[#{auth.otp_verify_error}]]*/ 'OTP verification failed'
     };
 
+    function showSignupStatus(message, success) {
+        const status = document.getElementById('signupOtpStatus');
+        status.textContent = message;
+        status.className = `alert ${success ? 'alert-success' : 'alert-danger'} text-start mb-3`;
+    }
+
     async function sendOtp(button) {
         const emailInput = document.getElementById("email");
         const email = emailInput.value.trim();
         if (!email || !emailInput.checkValidity()) {
             emailInput.reportValidity();
-            alert(otpMessages.emailFirst);
+            showSignupStatus(otpMessages.emailFirst, false);
             return;
         }
 
         button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+        document.getElementById('signUpBtn').disabled = true;
+        document.getElementById('otpToken').value = '';
         try {
             const response = await fetch(`${otpApiBaseUrl}/api/otp/send-otp-signup?email=${encodeURIComponent(email)}`, {
                 method: "POST"
             });
             if (response.ok) {
-                alert(otpMessages.sent);
+                showSignupStatus(otpMessages.sent, true);
             } else if (response.status === 409) {
-                alert(otpMessages.emailRegistered);
+                showSignupStatus(otpMessages.emailRegistered, false);
             } else {
-                alert(otpMessages.sendError);
+                showSignupStatus(otpMessages.sendError, false);
             }
         } catch (error) {
             console.error("Error sending OTP:", error);
-            alert(otpMessages.sendError);
+            showSignupStatus(otpMessages.sendError, false);
         } finally {
             button.disabled = false;
+            button.removeAttribute('aria-busy');
         }
     }
 
-    function verifyOtp() {
-        const email = document.getElementById("email").value;
-        const otp = document.getElementById("otp").value;
+    async function verifyOtp(button) {
+        const emailInput = document.getElementById("email");
+        const otpInput = document.getElementById("otp");
+        const email = emailInput.value.trim();
+        const otp = otpInput.value.trim();
         if (!email || !otp) {
-            alert(otpMessages.required);
+            showSignupStatus(otpMessages.required, false);
             return;
         }
-        fetch(`${otpApiBaseUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
-            method: "POST"
-        })
-        .then(response => {
+
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+        try {
+            const response = await fetch(`${otpApiBaseUrl}/api/otp/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&purpose=SIGNUP`, {
+                method: "POST"
+            });
             if (!response.ok) {
-                return response.text().then(text => { throw new Error(text); });
+                showSignupStatus(otpMessages.verifyError, false);
+                button.disabled = false;
+                return;
             }
-            return response.text();
-        })
-        .then(token => {
-            alert(otpMessages.verified);
+            const token = await response.text();
             document.getElementById("hiddenEmail").value = email;
             document.getElementById("otpToken").value = token;
-            document.getElementById("signUpBtn").removeAttribute("disabled");
-        })
-        .catch(error => {
+            document.getElementById("signUpBtn").disabled = false;
+            emailInput.disabled = true;
+            otpInput.disabled = true;
+            document.getElementById('sendOtpButton').disabled = true;
+            showSignupStatus(otpMessages.verified, true);
+        } catch (error) {
             console.error("Error verifying OTP:", error);
-            alert(otpMessages.verifyError);
-        });
+            showSignupStatus(otpMessages.verifyError, false);
+            button.disabled = false;
+        } finally {
+            button.removeAttribute('aria-busy');
+        }
     }
 </script>
 
-<script th:src="@{/vendor/jquery/jquery.min.js}" type="66fbe2c5c451d1f3f45b01f9-text/javascript"></script>
-
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}" type="66fbe2c5c451d1f3f45b01f9-text/javascript">
-</script>
-
-<script th:src="@{/vendor/slick/slick/slick.min.js}" type="66fbe2c5c451d1f3f45b01f9-text/javascript"></script>
-
-<script th:src="@{/js/custom.js}" type="66fbe2c5c451d1f3f45b01f9-text/javascript"></script>
-<script th:src="@{/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js}"
-    data-cf-settings="66fbe2c5c451d1f3f45b01f9-|49" defer></script>
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/slick/slick/slick.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+</body>
 
 </html>

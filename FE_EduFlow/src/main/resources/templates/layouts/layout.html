@@ -60,14 +60,13 @@
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
                         <!-- Language Switcher -->
-                        <div class="dropdown me-2">
-                            <a class="btn btn-outline-light dropdown-toggle rounded-pill px-3 py-1 border-white text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span th:text="${#locale.language == 'vi' ? 'VI' : 'EN'}">EN</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-1 mt-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')" th:text="#{language.english}">English</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')" th:text="#{language.vietnamese}">Vietnamese</a></li>
-                            </ul>
+                        <div class="btn-group me-2" role="group" th:aria-label="#{nav.language_menu}">
+                            <button type="button" class="btn btn-sm btn-outline-light px-2"
+                                    th:classappend="${#locale.language == 'vi'} ? ' active'" th:aria-pressed="${#locale.language == 'vi'}"
+                                    onclick="changeLang('vi')">VI</button>
+                            <button type="button" class="btn btn-sm btn-outline-light px-2"
+                                    th:classappend="${#locale.language != 'vi'} ? ' active'" th:aria-pressed="${#locale.language != 'vi'}"
+                                    onclick="changeLang('en')">EN</button>
                         </div>
                         <script>
                             function changeLang(lang) {
@@ -85,8 +84,9 @@
                         
                         <!-- If logged in -->
                         <div class="dropdown" th:if="${session.userLogin != null}">
-                            <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img th:src="@{/img/globel/avatar.png}" class="img-fluid rounded-circle border shadow-sm me-2" width="35" height="35" />
+                            <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" th:aria-label="#{nav.account_menu}">
+                                <img th:src="@{/img/globel/avatar.png}" class="img-fluid rounded-circle border shadow-sm me-2" width="35" height="35" alt="" />
                                 <span class="fw-semibold text-white" th:text="${session.userLogin.fullName}">User Name</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-2 mt-2">
@@ -181,14 +181,13 @@
                     </ul>
                     <div class="d-flex gap-1 align-items-center main-header-nav-right">
                         <!-- Language Switcher -->
-                        <div class="dropdown me-2">
-                            <a class="btn btn-outline-dark dropdown-toggle rounded-pill px-3 py-1 border-dark text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span th:text="${#locale.language == 'vi' ? 'VI' : 'EN'}">EN</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-1 mt-2">
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('en')" th:text="#{language.english}">English</a></li>
-                                <li><a class="dropdown-item px-3 py-2 rounded" href="#" onclick="changeLang('vi')" th:text="#{language.vietnamese}">Vietnamese</a></li>
-                            </ul>
+                        <div class="btn-group me-2" role="group" th:aria-label="#{nav.language_menu}">
+                            <button type="button" class="btn btn-sm btn-outline-dark px-2"
+                                    th:classappend="${#locale.language == 'vi'} ? ' active'" th:aria-pressed="${#locale.language == 'vi'}"
+                                    onclick="changeLang('vi')">VI</button>
+                            <button type="button" class="btn btn-sm btn-outline-dark px-2"
+                                    th:classappend="${#locale.language != 'vi'} ? ' active'" th:aria-pressed="${#locale.language != 'vi'}"
+                                    onclick="changeLang('en')">EN</button>
                         </div>
                         <script>
                             function changeLang(lang) {
@@ -206,8 +205,9 @@
                         
                         <!-- If logged in -->
                         <div class="dropdown" th:if="${session.userLogin != null}">
-                            <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img th:src="@{/img/globel/avatar.png}" class="img-fluid rounded-circle border shadow-sm me-2" width="35" height="35" />
+                            <a class="d-flex align-items-center dropdown-toggle text-decoration-none" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" th:aria-label="#{nav.account_menu}">
+                                <img th:src="@{/img/globel/avatar.png}" class="img-fluid rounded-circle border shadow-sm me-2" width="35" height="35" alt="" />
                                 <span class="fw-semibold text-dark" th:text="${session.userLogin.fullName}">User Name</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end m-0 border-0 shadow-sm p-2 mt-2">
