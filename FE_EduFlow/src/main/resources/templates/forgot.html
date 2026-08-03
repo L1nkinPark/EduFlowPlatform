@@ -37,23 +37,25 @@
                     <div class="rounded-3 bg-white shadow-sm p-4 p-md-5 text-center">
                         <h3 class="fw-bold text-black mb-3" th:text="#{forgot.form_title}">Forgot password</h3>
                         <p class="text-muted fw-light mb-4" th:text="#{forgot.form_desc}">Enter your registered email and we will send an OTP.</p>
+                        <div id="resetStatus" class="alert d-none text-start" role="status" aria-live="polite"
+                             data-testid="password-reset-status"></div>
                         <form id="otpForm" action="#" method="POST" class="d-grid gap-3 mb-2">
                             <!-- Trường nhập email -->
                             <div class="input-group">
-                                <input type="email" id="email" class="form-control" th:placeholder="#{forgot.email_placeholder}" required>
-                                <button type="button" onclick="sendOtp()" class="btn btn-primary" th:text="#{forgot.send_otp}">Send OTP</button>
+                                <input type="email" id="email" class="form-control" autocomplete="email" th:placeholder="#{forgot.email_placeholder}" required>
+                                <button type="button" id="sendOtpButton" onclick="sendOtp()" class="btn btn-primary" th:text="#{forgot.send_otp}">Send OTP</button>
                             </div>
 
                             <!-- Trường nhập OTP -->
                             <div class="input-group ">
-                                <input type="text" id="otp" class="form-control" th:placeholder="#{forgot.otp_placeholder}" required>
-                                <button type="button" onclick="verifyOtp()" class="btn btn-success" th:text="#{forgot.verify_otp}">Verify OTP</button>
+                                <input type="text" id="otp" class="form-control" inputmode="numeric" autocomplete="one-time-code" th:placeholder="#{forgot.otp_placeholder}" required>
+                                <button type="button" id="verifyOtpButton" onclick="verifyOtp()" class="btn btn-success" th:text="#{forgot.verify_otp}">Verify OTP</button>
                             </div>
 
                             <!-- Form nhập mật khẩu mới (ẩn đi ban đầu) -->
                             <div class="input-group" id="newPasswordForm" style="display:none;">
-                                <input type="password" id="newPassword" class="form-control" th:placeholder="#{forgot.password_placeholder}" minlength="6" required>
-                                <button type="button" onclick="resetPassword()" class="btn btn-primary" th:text="#{forgot.reset_password}">Reset password</button>
+                                <input type="password" id="newPassword" class="form-control" autocomplete="new-password" th:placeholder="#{forgot.password_placeholder}" minlength="6" required>
+                                <button type="button" id="resetPasswordButton" onclick="resetPassword()" class="btn btn-primary" th:text="#{forgot.reset_password}">Reset password</button>
                             </div>
                         </form>
 
@@ -220,11 +222,6 @@
         </div>
     </div>
     <div th:replace="~{layouts/layout :: footer}"></div>
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-        data-cf-beacon='{"rayId":"8d693b00ae31dd3a","version":"2024.10.1","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"dd471ab1978346bbb991feaa79e6ce5c","b":1}'
-        crossorigin="anonymous"></script>
 </body>
 
 <script th:inline="javascript">
@@ -247,117 +244,107 @@
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-    // Kiểm tra email trước khi gửi OTP
-    function sendOtp() {
-        const email = document.getElementById("email").value;
 
-        // Kiểm tra email hợp lệ
+    function showResetStatus(message, kind) {
+        const status = document.getElementById('resetStatus');
+        status.textContent = message;
+        status.className = `alert alert-${kind} text-start`;
+    }
+
+    function setButtonBusy(buttonId, busy) {
+        document.getElementById(buttonId).disabled = busy;
+    }
+
+    async function sendOtp() {
+        const email = document.getElementById("email").value;
         if (!validateEmail(email)) {
-            alert(resetMessages.emailInvalid);
+            showResetStatus(resetMessages.emailInvalid, 'danger');
             return;
         }
 
-        fetch(`${otpApiBaseUrl}/api/password/send-otp?email=` + encodeURIComponent(email), {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(async response => {
+        setButtonBusy('sendOtpButton', true);
+        try {
+            const response = await fetch(`${otpApiBaseUrl}/api/password/send-otp?email=` + encodeURIComponent(email), {
+                method: "POST",
+                headers: {"Content-Type": "application/json"}
+            });
             if (!response.ok) {
-                const message = await response.text();
-                if (response.status === 400 && message.includes("Email not found")) {
-                    throw new Error("EMAIL_NOT_FOUND");
-                }
-                throw new Error("OTP_SEND_FAILED");
+                showResetStatus(response.status === 400
+                    ? resetMessages.emailNotFound
+                    : resetMessages.otpSendFailed, 'danger');
+                return;
             }
-            return response.text();
-        })
-        .then(() => {
-            alert(resetMessages.otpSent);
-        })
-        .catch(error => {
-            alert(error.message === "EMAIL_NOT_FOUND"
-                ? resetMessages.emailNotFound
-                : resetMessages.otpSendFailed);
-        });
+            showResetStatus(resetMessages.otpSent, 'success');
+        } catch (error) {
+            showResetStatus(resetMessages.otpSendFailed, 'danger');
+        } finally {
+            setButtonBusy('sendOtpButton', false);
+        }
     }
 
-    // Xác minh OTP
-    function verifyOtp() {
+    async function verifyOtp() {
         const email = document.getElementById("email").value;
         const otp = document.getElementById("otp").value;
-
-        fetch(`${otpApiBaseUrl}/api/password/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(err => { throw new Error(err); });
-            }
-            return response.text();
-        })
-        .then(data => {
-            passwordResetToken = data;
-            alert(resetMessages.otpVerified);
-            // Hiển thị form nhập mật khẩu mới
-            document.getElementById("newPasswordForm").style.display = "block";
-        })
-        .catch(error => {
-            alert(resetMessages.otpVerifyError);
-        });
-    }
-
-    // Đặt lại mật khẩu
-    function resetPassword() {
-        const email = document.getElementById("email").value;
-        const newPassword = document.getElementById("newPassword").value;
-
-        if (!passwordResetToken || newPassword.length < 6) {
-            alert(resetMessages.resetError);
+        if (!validateEmail(email) || !otp.trim()) {
+            showResetStatus(resetMessages.otpVerifyError, 'danger');
             return;
         }
 
-        fetch(`${otpApiBaseUrl}/api/password/reset`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: email,
-                newPassword: newPassword,
-                otpToken: passwordResetToken,
-            }),
-        })
-        .then(response => {
+        setButtonBusy('verifyOtpButton', true);
+        try {
+            const response = await fetch(`${otpApiBaseUrl}/api/password/verify-otp?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"}
+            });
             if (!response.ok) {
-                return response.text().then(err => { throw new Error(err); });
+                showResetStatus(resetMessages.otpVerifyError, 'danger');
+                return;
             }
-            return response.text();
-        })
-        .then(data => {
-            alert(resetMessages.resetSuccess);
-            window.location.href = "signin"; // Chuyển hướng đến trang đăng nhập
-        })
-        .catch(error => {
-            alert(resetMessages.resetError);
-        });
+            passwordResetToken = await response.text();
+            showResetStatus(resetMessages.otpVerified, 'success');
+            document.getElementById("newPasswordForm").style.display = "flex";
+            document.getElementById("email").disabled = true;
+            document.getElementById("otp").disabled = true;
+            document.getElementById("sendOtpButton").disabled = true;
+        } catch (error) {
+            showResetStatus(resetMessages.otpVerifyError, 'danger');
+        } finally {
+            setButtonBusy('verifyOtpButton', false);
+        }
+    }
+
+    async function resetPassword() {
+        const email = document.getElementById("email").value;
+        const newPassword = document.getElementById("newPassword").value;
+        if (!passwordResetToken || newPassword.length < 6) {
+            showResetStatus(resetMessages.resetError, 'danger');
+            return;
+        }
+
+        setButtonBusy('resetPasswordButton', true);
+        try {
+            const response = await fetch(`${otpApiBaseUrl}/api/password/reset`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email, newPassword, otpToken: passwordResetToken})
+            });
+            if (!response.ok) {
+                showResetStatus(resetMessages.resetError, 'danger');
+                return;
+            }
+            showResetStatus(resetMessages.resetSuccess, 'success');
+            window.location.assign('/signin?password_reset=true');
+        } catch (error) {
+            showResetStatus(resetMessages.resetError, 'danger');
+        } finally {
+            setButtonBusy('resetPasswordButton', false);
+        }
     }
 </script>
 
-
-<script th:src="@{/vendor/jquery/jquery.min.js}" type="68f04101aa52db26d4fcbd56-text/javascript"></script>
-
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}" type="68f04101aa52db26d4fcbd56-text/javascript">
-</script>
-
-<script th:src="@{/vendor/slick/slick/slick.min.js}" type="68f04101aa52db26d4fcbd56-text/javascript"></script>
-
-<script th:src="@{/js/custom.js}" type="68f04101aa52db26d4fcbd56-text/javascript"></script>
-<script th:src="@{/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js}"
-    data-cf-settings="68f04101aa52db26d4fcbd56-|49" defer></script>
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/slick/slick/slick.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
 
 </html>

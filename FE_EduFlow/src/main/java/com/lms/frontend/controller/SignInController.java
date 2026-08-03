@@ -29,7 +29,8 @@ public class SignInController {
 
     @GetMapping
     public String viewPage(Model model,
-                           @RequestParam(name = "register_success", required = false) Boolean registerSuccess) {
+                           @RequestParam(name = "register_success", required = false) Boolean registerSuccess,
+                           @RequestParam(name = "password_reset", required = false) Boolean passwordReset) {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("");
         loginRequest.setPassword("");
@@ -38,6 +39,9 @@ public class SignInController {
         if (Boolean.TRUE.equals(registerSuccess)) {
             model.addAttribute("success", messageSource.getMessage(
                     "auth.register_success", null, LocaleContextHolder.getLocale()));
+        } else if (Boolean.TRUE.equals(passwordReset)) {
+            model.addAttribute("success", messageSource.getMessage(
+                    "auth.password_reset_signin", null, LocaleContextHolder.getLocale()));
         }
 
         return "signin";

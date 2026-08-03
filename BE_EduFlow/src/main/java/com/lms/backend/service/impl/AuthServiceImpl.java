@@ -73,7 +73,9 @@ public class AuthServiceImpl implements AuthService {
 
         // new User
         Account user = new Account();
-        user.setFullName(request.getFullname().trim().toLowerCase());
+        // Names are display data and must retain the user's capitalization.
+        // Only identifiers such as email/username are normalized to lowercase.
+        user.setFullName(request.getFullname().trim());
         user.setEmail(request.getEmail().trim().toLowerCase());
         user.setUsername(request.getUsername().trim().toLowerCase());
         user.setBirthday(request.getBirthday());

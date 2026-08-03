@@ -118,7 +118,7 @@ class MainTests {
 
     @Test
     void signUpPageUsesSameOriginOtpApiInProduction() throws Exception {
-        mockMvc.perform(get("/signup"))
+        mockMvc.perform(get("/signup").param("lang", "vi"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("signup"))
                 .andExpect(model().attributeExists("userRegister"))
@@ -126,7 +126,10 @@ class MainTests {
                 .andExpect(content().string(containsString("/api/otp/send-otp-signup")))
                 .andExpect(content().string(containsString("response.status === 409")))
                 .andExpect(content().string(containsString("emailRegistered")))
-                .andExpect(content().string(containsString("/api/otp/verify-otp")));
+                .andExpect(content().string(containsString("/api/otp/verify-otp")))
+                .andExpect(content().string(containsString("placeholder=\"Tên\"")))
+                .andExpect(content().string(containsString("placeholder=\"Họ\"")))
+                .andExpect(content().string(not(containsString("name=\"firstName\" class=\"form-control\" placeholder=\"Họ và tên\""))));
     }
 
     @Test
@@ -139,7 +142,13 @@ class MainTests {
                 .andExpect(content().string(containsString("/api/password/send-otp")))
                 .andExpect(content().string(containsString("/api/password/verify-otp")))
                 .andExpect(content().string(not(containsString("/api/otp/validate-email"))))
-                .andExpect(content().string(containsString("otpToken: passwordResetToken")));
+                .andExpect(content().string(containsString("otpToken: passwordResetToken")))
+                .andExpect(content().string(containsString("data-testid=\"password-reset-status\"")))
+                .andExpect(content().string(containsString("async function verifyOtp()")))
+                .andExpect(content().string(containsString("/signin?password_reset=true")))
+                .andExpect(content().string(not(containsString("alert("))))
+                .andExpect(content().string(not(containsString("rocket-loader"))))
+                .andExpect(content().string(not(containsString("static.cloudflareinsights.com"))));
     }
 
     @Test
@@ -147,6 +156,34 @@ class MainTests {
         mockMvc.perform(get("/forgot").param("lang", "en"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Recover your account securely")));
+    }
+
+    @Test
+    void passwordResetConfirmationIsShownOnSignInPage() throws Exception {
+        mockMvc.perform(get("/signin")
+                        .param("password_reset", "true")
+                        .param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data-testid=\"login-success\"")))
+                .andExpect(content().string(containsString(
+                        "Đặt lại mật khẩu thành công. Hãy đăng nhập bằng mật khẩu mới.")));
+    }
+
+    @Test
+    void studentProfileAndSecurityFormsHaveAccessibleLabelsAndAutocomplete() throws Exception {
+        String security = new ClassPathResource("templates/student-security.html")
+                .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        String profile = new ClassPathResource("templates/student-edit-profile.html")
+                .getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+
+        assertTrue(security.contains("for=\"currentPassword\""));
+        assertTrue(security.contains("autocomplete=\"current-password\""));
+        assertTrue(security.contains("for=\"newPassword\""));
+        assertTrue(security.contains("autocomplete=\"new-password\""));
+        assertTrue(profile.contains("for=\"fullName\""));
+        assertTrue(profile.contains("autocomplete=\"name\""));
+        assertTrue(profile.contains("for=\"phone\""));
+        assertTrue(profile.contains("autocomplete=\"tel\""));
     }
 
     @Test

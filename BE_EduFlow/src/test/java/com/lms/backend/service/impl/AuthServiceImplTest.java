@@ -88,7 +88,7 @@ public class AuthServiceImplTest {
         AuthResponse response = authService.register(registerRequest);
 
         assertNotNull(response);
-        assertEquals("john doe", response.getFullname());
+        assertEquals("John Doe", response.getFullname());
         assertEquals("john@test.com", response.getEmail());
         assertEquals("john", response.getUsername());
         assertEquals("STUDENT", response.getRole());

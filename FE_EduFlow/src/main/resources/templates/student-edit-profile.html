@@ -40,23 +40,23 @@
                         <form th:action="@{/student/edit}" th:object="${profile}" method="post">
                             <div class="row">
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label" th:text="#{common.username}">Username</label>
-                                    <input type="text" class="form-control" th:value="${account.username}" disabled>
+                                    <label for="profileUsername" class="form-label" th:text="#{common.username}">Username</label>
+                                    <input id="profileUsername" type="text" class="form-control" th:value="${account.username}" disabled>
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label" th:text="#{common.email}">Email</label>
-                                    <input type="text" class="form-control" th:value="${account.email}" disabled>
+                                    <label for="profileEmail" class="form-label" th:text="#{common.email}">Email</label>
+                                    <input id="profileEmail" type="email" class="form-control" th:value="${account.email}" disabled>
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label" th:text="#{common.full_name}">Full name</label>
-                                    <input type="text" class="form-control" th:field="*{fullName}" required>
+                                    <label for="fullName" class="form-label" th:text="#{common.full_name}">Full name</label>
+                                    <input type="text" class="form-control" th:field="*{fullName}" autocomplete="name" required>
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label" th:text="#{common.phone}">Phone number</label>
-                                    <input type="text" class="form-control" th:field="*{phone}" th:placeholder="#{common.not_updated}">
+                                    <label for="phone" class="form-label" th:text="#{common.phone}">Phone number</label>
+                                    <input type="tel" class="form-control" th:field="*{phone}" autocomplete="tel" th:placeholder="#{common.not_updated}">
                                 </div>
                                 <div class="mb-3 col-md-6 col-sm-12">
-                                    <label class="form-label" th:text="#{common.birthday}">Date of birth</label>
+                                    <label for="birthday" class="form-label" th:text="#{common.birthday}">Date of birth</label>
                                     <input type="date" class="form-control" th:field="*{birthday}">
                                 </div>
                             </div>
