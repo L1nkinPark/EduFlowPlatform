@@ -131,6 +131,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+          # Fail fast on a transient or invalid STS credential check instead of
+          # consuming the entire 45-minute deploy job through exponential retry.
+          retry-max-attempts: 3
+          action-timeout-s: 120
 
       - name: Log in to Amazon ECR
         id: login-ecr
