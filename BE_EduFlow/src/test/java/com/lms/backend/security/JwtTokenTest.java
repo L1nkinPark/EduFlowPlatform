@@ -18,7 +18,9 @@ class JwtTokenTest {
         JwtToken issuer = tokenService("stable-infrastructure-secret");
         JwtToken verifier = tokenService("stable-infrastructure-secret");
 
-        String token = issuer.generateToken(Map.of("role", "STUDENT"), user);
+        String token = issuer.generateToken(Map.of(
+                "username", user.getUsername(),
+                "authorities", user.getAuthorities()), user);
 
         assertEquals("student@example.com", verifier.extractUsername(token));
         assertTrue(verifier.isTokenValid(token, user));

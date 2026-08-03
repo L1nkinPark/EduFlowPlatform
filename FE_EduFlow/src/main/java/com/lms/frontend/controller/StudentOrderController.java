@@ -63,7 +63,10 @@ public class StudentOrderController {
             return "redirect:" + apiResponse.getPayload();
         }
 
-        return "redirect:/course/detail?courseId=" + courseId + "&error=checkout_failed";
+        String errorCode = isPaymentConfigurationUnavailable(apiResponse)
+                ? "payment_unavailable"
+                : "checkout_failed";
+        return "redirect:/course/detail?courseId=" + courseId + "&error=" + errorCode;
     }
 
     @GetMapping("/vnpay-callback")
@@ -86,5 +89,13 @@ public class StudentOrderController {
             return "redirect:/course/detail?courseId=" + courseId + "&error=payment_failed";
         }
         return "redirect:/course/all?error=payment_failed";
+    }
+
+    private boolean isPaymentConfigurationUnavailable(ApiResponse<String> response) {
+        if (response == null || response.getMessage() == null) {
+            return false;
+        }
+        String message = response.getMessage();
+        return message.contains("VNPAY_") && message.contains("not configured");
     }
 }

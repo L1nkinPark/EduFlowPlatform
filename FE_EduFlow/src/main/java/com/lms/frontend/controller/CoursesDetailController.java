@@ -8,6 +8,8 @@ import com.lms.frontend.service.OrderService;
 import com.lms.frontend.service.LessonProgressService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +30,14 @@ public class CoursesDetailController {
     @Autowired
     LessonProgressService lessonProgressService;
 
+    @Autowired
+    MessageSource messageSource;
+
     @GetMapping(value = "/detail")
-    public String showDetailCourse(Model model, @RequestParam(required = false) String courseId, HttpSession session) {
+    public String showDetailCourse(Model model,
+                                   @RequestParam(required = false) String courseId,
+                                   @RequestParam(required = false) String error,
+                                   HttpSession session) {
         if (courseId == null || courseId.isBlank()) {
             return "redirect:/course/all";
         }
@@ -81,6 +89,17 @@ public class CoursesDetailController {
             }
         }
         model.addAttribute("relatedCourses", relatedCourses);
+        String errorMessageKey = switch (error == null ? "" : error) {
+            case "payment_unavailable" -> "detail.payment_unavailable";
+            case "payment_failed" -> "detail.payment_failed";
+            case "course_not_purchased" -> "detail.course_not_purchased";
+            case "checkout_failed" -> "detail.checkout_failed";
+            default -> null;
+        };
+        if (errorMessageKey != null) {
+            model.addAttribute("checkoutError", messageSource.getMessage(
+                    errorMessageKey, null, LocaleContextHolder.getLocale()));
+        }
 
         return "courses-detail";
     }

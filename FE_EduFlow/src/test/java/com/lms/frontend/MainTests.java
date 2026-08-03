@@ -295,6 +295,26 @@ class MainTests {
                 .andExpect(content().string(not(containsString("askbootstrap.com"))));
     }
 
+    @Test
+    void courseDetailShowsLocalizedPaymentFailureInsteadOfFailingSilently() throws Exception {
+        CourseResponse course = new CourseResponse();
+        course.setCourseId("course-payment-test");
+        course.setCourseName("Khóa học thanh toán");
+        course.setChapters(java.util.Collections.emptyList());
+        ApiResponse<CourseResponse> response = new ApiResponse<>();
+        response.ok(course);
+        when(courseService.getCourseById("course-payment-test")).thenReturn(response);
+
+        mockMvc.perform(get("/course/detail")
+                        .param("courseId", "course-payment-test")
+                        .param("error", "payment_unavailable")
+                        .param("lang", "vi"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data-testid=\"checkout-error\"")))
+                .andExpect(content().string(containsString(
+                        "Thanh toán trực tuyến đang tạm thời gián đoạn.")));
+    }
+
     @TestConfiguration(proxyBeanMethods = false)
     static class TestConfig {
 

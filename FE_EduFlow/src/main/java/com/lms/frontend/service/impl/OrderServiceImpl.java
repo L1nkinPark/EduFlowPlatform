@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -110,6 +111,14 @@ public class OrderServiceImpl implements OrderService {
                     new ParameterizedTypeReference<ApiResponse<String>>() {}
             );
             return responseEntity.getBody();
+        } catch (HttpClientErrorException ex) {
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                return objectMapper.readValue(ex.getResponseBodyAsString(),
+                        objectMapper.getTypeFactory().constructParametricType(ApiResponse.class, String.class));
+            } catch (Exception ignored) {
+                return null;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

@@ -11,11 +11,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -113,5 +116,29 @@ public class OrderServiceImplTest {
         boolean result = orderService.hasPurchased("course123");
 
         assertFalse(result);
+    }
+
+    @Test
+    void getVnPayUrlPreservesBackendConfigurationError() {
+        String responseBody = "{\"status\":\"ERROR\",\"message\":\"VNPAY_TMN_CODE is not configured\"}";
+        HttpClientErrorException exception = HttpClientErrorException.create(
+                HttpStatus.BAD_REQUEST,
+                "Bad Request",
+                HttpHeaders.EMPTY,
+                responseBody.getBytes(StandardCharsets.UTF_8),
+                StandardCharsets.UTF_8);
+        when(restTemplate.exchange(
+                anyString(),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                any(ParameterizedTypeReference.class)
+        )).thenThrow(exception);
+
+        ApiResponse<String> result = orderService.getVnPayUrl(
+                "course123", "http://example.test", null);
+
+        assertNotNull(result);
+        assertEquals("ERROR", result.getStatus());
+        assertEquals("VNPAY_TMN_CODE is not configured", result.getMessage());
     }
 }
