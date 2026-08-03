@@ -215,6 +215,12 @@ resource "aws_ecs_task_definition" "backend" {
           valueFrom = "${var.db_password_arn}:password::${var.db_secret_version_id}"
         },
         {
+          # Keep JWT signing stable across task replacements. JwtToken applies
+          # domain separation before using this value as an HMAC key.
+          name      = "JWT_SECRET"
+          valueFrom = "${var.db_password_arn}:password::${var.db_secret_version_id}"
+        },
+        {
           name      = "SPRING_MAIL_USERNAME"
           valueFrom = "${var.db_password_arn}:smtp_username::${var.db_secret_version_id}"
         },
