@@ -11,6 +11,7 @@
     <meta name="keywords" content="EduFlow, online course" />
 
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/course-detail.css}" rel="stylesheet">
 
     <link th:href="@{/vendor/slick/slick/slick.css}" rel="stylesheet">
     <link th:href="@{/vendor/slick/slick/slick-theme.css}" rel="stylesheet">
@@ -77,6 +78,8 @@
                                                 <div class="card border-0 shadow-sm overflow-hidden rounded-3">
                                                     <div class="position-relative bg-dark" style="min-height: 360px;">
                                                         <img th:src="${courses.thumbnail != null && !#strings.isEmpty(courses.thumbnail) ? courses.thumbnail : courses.image}"
+                                                               referrerpolicy="no-referrer"
+                                                               onerror="this.onerror=null;this.src='/img/globel/b1.jpg'"
                                                              th:alt="${courses.courseName}"
                                                              class="w-100 h-100 position-absolute top-0 start-0"
                                                              style="object-fit: cover; opacity: .82;">
@@ -100,8 +103,6 @@
                                                 <p th:text="${courses.description}">description</p>
 
                                             </div>
-                                            <img th:src="@{/img/globel/cd1.jpg}" th:alt="${courses.courseName}" class="img-fluid rounded-3" loading="lazy">
-
                 <!--                                            Review-->
 <!--                                            <div>-->
 <!--                                                <h3 class="text-dark pb-2">Reviews</h3>-->
@@ -236,8 +237,10 @@
                     <div class="sidebar-fixed">
                         <div id="coursePurchaseCard" class="card border-0 bg-white rounded-3 shadow-sm overflow-hidden mb-3 p-3">
                             <div class="card-body p-4">
-                                <div class="mb-3" th:if="${!isPurchased}">
-                                    <span class="fs-1 text-black fw-bold" th:text="${#numbers.formatDecimal(courses.price, 0, 'COMMA', 0, 'POINT') + ' VND'}">439.000 VND</span>
+                                <div id="coursePrice" class="course-price mb-4" th:if="${!isPurchased}"
+                                     th:data-original-price="${courses.price}">
+                                    <span id="coursePriceAmount" class="course-price__amount"
+                                          th:text="${@vndCurrency.format(courses.price)}">490.000 ₫</span>
                                 </div>
                                 <div class="d-grid my-2" th:if="${isPurchased}">
                                     <div class="text-center mb-3">
@@ -306,7 +309,9 @@
                 <div class="col" th:each="course : ${relatedCourses}">
                     <div
                         class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden video-card-item position-relative">
-                        <img th:src="${course?.image}" th:alt="${course?.courseName}" class="img-fluid" loading="lazy">
+                        <img th:src="${course?.image != null && !#strings.isEmpty(course.image) ? course.image : course?.thumbnail}"
+                             th:alt="${course?.courseName}" class="img-fluid" loading="lazy" referrerpolicy="no-referrer"
+                             onerror="this.onerror=null;this.src='/img/globel/b1.jpg'">
                         <div class="card-body">
                             <h6 class="card-title pb-3 text-black mb-0">
                                 <span th:text="${course?.courseName}"> </span>
@@ -320,7 +325,7 @@
                         <div class="card-footer border-0 bg-white border-top p-3">
                             <div class="d-grid">
                                 <button th:if="${!enrolledCourseIds.contains(course.courseId)}" class="btn btn-primary">
-                                    <i class="bi bi-cart-fill"></i> <span th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                    <i class="bi bi-cart-fill"></i> <span th:text="${@vndCurrency.format(course.price)}"></span>
                                 </button>
                                 <button th:if="${enrolledCourseIds.contains(course.courseId)}" class="btn btn-success">
                                     <i class="bi bi-play-circle-fill"></i> <span th:text="#{courses.continue_learning}">Continue learning</span>
@@ -517,9 +522,11 @@
             const promoCodeInput = document.getElementById('promoCodeInput');
             const promoCodeMessage = document.getElementById('promoCodeMessage');
             const checkoutLink = document.getElementById('checkoutLink');
+            const coursePrice = document.getElementById('coursePrice');
+            const coursePriceAmount = document.getElementById('coursePriceAmount');
             const courseId = /*[[${courses.courseId}]]*/ '';
             const baseCheckoutUrl = /*[[@{/course/checkout(courseId=${courses.courseId})}]]*/ '';
-            const numberLocale = /*[[${#locale.toLanguageTag()}]]*/ 'vi-VN';
+            const originalPrice = coursePrice ? Number(coursePrice.dataset.originalPrice) : 0;
             const i18n = {
                 promoEmpty: /*[[#{detail.promo_empty}]]*/ 'Please enter a promo code',
                 promoChecking: /*[[#{detail.promo_checking}]]*/ 'Checking promo code...',
@@ -527,6 +534,11 @@
                 promoInvalid: /*[[#{detail.promo_invalid}]]*/ 'Invalid promo code',
                 promoError: /*[[#{detail.promo_error}]]*/ 'Server connection error, please try again'
             };
+
+            function formatVnd(amount) {
+                const value = Number(amount);
+                return (Number.isFinite(value) ? Math.round(value) : 0).toLocaleString('vi-VN') + ' ₫';
+            }
 
             if (applyPromoBtn) {
                 applyPromoBtn.addEventListener('click', function() {
@@ -553,12 +565,21 @@
                     .then(data => {
                         applyPromoBtn.disabled = false;
                         if (data && data.status === 'SUCCESS') {
+                            const finalAmount = Number(data.payload.finalAmount);
                             promoCodeMessage.className = 'small mb-2 text-success';
-                            promoCodeMessage.textContent = i18n.promoSuccess + ' ' + data.payload.discountAmount.toLocaleString(numberLocale) + ' VND.';
+                            promoCodeMessage.textContent = i18n.promoSuccess + ' ' + formatVnd(data.payload.discountAmount) + '.';
+                            if (coursePriceAmount && Number.isFinite(finalAmount)) {
+                                coursePriceAmount.textContent = formatVnd(finalAmount);
+                                coursePrice.classList.add('is-discounted');
+                            }
                             checkoutLink.href = baseCheckoutUrl + '&promoCode=' + encodeURIComponent(promoCode);
                         } else {
                             promoCodeMessage.className = 'small mb-2 text-danger';
                             promoCodeMessage.textContent = i18n.promoInvalid;
+                            if (coursePriceAmount) {
+                                coursePriceAmount.textContent = formatVnd(originalPrice);
+                                coursePrice.classList.remove('is-discounted');
+                            }
                             checkoutLink.href = baseCheckoutUrl;
                         }
                     })

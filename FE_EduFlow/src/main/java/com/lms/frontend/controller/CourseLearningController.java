@@ -67,6 +67,8 @@ public class CourseLearningController {
                 currentLesson == null ? null : normalizeVideoUrl(currentLesson.getVideo()));
         model.addAttribute("currentVideoIsFile",
                 currentLesson != null && isVideoFile(currentLesson.getVideo()));
+        model.addAttribute("currentDocumentIsPdf",
+                currentLesson != null && isPdfDocument(currentLesson));
         model.addAttribute("currentIndex", currentIndex);
         model.addAttribute("previousLesson", currentIndex > 0 ? lessons.get(currentIndex - 1) : null);
         model.addAttribute("nextLesson",
@@ -84,6 +86,21 @@ public class CourseLearningController {
         }
         String cleanUrl = videoUrl.toLowerCase().split("\\?")[0];
         return cleanUrl.endsWith(".mp4") || cleanUrl.endsWith(".webm") || cleanUrl.endsWith(".ogg");
+    }
+
+    private boolean isPdfDocument(LessonResponse lesson) {
+        if (lesson == null) {
+            return false;
+        }
+        if ("application/pdf".equalsIgnoreCase(lesson.getDocumentContentType())) {
+            return true;
+        }
+        String name = lesson.getDocumentName();
+        if (name != null && name.toLowerCase().endsWith(".pdf")) {
+            return true;
+        }
+        String url = lesson.getDocumentUrl();
+        return url != null && url.toLowerCase().split("\\?")[0].endsWith(".pdf");
     }
 
     private String normalizeVideoUrl(String videoUrl) {

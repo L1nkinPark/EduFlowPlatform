@@ -9,6 +9,7 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
+    <link th:href="@{/css/instructor-editor.css}" rel="stylesheet">
 </head>
 <body class="bg-light">
 <div th:replace="~{layouts/layout :: instructor_header}"></div>
@@ -25,23 +26,24 @@
         <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card border-light">
+                <div class="card border-light editor-card">
                     <div class="card-body">
-                        <form th:action="@{/instructor/courses/add}" method="POST" th:object="${course}">
+                        <form th:action="@{/instructor/courses/add}" method="POST" enctype="multipart/form-data" th:object="${course}" id="courseForm">
                             <input type="hidden" th:field="*{courseId}">
+                            <input type="hidden" th:field="*{thumbnail}">
 
                             <div class="mb-3">
                                 <label class="form-label" th:text="#{instructor.course_name}">Course name</label>
-                                <input type="text" class="form-control" th:field="*{courseName}" required>
+                                <input type="text" class="form-control" th:field="*{courseName}" required data-normalize-unicode>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label" th:text="#{common.description}">Description</label>
-                                <textarea rows="3" class="form-control" th:field="*{description}"></textarea>
+                                <textarea rows="3" class="form-control" th:field="*{description}" data-normalize-unicode></textarea>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12 mb-3">
+                                <div class="col-md-12 mb-4">
                                     <label class="form-label" th:text="#{instructor.category}">Course category</label>
                                     <select class="form-select" th:field="*{subCategoryId}" required>
                                         <option value="" th:text="#{instructor.select_category}">Select category</option>
@@ -55,15 +57,46 @@
                                     </select>
                                     <div class="form-text" th:text="#{instructor.category_hint}">Choose the correct category.</div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" th:text="#{instructor.image_url}">Image (URL)</label>
-                                    <input type="text" class="form-control" th:field="*{image}" placeholder="/img/globel/b1.jpg">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" th:text="#{instructor.thumbnail_url}">Thumbnail (URL)</label>
-                                    <input type="text" class="form-control" th:field="*{thumbnail}" placeholder="/img/globel/b1.jpg">
-                                </div>
                             </div>
+
+                            <section class="mb-4">
+                                <label class="form-label fw-semibold" th:text="#{instructor.course_cover}">Ảnh bìa khóa học</label>
+                                <div class="row g-3 align-items-start">
+                                    <div class="col-md-7">
+                                        <div class="cover-source-tabs" role="tablist">
+                                            <button type="button" class="active" id="coverUrlTab">
+                                                <i class="bi bi-link-45deg"></i> <span th:text="#{instructor.cover_from_url}">Dán URL ảnh</span>
+                                            </button>
+                                            <button type="button" id="coverUploadTab">
+                                                <i class="bi bi-cloud-arrow-up"></i> <span th:text="#{instructor.cover_upload}">Tải ảnh lên</span>
+                                            </button>
+                                        </div>
+                                        <div id="coverUrlPanel">
+                                            <input id="coverUrl" type="text" inputmode="url" class="form-control" th:field="*{image}"
+                                                   placeholder="https://example.com/anh-khoa-hoc.jpg">
+                                            <span class="form-hint" th:text="#{instructor.cover_url_hint}">Dùng link HTTPS trực tiếp đến ảnh. Bản xem trước sẽ xuất hiện bên cạnh.</span>
+                                            <div id="coverUrlError" class="text-danger small mt-2" hidden th:text="#{instructor.cover_url_error}">Không tải được ảnh từ URL này.</div>
+                                        </div>
+                                        <div id="coverUploadPanel" hidden>
+                                            <label class="upload-zone py-3" for="coverFile">
+                                                <i class="bi bi-image"></i>
+                                                <strong th:text="#{instructor.cover_upload_action}">Chọn ảnh từ máy</strong>
+                                                <span th:text="#{instructor.cover_upload_hint}">JPG, PNG, WEBP hoặc GIF · tối đa 5 MB</span>
+                                                <input id="coverFile" name="coverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+                                            </label>
+                                            <div class="selected-file" id="selectedCover"><i class="bi bi-file-earmark-image"></i><span></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="cover-preview" id="coverPreview">
+                                            <img id="coverPreviewImage"
+                                                 th:src="${course.image != null and !#strings.isEmpty(course.image) ? course.image : course.thumbnail}"
+                                                 th:alt="#{instructor.cover_preview}" referrerpolicy="no-referrer" hidden>
+                                            <div class="cover-preview-empty" id="coverPreviewEmpty"><i class="bi bi-image"></i><span th:text="#{instructor.cover_preview}">Xem trước ảnh bìa</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -86,7 +119,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label" th:text="#{common.vnd_price}">Price (VND)</label>
+                                    <label class="form-label" th:text="#{common.vnd_price}">Price (₫)</label>
                                     <input type="number" step="1000" min="0" class="form-control" th:field="*{price}">
                                 </div>
                             </div>
@@ -106,5 +139,72 @@
 
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/unicode-normalizer.js}"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlTab = document.getElementById('coverUrlTab');
+        const uploadTab = document.getElementById('coverUploadTab');
+        const urlPanel = document.getElementById('coverUrlPanel');
+        const uploadPanel = document.getElementById('coverUploadPanel');
+        const urlInput = document.getElementById('coverUrl');
+        const fileInput = document.getElementById('coverFile');
+        const previewImage = document.getElementById('coverPreviewImage');
+        const previewEmpty = document.getElementById('coverPreviewEmpty');
+        const urlError = document.getElementById('coverUrlError');
+        const selectedCover = document.getElementById('selectedCover');
+        let objectUrl;
+
+        function selectSource(source) {
+            const usingUrl = source === 'url';
+            urlTab.classList.toggle('active', usingUrl);
+            uploadTab.classList.toggle('active', !usingUrl);
+            urlPanel.hidden = !usingUrl;
+            uploadPanel.hidden = usingUrl;
+            urlInput.disabled = !usingUrl;
+            if (usingUrl) {
+                fileInput.value = '';
+                selectedCover.classList.remove('show');
+                updateUrlPreview();
+            }
+        }
+
+        function showPreview(source) {
+            if (!source) {
+                previewImage.hidden = true;
+                previewEmpty.hidden = false;
+                return;
+            }
+            previewImage.hidden = false;
+            previewEmpty.hidden = true;
+            previewImage.src = source;
+        }
+
+        function updateUrlPreview() {
+            const value = urlInput.value.trim();
+            urlError.hidden = true;
+            showPreview(value);
+        }
+
+        urlTab.addEventListener('click', () => selectSource('url'));
+        uploadTab.addEventListener('click', () => selectSource('upload'));
+        urlInput.addEventListener('input', updateUrlPreview);
+        previewImage.addEventListener('load', () => { urlError.hidden = true; });
+        previewImage.addEventListener('error', () => {
+            previewImage.hidden = true;
+            previewEmpty.hidden = false;
+            if (!urlInput.disabled && urlInput.value.trim()) urlError.hidden = false;
+        });
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            selectedCover.classList.toggle('show', Boolean(file));
+            selectedCover.querySelector('span').textContent = file ? file.name : '';
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+            objectUrl = file ? URL.createObjectURL(file) : null;
+            showPreview(objectUrl);
+        });
+
+        if (previewImage.getAttribute('src')) showPreview(previewImage.getAttribute('src'));
+    });
+</script>
 </body>
 </html>

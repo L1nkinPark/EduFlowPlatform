@@ -88,6 +88,15 @@
 }
 .reading-label { color: var(--learning-blue); font-weight: 700; margin-bottom: 28px; }
 .reading-content { font-size: 17px; line-height: 1.85; white-space: pre-line; }
+.document-attachment { margin: -8px 0 26px; }
+.document-pdf { border: 1px solid var(--learning-border); border-radius: 10px; height: min(70vh, 760px); width: 100%; }
+.document-pdf-actions { display: flex; justify-content: flex-end; margin-top: 12px; }
+.document-download { align-items: center; background: #f8fafc; border: 1px solid var(--learning-border); border-radius: 12px; display: grid; gap: 16px; grid-template-columns: auto minmax(0, 1fr) auto; padding: 18px; }
+.document-download > i { color: var(--learning-blue); font-size: 34px; }
+.document-download strong, .document-download span { display: block; }
+.document-download span { color: var(--learning-muted); font-size: 13px; margin-top: 3px; }
+.document-empty { align-items: center; color: var(--learning-muted); display: flex; flex-direction: column; gap: 8px; justify-content: center; min-height: 240px; }
+.document-empty i { font-size: 42px; }
 
 .lesson-toolbar, .lesson-navigation, .course-about {
     width: min(calc(100% - 64px), 1080px);
@@ -208,6 +217,9 @@
     .lesson-toolbar { align-items: stretch; flex-direction: column; }
     .lesson-toolbar button { width: 100%; }
     .reading-stage { margin: 18px; padding: 30px 24px; min-height: 360px; }
+    .document-pdf { height: 62vh; }
+    .document-download { grid-template-columns: auto minmax(0, 1fr); }
+    .document-download .btn { grid-column: 1 / -1; width: 100%; }
 }
 
 @media (max-width: 576px) {

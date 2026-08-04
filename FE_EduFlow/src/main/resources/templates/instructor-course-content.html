@@ -1,152 +1,337 @@
 <!DOCTYPE html>
-<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="vi" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" th:href="@{/img/icon.png}">
-    <title>Course Content - EduFlow Instructor</title>
-
+    <title th:text="#{instructor.content}">Nội dung khóa học</title>
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link th:href="@{/vendor/icofont/icofont.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/cdn.jsdelivr.net/npm/bootstrap-icons%401.7.1/font/bootstrap-icons.css}">
+    <link th:href="@{/css/instructor-editor.css}" rel="stylesheet">
 </head>
 <body class="bg-light">
 <div th:replace="~{layouts/layout :: instructor_header}"></div>
 
 <section class="py-3 border-bottom bg-white shadow-sm">
-    <div class="container">
-        <h4 class="mb-0" th:text="${course != null ? course.courseName : 'Course'}">Course Name</h4>
-        <p class="text-muted mb-0" th:text="#{instructor.content_desc}">Manage chapters and lessons</p>
+    <div class="container editor-heading">
+        <div>
+            <a class="small text-decoration-none" th:href="@{/instructor/mycourse}">
+                <i class="bi bi-arrow-left"></i> <span th:text="#{instructor.back_to_courses}">Khóa học của tôi</span>
+            </a>
+            <h4 class="mb-1 mt-2" th:text="${course != null ? course.courseName : #messages.msg('common.course')}">Tên khóa học</h4>
+            <p class="text-muted mb-0" th:text="#{instructor.content_desc}">Quản lý chương và bài học</p>
+        </div>
+        <a class="btn btn-outline-primary" th:if="${course != null}"
+           th:href="@{/course/detail(courseId=${course.courseId})}">
+            <i class="bi bi-eye"></i> <span th:text="#{instructor.preview_course}">Xem khóa học</span>
+        </a>
     </div>
 </section>
 
-<div class="pt-5 pb-5">
+<main class="pt-4 pb-5">
     <div class="container">
-        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="status">
+            <i class="bi bi-check-circle-fill me-2"></i><span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle-fill me-2"></i><span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="editor-steps" aria-label="Course content workflow">
+            <div class="editor-step" th:classappend="${course == null or course.chapters == null or course.chapters.isEmpty()} ? 'active' : 'done'">
+                <span class="editor-step-number"><i class="bi bi-check-lg" th:if="${course != null and course.chapters != null and !course.chapters.isEmpty()}"></i><span th:unless="${course != null and course.chapters != null and !course.chapters.isEmpty()}">1</span></span>
+                <span><strong th:text="#{instructor.step_chapter}">Tạo chương</strong><small th:text="#{instructor.step_chapter_hint}">Nhóm các bài học theo chủ đề</small></span>
+            </div>
+            <div class="editor-step" th:classappend="${course != null and course.chapters != null and !course.chapters.isEmpty()} ? 'active' : ''">
+                <span class="editor-step-number">2</span>
+                <span><strong th:text="#{instructor.step_lesson}">Thêm bài học</strong><small th:text="#{instructor.step_lesson_hint}">Video, nội dung hoặc tệp tài liệu</small></span>
+            </div>
+            <div class="editor-step">
+                <span class="editor-step-number">3</span>
+                <span><strong th:text="#{instructor.step_preview}">Kiểm tra</strong><small th:text="#{instructor.step_preview_hint}">Mở khóa học như một học viên</small></span>
+            </div>
+        </div>
 
         <div class="row g-4">
-            <!-- Existing chapters/lessons tree -->
-            <div class="col-lg-7">
-                <div class="card border-light">
-                    <div class="card-header">
-                        <h5 class="mb-0" th:text="#{instructor.content}">Course Content</h5>
-                    </div>
-                    <div class="card-body">
-                        <div th:if="${course == null or course.chapters == null or course.chapters.isEmpty()}" class="text-muted text-center py-4">
-                            <span th:text="#{instructor.no_chapters}">No chapters yet.</span>
-                        </div>
-                        <div class="accordion" id="chapterAccordion" th:unless="${course == null or course.chapters == null or course.chapters.isEmpty()}">
-                            <div class="accordion-item" th:each="chapter, chIdx : ${course?.chapters}">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            th:data-bs-target="'#chapter-' + ${chapter.chapterId}">
-                                        <span th:text="${chIdx.count} + '. ' + ${chapter.title}">Chapter</span>
-                                    </button>
-                                </h2>
-                                <div th:id="'chapter-' + ${chapter.chapterId}" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <p class="text-muted small" th:text="${chapter.description}">Description</p>
-                                        <ul class="list-group" th:if="${chapter.lessons != null and !chapter.lessons.isEmpty()}">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="lesson : ${chapter.lessons}">
-                                                <span>
-                                                    <i class="bi" th:classappend="${lesson.lessonType == 'DOCUMENT'} ? 'bi-file-text' : 'bi-play-circle'"></i>
-                                                    <span th:text="${lesson.title}">Lesson title</span>
-                                                </span>
-                                                <span class="badge bg-secondary" th:text="${lesson.lessonType}">VIDEO</span>
-                                            </li>
-                                        </ul>
-                                        <p class="text-muted small mb-0" th:if="${chapter.lessons == null or chapter.lessons.isEmpty()}" th:text="#{instructor.no_lessons}">No lessons in this chapter.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Forms to add chapter / lesson -->
             <div class="col-lg-5">
-                <div class="card border-light mb-4">
+                <section class="card editor-card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-folder-plus"></i> <span th:text="#{instructor.add_chapter}">Add chapter</span></h5>
+                        <div class="editor-card-title">
+                            <i class="bi bi-folder-plus fs-5"></i>
+                            <div><h5 class="mb-0" th:text="#{instructor.add_chapter}">Thêm chương</h5><small class="text-muted" th:text="#{instructor.chapter_help}">Hãy tạo chương trước khi thêm bài học</small></div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/instructor/courses/content/chapters}" th:object="${newChapter}" method="post">
                             <input type="hidden" name="courseId" th:value="${courseId}">
                             <div class="mb-3">
-                                <label class="form-label" th:text="#{instructor.chapter_name}">Chapter name</label>
-                                <input type="text" class="form-control" th:field="*{title}" required>
+                                <label class="form-label field-required" for="chapterTitle" th:text="#{instructor.chapter_name}">Tên chương</label>
+                                <input id="chapterTitle" type="text" class="form-control" th:field="*{title}" maxlength="150" required data-normalize-unicode
+                                       th:placeholder="#{instructor.chapter_placeholder}">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" th:text="#{common.description}">Description</label>
-                                <textarea class="form-control" rows="2" th:field="*{description}"></textarea>
+                                <label class="form-label" for="chapterDescription" th:text="#{common.description}">Mô tả</label>
+                                <textarea id="chapterDescription" class="form-control" rows="2" th:field="*{description}" data-normalize-unicode
+                                          th:placeholder="#{instructor.chapter_description_placeholder}"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100" th:text="#{instructor.add_chapter}">Add chapter</button>
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-plus-lg me-1"></i> <span th:text="#{instructor.add_chapter}">Thêm chương</span>
+                            </button>
                         </form>
                     </div>
-                </div>
+                </section>
 
-                <div class="card border-light">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-file-earmark-plus"></i> <span th:text="#{instructor.add_lesson}">Add lesson</span></h5>
+                <section class="card editor-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="editor-card-title"><i class="bi bi-list-nested fs-5"></i><h5 class="mb-0" th:text="#{instructor.content}">Nội dung hiện có</h5></div>
+                        <span class="badge bg-light text-dark" th:if="${course != null and course.chapters != null}"
+                              th:text="${course.chapters.size() + ' ' + #messages.msg('common.chapters')}">0 chương</span>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/instructor/courses/content/lessons}" th:object="${newLesson}" method="post" id="lessonForm">
+                        <div th:if="${course == null or course.chapters == null or course.chapters.isEmpty()}" class="text-center text-muted py-4">
+                            <i class="bi bi-folder2-open d-block fs-1 mb-2"></i>
+                            <strong class="d-block" th:text="#{instructor.no_chapters_short}">Chưa có chương</strong>
+                            <span class="small" th:text="#{instructor.no_chapters}">Hãy thêm chương đầu tiên bằng biểu mẫu.</span>
+                        </div>
+                        <div class="accordion" id="chapterAccordion" th:unless="${course == null or course.chapters == null or course.chapters.isEmpty()}">
+                            <div class="accordion-item curriculum-item" th:each="chapter, chIdx : ${course.chapters}">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" th:classappend="${!chIdx.first} ? 'collapsed' : ''" type="button"
+                                            data-bs-toggle="collapse" th:data-bs-target="'#chapter-' + ${chapter.chapterId}"
+                                            th:aria-expanded="${chIdx.first}">
+                                        <span th:text="${chIdx.count} + '. ' + ${chapter.title}">Chương</span>
+                                    </button>
+                                </h2>
+                                <div th:id="'chapter-' + ${chapter.chapterId}" class="accordion-collapse collapse"
+                                     th:classappend="${chIdx.first} ? 'show' : ''" data-bs-parent="#chapterAccordion">
+                                    <div class="accordion-body pt-2">
+                                        <p class="text-muted small" th:if="${chapter.description != null and !#strings.isEmpty(chapter.description)}" th:text="${chapter.description}"></p>
+                                        <div th:if="${chapter.lessons != null and !chapter.lessons.isEmpty()}">
+                                            <div class="lesson-list-item d-flex justify-content-between align-items-center" th:each="lesson : ${chapter.lessons}">
+                                                <span class="d-flex align-items-center min-w-0">
+                                                    <span class="lesson-icon"><i class="bi" th:classappend="${lesson.lessonType == 'DOCUMENT'} ? 'bi-file-earmark-text' : 'bi-play-circle'"></i></span>
+                                                    <span class="text-truncate" th:text="${lesson.title}">Tên bài học</span>
+                                                </span>
+                                                <span class="badge bg-light text-dark" th:text="${lesson.lessonType == 'DOCUMENT'} ? #{instructor.reading_badge} : 'VIDEO'">VIDEO</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted small mb-0 py-2" th:if="${chapter.lessons == null or chapter.lessons.isEmpty()}" th:text="#{instructor.no_lessons}">Chưa có bài học.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-7">
+                <section class="card editor-card">
+                    <div class="card-header">
+                        <div class="editor-card-title">
+                            <i class="bi bi-file-earmark-plus fs-5"></i>
+                            <div><h5 class="mb-0" th:text="#{instructor.add_lesson}">Thêm bài học</h5><small class="text-muted" th:text="#{instructor.lesson_help}">Chọn chương và cách học viên sẽ xem nội dung</small></div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="empty-guidance" th:if="${course == null or course.chapters == null or course.chapters.isEmpty()}">
+                            <div class="d-flex gap-3 align-items-start">
+                                <i class="bi bi-arrow-left-circle"></i>
+                                <div><strong class="d-block" th:text="#{instructor.chapter_required_title}">Tạo một chương trước</strong><span class="small" th:text="#{instructor.chapter_required_hint}">Bài học luôn nằm trong một chương. Điền biểu mẫu “Thêm chương” bên trái, sau đó quay lại đây.</span></div>
+                            </div>
+                        </div>
+
+                        <form th:unless="${course == null or course.chapters == null or course.chapters.isEmpty()}"
+                              th:action="@{/instructor/courses/content/lessons}" th:object="${newLesson}"
+                              method="post" enctype="multipart/form-data" id="lessonForm">
                             <input type="hidden" name="courseId" th:value="${courseId}">
-                            <div class="mb-3">
-                                <label class="form-label" th:text="#{common.chapter}">Chapter</label>
-                                <select class="form-select" th:field="*{chapterId}" required>
-                                    <option value="" disabled selected th:text="#{instructor.select_chapter}">-- Select chapter --</option>
-                                    <option th:each="chapter : ${course?.chapters}"
-                                            th:value="${chapter.chapterId}" th:text="${chapter.title}">Chapter</option>
-                                </select>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label field-required" for="chapterSelect" th:text="#{common.chapter}">Chương</label>
+                                    <select id="chapterSelect" class="form-select" th:field="*{chapterId}" required>
+                                        <option value="" th:text="#{instructor.select_chapter}">-- Chọn chương --</option>
+                                        <option th:each="chapter, chapterStat : ${course.chapters}" th:value="${chapter.chapterId}"
+                                                th:text="${chapterStat.count} + '. ' + ${chapter.title}">Chương</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label field-required" for="lessonTitle" th:text="#{instructor.lesson_name}">Tên bài học</label>
+                                    <input id="lessonTitle" type="text" class="form-control" th:field="*{title}" maxlength="100" required data-normalize-unicode
+                                           th:placeholder="#{instructor.lesson_placeholder}">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label" th:text="#{instructor.lesson_name}">Lesson name</label>
-                                <input type="text" class="form-control" th:field="*{title}" required>
+
+                            <fieldset class="mb-4">
+                                <legend class="form-label field-required fs-6" th:text="#{instructor.lesson_type}">Loại bài học</legend>
+                                <div class="type-options">
+                                    <div class="type-option">
+                                        <input type="radio" th:field="*{lessonType}" id="lessonTypeVideo" value="VIDEO">
+                                        <label for="lessonTypeVideo"><i class="bi bi-play-btn"></i><span><strong th:text="#{instructor.video_lesson}">Bài học video</strong><small th:text="#{instructor.video_lesson_hint}">YouTube hoặc đường dẫn video trực tiếp</small></span></label>
+                                    </div>
+                                    <div class="type-option">
+                                        <input type="radio" th:field="*{lessonType}" id="lessonTypeDocument" value="DOCUMENT">
+                                        <label for="lessonTypeDocument"><i class="bi bi-file-earmark-richtext"></i><span><strong th:text="#{instructor.document_lesson}">Tài liệu</strong><small th:text="#{instructor.document_lesson_hint}">PDF, Word, PowerPoint, Excel hoặc nội dung viết</small></span></label>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div id="videoFields">
+                                <div class="mb-3">
+                                    <label class="form-label field-required" for="videoUrl" th:text="#{instructor.video_url}">Đường dẫn video</label>
+                                    <input id="videoUrl" type="url" class="form-control" th:field="*{video}"
+                                           placeholder="https://www.youtube.com/watch?v=...">
+                                    <span class="form-hint" th:text="#{instructor.video_url_hint}">Bạn có thể dán link YouTube thông thường, không cần tự đổi sang link nhúng.</span>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label" th:text="#{instructor.lesson_type}">Lesson type</label>
-                                <select class="form-select" th:field="*{lessonType}" id="lessonTypeSelect" onchange="toggleLessonFields()">
-                                    <option value="VIDEO">VIDEO</option>
-                                    <option value="DOCUMENT" th:text="#{instructor.document_type}">DOCUMENT (reading)</option>
-                                </select>
+
+                            <div id="documentFields" hidden>
+                                <label class="form-label" th:text="#{instructor.upload_document}">Tải tệp tài liệu</label>
+                                <label class="upload-zone" id="documentDropZone" for="lessonFile">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                    <strong th:text="#{instructor.upload_document_action}">Chọn tệp hoặc kéo thả vào đây</strong>
+                                    <span th:text="#{instructor.upload_document_hint}">PDF, DOC/DOCX, PPT/PPTX, XLS/XLSX, TXT · tối đa 25 MB</span>
+                                    <input id="lessonFile" name="lessonFile" type="file"
+                                           accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.rtf,.csv,.odt,.ods,.odp">
+                                </label>
+                                <div class="selected-file" id="selectedFile"><i class="bi bi-file-earmark-check"></i><span></span></div>
+
+                                <div class="content-divider" th:text="#{common.or}">hoặc</div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="documentContent" th:text="#{instructor.document_content}">Nội dung tài liệu</label>
+                                    <textarea id="documentContent" class="form-control" rows="8" th:field="*{content}" data-normalize-unicode
+                                              th:placeholder="#{instructor.document_placeholder}"></textarea>
+                                    <span class="form-hint" th:text="#{instructor.document_content_hint}">Bạn chỉ cần chọn tệp hoặc nhập nội dung; cũng có thể dùng cả hai.</span>
+                                </div>
                             </div>
-                            <div class="mb-3" id="videoField">
-                                <label class="form-label">Video URL (embed link)</label>
-                                <input type="text" class="form-control" th:field="*{video}" placeholder="https://www.youtube.com/embed/...">
+
+                            <div class="row align-items-end">
+                                <div class="col-md-5 mb-3">
+                                    <label class="form-label" for="duration" th:text="#{instructor.duration_hint}">Thời lượng (phút)</label>
+                                    <div class="input-group"><input id="duration" type="number" class="form-control" th:field="*{duration}" min="0" max="10000"><span class="input-group-text" th:text="#{common.minutes}">phút</span></div>
+                                </div>
+                                <div class="col-md-7 mb-3">
+                                    <button id="lessonSubmit" type="submit" class="btn btn-primary w-100 py-2">
+                                        <i class="bi bi-plus-lg me-1"></i> <span th:text="#{instructor.add_lesson}">Thêm bài học</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="mb-3" id="contentField" style="display:none;">
-                                <label class="form-label" th:text="#{instructor.document_content}">Document content</label>
-                                <textarea class="form-control" rows="6" th:field="*{content}"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" th:text="#{instructor.duration_hint}">Duration in seconds</label>
-                                <input type="number" class="form-control" th:field="*{duration}" min="0">
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100" th:text="#{instructor.add_lesson}">Add lesson</button>
                         </form>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </div>
-</div>
+</main>
 
-<footer class="py-4 bg-white border-top text-center small text-muted">
-    <div class="container">©2026 EduFlow Instructor Panel</div>
-</footer>
-
+<footer class="py-4 bg-white border-top text-center small text-muted"><div class="container">©2026 EduFlow Instructor Panel</div></footer>
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script>
-    function toggleLessonFields() {
-        var type = document.getElementById('lessonTypeSelect').value;
-        document.getElementById('videoField').style.display = (type === 'VIDEO') ? 'block' : 'none';
-        document.getElementById('contentField').style.display = (type === 'DOCUMENT') ? 'block' : 'none';
-    }
-    toggleLessonFields();
+<script th:src="@{/js/unicode-normalizer.js}"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('lessonForm');
+        if (!form) return;
+
+        const videoRadio = document.getElementById('lessonTypeVideo');
+        const documentRadio = document.getElementById('lessonTypeDocument');
+        const videoFields = document.getElementById('videoFields');
+        const documentFields = document.getElementById('documentFields');
+        const videoUrl = document.getElementById('videoUrl');
+        const documentContent = document.getElementById('documentContent');
+        const lessonFile = document.getElementById('lessonFile');
+        const selectedFile = document.getElementById('selectedFile');
+        const dropZone = document.getElementById('documentDropZone');
+        const chapterSelect = document.getElementById('chapterSelect');
+
+        if (chapterSelect.options.length === 2 && !chapterSelect.value) chapterSelect.selectedIndex = 1;
+
+        function updateType() {
+            const isVideo = videoRadio.checked;
+            videoFields.hidden = !isVideo;
+            documentFields.hidden = isVideo;
+            videoUrl.required = isVideo;
+            videoUrl.disabled = !isVideo;
+            documentContent.disabled = isVideo;
+            lessonFile.disabled = isVideo;
+            if (isVideo) {
+                documentContent.setCustomValidity('');
+                lessonFile.setCustomValidity('');
+            }
+        }
+
+        function showSelectedFile() {
+            const file = lessonFile.files[0];
+            selectedFile.classList.toggle('show', Boolean(file));
+            selectedFile.classList.remove('invalid');
+            lessonFile.setCustomValidity('');
+            if (!file) {
+                selectedFile.querySelector('span').textContent = '';
+                return;
+            }
+
+            const extension = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+            const allowedExtensions = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt', 'rtf', 'csv', 'odt', 'ods', 'odp'];
+            let error = '';
+            if (file.size > 25 * 1024 * 1024) {
+                error = /*[[#{instructor.document_too_large}]]*/ 'Tệp tài liệu không được vượt quá 25 MB.';
+            } else if (!allowedExtensions.includes(extension)) {
+                error = /*[[#{instructor.document_invalid_type}]]*/ 'Định dạng tài liệu này không được hỗ trợ.';
+            }
+
+            lessonFile.setCustomValidity(error);
+            selectedFile.classList.toggle('invalid', Boolean(error));
+            selectedFile.querySelector('span').textContent = error || file.name + ' · ' + formatBytes(file.size);
+            if (error) lessonFile.reportValidity();
+        }
+
+        function formatBytes(bytes) {
+            if (bytes < 1024 * 1024) return Math.ceil(bytes / 1024) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        [videoRadio, documentRadio].forEach(input => input.addEventListener('change', updateType));
+        lessonFile.addEventListener('change', showSelectedFile);
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, event => {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+        });
+        ['dragenter', 'dragover'].forEach(eventName =>
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragging')));
+        ['dragleave', 'drop'].forEach(eventName =>
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragging')));
+        dropZone.addEventListener('drop', event => {
+            if (!event.dataTransfer || !event.dataTransfer.files.length) return;
+            const transfer = new DataTransfer();
+            transfer.items.add(event.dataTransfer.files[0]);
+            lessonFile.files = transfer.files;
+            showSelectedFile();
+        });
+
+        form.addEventListener('submit', function (event) {
+            if (documentRadio.checked && !lessonFile.files.length && !documentContent.value.trim()) {
+                event.preventDefault();
+                documentContent.setCustomValidity(/*[[#{instructor.document_required}]]*/ 'Hãy chọn một tệp hoặc nhập nội dung tài liệu.');
+                documentContent.reportValidity();
+                return;
+            }
+            documentContent.setCustomValidity('');
+            if (form.checkValidity()) {
+                const button = document.getElementById('lessonSubmit');
+                button.disabled = true;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>' +
+                    /*[[#{instructor.adding_lesson}]]*/ ' Đang thêm bài học...';
+            }
+        });
+
+        documentContent.addEventListener('input', () => documentContent.setCustomValidity(''));
+        updateType();
+    });
 </script>
 </body>
 </html>

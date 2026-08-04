@@ -75,6 +75,9 @@ public class CourseMapper {
                         lessonResponse.setLessonType(lesson.getLessonType());
                         lessonResponse.setVideo(lesson.getVideo());
                         lessonResponse.setContent(lesson.getContent());
+                        lessonResponse.setDocumentUrl(lesson.getDocumentUrl());
+                        lessonResponse.setDocumentName(lesson.getDocumentName());
+                        lessonResponse.setDocumentContentType(lesson.getDocumentContentType());
                         lessonResponse.setDuration(lesson.getDuration());
                         lessonResponse.setStatus(lesson.isStatus());
                         lessonResponses.add(lessonResponse);

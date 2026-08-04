@@ -1,0 +1,21 @@
+.course-price {
+    color: #111827;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.course-price__amount {
+    font-size: clamp(2rem, 3.1vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -.04em;
+}
+
+.course-price.is-discounted .course-price__amount {
+    color: #2563eb;
+}
+
+@media (max-width: 991.98px) {
+    .course-price__amount {
+        font-size: 2rem;
+    }
+}

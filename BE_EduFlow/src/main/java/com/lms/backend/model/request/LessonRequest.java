@@ -14,6 +14,9 @@ public class LessonRequest implements Serializable {
     private String lessonType = "VIDEO";
     private String video;
     private String content;
+    private String documentUrl;
+    private String documentName;
+    private String documentContentType;
     private int duration;
     private boolean status = true;
 }

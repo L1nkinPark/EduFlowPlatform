@@ -17,6 +17,12 @@ public class LessonResponse {
 
     private String content;
 
+    private String documentUrl;
+
+    private String documentName;
+
+    private String documentContentType;
+
     private int duration;
 
     private ChapterResponse chapter;
