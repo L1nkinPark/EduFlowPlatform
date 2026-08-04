@@ -6,6 +6,24 @@
     --editor-border: #e4e7ec;
 }
 
+.editor-card,
+.editor-card button,
+.editor-card input,
+.editor-card select,
+.editor-card textarea {
+    font-family: "Segoe UI", "Noto Sans", Arial, sans-serif;
+}
+
+.editor-card input,
+.editor-card select,
+.editor-card textarea {
+    font-kerning: normal;
+    font-variant-ligatures: none;
+    letter-spacing: normal;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+}
+
 .editor-heading {
     display: flex;
     align-items: center;

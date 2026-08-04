@@ -7,6 +7,7 @@ import com.lms.backend.model.request.LessonRequest;
 import com.lms.backend.repository.ChapterRepository;
 import com.lms.backend.repository.LessonRepository;
 import com.lms.backend.service.LessonService;
+import com.lms.backend.util.UnicodeTextNormalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class LessonServiceImpl implements LessonService {
         if (request.getChapterId() == null) {
             throw new IllegalArgumentException("Vui lòng chọn chương cho bài học.");
         }
-        String title = request.getTitle() == null ? "" : request.getTitle().trim();
-        if (title.isEmpty()) {
+        String title = UnicodeTextNormalizer.normalizeAndTrimToNull(request.getTitle());
+        if (title == null) {
             throw new IllegalArgumentException("Vui lòng nhập tên bài học.");
         }
         if (title.length() > 100) {
@@ -70,9 +71,6 @@ public class LessonServiceImpl implements LessonService {
     }
 
     private String trimToNull(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return null;
-        }
-        return value.trim();
+        return UnicodeTextNormalizer.normalizeAndTrimToNull(value);
     }
 }

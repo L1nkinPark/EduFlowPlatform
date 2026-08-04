@@ -110,7 +110,7 @@
                             <div class="card-footer border-0 bg-white border-top p-3">
                                 <div class="d-grid">
                                     <div th:if="${!enrolledCourseIds.contains(course.courseId)}" class="btn btn-primary" aria-hidden="true">
-                                        <i class="bi bi-cart-fill"></i> <span th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                        <i class="bi bi-cart-fill"></i> <span th:text="${@vndCurrency.format(course.price)}"></span>
                                     </div>
                                     <div th:if="${enrolledCourseIds.contains(course.courseId)}" class="btn btn-success" aria-hidden="true">
                                         <i class="bi bi-play-circle-fill"></i> <span th:text="#{courses.continue_learning}">Continue learning</span>

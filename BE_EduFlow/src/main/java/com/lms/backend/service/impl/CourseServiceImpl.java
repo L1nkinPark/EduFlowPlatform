@@ -6,6 +6,7 @@ import com.lms.backend.model.request.CourseRequest;
 import com.lms.backend.repository.CourseRepository;
 import com.lms.backend.service.CourseService;
 import com.lms.backend.service.SubCategoryService;
+import com.lms.backend.util.UnicodeTextNormalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,8 +55,8 @@ public class CourseServiceImpl implements CourseService {
             course = getCourseById(courseRequest.getCourseId());
         }
 
-        course.setCourseName(courseRequest.getCourseName());
-        course.setDescription(courseRequest.getDescription());
+        course.setCourseName(UnicodeTextNormalizer.normalizeAndTrim(courseRequest.getCourseName()));
+        course.setDescription(UnicodeTextNormalizer.normalizeAndTrimToNull(courseRequest.getDescription()));
         course.setPrice(courseRequest.getPrice());
         course.setStatus(courseRequest.getStatus());
         course.setImage(courseRequest.getImage());

@@ -46,7 +46,7 @@
                                 <div th:text="${order.studentName}">Student name</div>
                                 <small class="text-muted" th:text="${order.studentEmail}">email</small>
                             </td>
-                            <td th:text="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT')} + ' VND'">0 VND</td>
+                            <td th:text="${@vndCurrency.format(order.price)}">0 ₫</td>
                             <td th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">Date</td>
                         </tr>
                         </tbody>

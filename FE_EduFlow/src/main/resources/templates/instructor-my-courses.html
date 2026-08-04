@@ -57,7 +57,7 @@
                                     <h5 class="mb-0 ms-3" th:text="${course.courseName}">Course name</h5>
                                 </div>
                             </td>
-                            <td th:text="${course.price} + ' VND'">0</td>
+                            <td th:text="${@vndCurrency.format(course.price)}">0 ₫</td>
                             <td th:text="${course.chapters != null ? course.chapters.size() : 0}">0</td>
                             <td>
                                 <span class="badge bg-success" th:text="${course.status}">ACTIVE</span>

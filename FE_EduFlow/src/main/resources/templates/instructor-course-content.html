@@ -69,12 +69,12 @@
                             <input type="hidden" name="courseId" th:value="${courseId}">
                             <div class="mb-3">
                                 <label class="form-label field-required" for="chapterTitle" th:text="#{instructor.chapter_name}">Tên chương</label>
-                                <input id="chapterTitle" type="text" class="form-control" th:field="*{title}" maxlength="150" required
+                                <input id="chapterTitle" type="text" class="form-control" th:field="*{title}" maxlength="150" required data-normalize-unicode
                                        th:placeholder="#{instructor.chapter_placeholder}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="chapterDescription" th:text="#{common.description}">Mô tả</label>
-                                <textarea id="chapterDescription" class="form-control" rows="2" th:field="*{description}"
+                                <textarea id="chapterDescription" class="form-control" rows="2" th:field="*{description}" data-normalize-unicode
                                           th:placeholder="#{instructor.chapter_description_placeholder}"></textarea>
                             </div>
                             <button type="submit" class="btn btn-outline-primary w-100">
@@ -159,7 +159,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label field-required" for="lessonTitle" th:text="#{instructor.lesson_name}">Tên bài học</label>
-                                    <input id="lessonTitle" type="text" class="form-control" th:field="*{title}" maxlength="100" required
+                                    <input id="lessonTitle" type="text" class="form-control" th:field="*{title}" maxlength="100" required data-normalize-unicode
                                            th:placeholder="#{instructor.lesson_placeholder}">
                                 </div>
                             </div>
@@ -202,7 +202,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label" for="documentContent" th:text="#{instructor.document_content}">Nội dung tài liệu</label>
-                                    <textarea id="documentContent" class="form-control" rows="8" th:field="*{content}"
+                                    <textarea id="documentContent" class="form-control" rows="8" th:field="*{content}" data-normalize-unicode
                                               th:placeholder="#{instructor.document_placeholder}"></textarea>
                                     <span class="form-hint" th:text="#{instructor.document_content_hint}">Bạn chỉ cần chọn tệp hoặc nhập nội dung; cũng có thể dùng cả hai.</span>
                                 </div>
@@ -230,6 +230,7 @@
 <footer class="py-4 bg-white border-top text-center small text-muted"><div class="container">©2026 EduFlow Instructor Panel</div></footer>
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/unicode-normalizer.js}"></script>
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('lessonForm');
