@@ -22,3 +22,6 @@ terraform.tfvars
 # Local diagnostics and generated test output
 scratch/
 test_results.txt
+
+# Local fallback for instructor-uploaded course media
+FE_EduFlow/uploads/

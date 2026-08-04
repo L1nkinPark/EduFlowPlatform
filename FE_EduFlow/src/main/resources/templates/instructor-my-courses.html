@@ -51,7 +51,9 @@
                         <tr th:each="course : ${courseList}">
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <img th:src="${course.thumbnail}" class="rounded img-4by3-sm" style="width:60px;height:45px;object-fit:cover;" onerror="this.style.display='none'">
+                                    <img th:src="${course.thumbnail != null && !#strings.isEmpty(course.thumbnail) ? course.thumbnail : course.image}"
+                                         class="rounded img-4by3-sm" style="width:60px;height:45px;object-fit:cover;" referrerpolicy="no-referrer"
+                                         onerror="this.onerror=null;this.src='/img/globel/b1.jpg'" alt="">
                                     <h5 class="mb-0 ms-3" th:text="${course.courseName}">Course name</h5>
                                 </div>
                             </td>

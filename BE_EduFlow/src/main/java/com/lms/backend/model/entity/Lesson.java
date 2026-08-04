@@ -33,6 +33,15 @@ public class Lesson implements Serializable {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "document_url", length = 2048)
+    private String documentUrl;
+
+    @Column(name = "document_name")
+    private String documentName;
+
+    @Column(name = "document_content_type", length = 100)
+    private String documentContentType;
+
     @Column(name = "duration")
     private int duration;
 
@@ -44,4 +53,3 @@ public class Lesson implements Serializable {
     private boolean status;
 
 }
-

@@ -58,8 +58,36 @@
 
                 <article class="reading-stage" th:if="${currentLesson.lessonType == 'DOCUMENT'}">
                     <div class="reading-label"><i class="bi bi-file-earmark-text"></i> <span th:text="#{learning.reading}">Reading</span></div>
-                    <div class="reading-content" th:utext="${currentLesson.content}">
+                    <div class="document-attachment" th:if="${currentLesson.documentUrl != null and !#strings.isEmpty(currentLesson.documentUrl)}">
+                        <iframe class="document-pdf" th:if="${currentDocumentIsPdf}"
+                                th:src="${currentLesson.documentUrl}"
+                                th:title="${currentLesson.documentName != null ? currentLesson.documentName : currentLesson.title}"></iframe>
+                        <div class="document-pdf-actions" th:if="${currentDocumentIsPdf}">
+                            <a class="btn btn-outline-primary" th:href="${currentLesson.documentUrl}"
+                               target="_blank" rel="noopener noreferrer">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                <span th:text="#{learning.open_pdf_new_tab}">Mở PDF trong tab mới</span>
+                            </a>
+                        </div>
+                        <div class="document-download" th:unless="${currentDocumentIsPdf}">
+                            <i class="bi bi-file-earmark-arrow-down"></i>
+                            <div>
+                                <strong th:text="${currentLesson.documentName != null ? currentLesson.documentName : #messages.msg('learning.attached_document')}">Attached document</strong>
+                                <span th:text="#{learning.document_open_hint}">Open or download the file to view it.</span>
+                            </div>
+                            <a class="btn btn-primary" th:href="${currentLesson.documentUrl}" target="_blank" rel="noopener noreferrer">
+                                <i class="bi bi-box-arrow-up-right"></i> <span th:text="#{learning.open_document}">Open document</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="reading-content mt-4"
+                         th:if="${currentLesson.content != null and !#strings.isEmpty(currentLesson.content)}"
+                         th:utext="${currentLesson.content}">
                         Lesson content will appear here.
+                    </div>
+                    <div class="document-empty"
+                         th:if="${(currentLesson.documentUrl == null or #strings.isEmpty(currentLesson.documentUrl)) and (currentLesson.content == null or #strings.isEmpty(currentLesson.content))}">
+                        <i class="bi bi-file-earmark-x"></i> <span th:text="#{learning.document_unavailable}">Document unavailable.</span>
                     </div>
                 </article>
             </div>
@@ -106,9 +134,10 @@
                 </a>
             </nav>
 
-            <section class="course-about">
+            <section class="course-about"
+                     th:if="${currentLesson.lessonType != 'DOCUMENT' && currentLesson.content != null && !#strings.isEmpty(currentLesson.content)}">
                 <h3 th:text="#{learning.about}">About this lesson</h3>
-                <p th:text="${course.description}">Course description</p>
+                <div class="reading-content" th:utext="${currentLesson.content}">Lesson summary</div>
             </section>
         </th:block>
     </section>

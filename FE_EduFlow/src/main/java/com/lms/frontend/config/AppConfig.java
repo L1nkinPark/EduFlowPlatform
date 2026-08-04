@@ -7,11 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.time.Duration;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
@@ -40,6 +43,9 @@ public class AppConfig implements WebMvcConfigurer {
     @Value(value = "${cloudinary.secure}")
     private String secure;
 
+    @Value("${media.local-directory:./uploads}")
+    private String mediaLocalDirectory;
+
     @Bean
     public Cloudinary cloudinary() {
         Map config = new HashMap();
@@ -57,6 +63,22 @@ public class AppConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        java.nio.file.Path mediaRoot = Paths.get(mediaLocalDirectory).toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(mediaRoot);
+        } catch (java.io.IOException ex) {
+            throw new IllegalStateException("Cannot create the local media directory: " + mediaRoot, ex);
+        }
+        String uploadLocation = mediaRoot.toUri().toString();
+        if (!uploadLocation.endsWith("/")) {
+            uploadLocation += "/";
+        }
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations(uploadLocation);
     }
 
     @Bean
