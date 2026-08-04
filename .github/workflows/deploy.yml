@@ -90,7 +90,24 @@ jobs:
       - name: Verify frontend runtime upload permissions
         working-directory: FE_EduFlow
         run: |
-          docker build --tag eduflow-frontend-ci .
+          set -euo pipefail
+
+          for attempt in 1 2 3; do
+            echo "Building frontend test image (attempt $attempt of 3)..."
+            if docker build --tag eduflow-frontend-ci .; then
+              break
+            fi
+
+            if [[ "$attempt" -eq 3 ]]; then
+              echo "::error::Frontend image build failed after 3 attempts."
+              exit 1
+            fi
+
+            delay=$((attempt * 15))
+            echo "::warning::Docker build failed, retrying in ${delay}s."
+            sleep "$delay"
+          done
+
           docker run --rm --entrypoint sh eduflow-frontend-ci \
             -c 'test -d /app/uploads && test -w /app/uploads'
 
@@ -152,10 +169,27 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build \
-            -t "$ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG" \
-            -t "$ECR_REGISTRY/$FE_ECR_REPO:latest" \
-            ./FE_EduFlow
+          set -euo pipefail
+
+          for attempt in 1 2 3; do
+            echo "Building frontend deployment image (attempt $attempt of 3)..."
+            if docker build \
+                -t "$ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG" \
+                -t "$ECR_REGISTRY/$FE_ECR_REPO:latest" \
+                ./FE_EduFlow; then
+              break
+            fi
+
+            if [[ "$attempt" -eq 3 ]]; then
+              echo "::error::Frontend deployment image build failed after 3 attempts."
+              exit 1
+            fi
+
+            delay=$((attempt * 15))
+            echo "::warning::Docker build failed, retrying in ${delay}s."
+            sleep "$delay"
+          done
+
           docker push "$ECR_REGISTRY/$FE_ECR_REPO:$IMAGE_TAG"
           docker push "$ECR_REGISTRY/$FE_ECR_REPO:latest"
 
@@ -164,10 +198,27 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build \
-            -t "$ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG" \
-            -t "$ECR_REGISTRY/$BE_ECR_REPO:latest" \
-            ./BE_EduFlow
+          set -euo pipefail
+
+          for attempt in 1 2 3; do
+            echo "Building backend deployment image (attempt $attempt of 3)..."
+            if docker build \
+                -t "$ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG" \
+                -t "$ECR_REGISTRY/$BE_ECR_REPO:latest" \
+                ./BE_EduFlow; then
+              break
+            fi
+
+            if [[ "$attempt" -eq 3 ]]; then
+              echo "::error::Backend deployment image build failed after 3 attempts."
+              exit 1
+            fi
+
+            delay=$((attempt * 15))
+            echo "::warning::Docker build failed, retrying in ${delay}s."
+            sleep "$delay"
+          done
+
           docker push "$ECR_REGISTRY/$BE_ECR_REPO:$IMAGE_TAG"
           docker push "$ECR_REGISTRY/$BE_ECR_REPO:latest"
 
