@@ -87,6 +87,13 @@ jobs:
         working-directory: FE_EduFlow
         run: mvn --batch-mode --no-transfer-progress test
 
+      - name: Verify frontend runtime upload permissions
+        working-directory: FE_EduFlow
+        run: |
+          docker build --tag eduflow-frontend-ci .
+          docker run --rm --entrypoint sh eduflow-frontend-ci \
+            -c 'test -d /app/uploads && test -w /app/uploads'
+
   terraform-validate:
     name: Terraform validation
     runs-on: ubuntu-latest
@@ -169,14 +176,80 @@ jobs:
           aws ecs update-service \
             --cluster "$ECS_CLUSTER" \
             --service "$FE_SERVICE" \
-            --force-new-deployment
+            --force-new-deployment \
+            --query 'service.{serviceName:serviceName,taskDefinition:taskDefinition,deployments:deployments[].{id:id,status:status,rolloutState:rolloutState,desiredCount:desiredCount,runningCount:runningCount,pendingCount:pendingCount}}' \
+            --output json
           aws ecs update-service \
             --cluster "$ECS_CLUSTER" \
             --service "$BE_SERVICE" \
-            --force-new-deployment
+            --force-new-deployment \
+            --query 'service.{serviceName:serviceName,taskDefinition:taskDefinition,deployments:deployments[].{id:id,status:status,rolloutState:rolloutState,desiredCount:desiredCount,runningCount:runningCount,pendingCount:pendingCount}}' \
+            --output json
 
       - name: Wait for ECS services to stabilize
+        shell: bash
         run: |
-          aws ecs wait services-stable \
-            --cluster "$ECS_CLUSTER" \
-            --services "$FE_SERVICE" "$BE_SERVICE"
+          set -uo pipefail
+
+          if aws ecs wait services-stable \
+              --cluster "$ECS_CLUSTER" \
+              --services "$FE_SERVICE" "$BE_SERVICE"; then
+            echo "Both ECS services reached a stable state."
+            exit 0
+          fi
+
+          echo "::error::ECS services did not stabilize. Collecting service, task, target health, and application logs."
+          set +e
+          log_start_time=$(( $(date +%s) * 1000 - 20 * 60 * 1000 ))
+
+          for service in "$FE_SERVICE" "$BE_SERVICE"; do
+            echo "::group::ECS diagnostics: $service"
+
+            aws ecs describe-services \
+              --cluster "$ECS_CLUSTER" \
+              --services "$service" \
+              --query 'services[0].{serviceName:serviceName,taskDefinition:taskDefinition,desiredCount:desiredCount,runningCount:runningCount,pendingCount:pendingCount,deployments:deployments[].{id:id,status:status,rolloutState:rolloutState,rolloutStateReason:rolloutStateReason,desiredCount:desiredCount,runningCount:runningCount,pendingCount:pendingCount,failedTasks:failedTasks},events:events[0:10].[createdAt,message]}' \
+              --output json
+
+            stopped_tasks=$(aws ecs list-tasks \
+              --cluster "$ECS_CLUSTER" \
+              --service-name "$service" \
+              --desired-status STOPPED \
+              --max-results 10 \
+              --query 'taskArns' \
+              --output text)
+
+            if [[ -n "$stopped_tasks" && "$stopped_tasks" != "None" ]]; then
+              aws ecs describe-tasks \
+                --cluster "$ECS_CLUSTER" \
+                --tasks $stopped_tasks \
+                --query 'tasks[].{taskArn:taskArn,taskDefinitionArn:taskDefinitionArn,lastStatus:lastStatus,stopCode:stopCode,stoppedReason:stoppedReason,containers:containers[].{name:name,lastStatus:lastStatus,exitCode:exitCode,reason:reason}}' \
+                --output json
+            else
+              echo "No stopped tasks were returned for $service."
+            fi
+
+            target_group_arn=$(aws ecs describe-services \
+              --cluster "$ECS_CLUSTER" \
+              --services "$service" \
+              --query 'services[0].loadBalancers[0].targetGroupArn' \
+              --output text)
+
+            if [[ -n "$target_group_arn" && "$target_group_arn" != "None" ]]; then
+              aws elbv2 describe-target-health \
+                --target-group-arn "$target_group_arn" \
+                --query 'TargetHealthDescriptions[].{target:Target.Id,port:Target.Port,state:TargetHealth.State,reason:TargetHealth.Reason,description:TargetHealth.Description}' \
+                --output json
+            fi
+
+            aws logs filter-log-events \
+              --log-group-name "/ecs/$service" \
+              --start-time "$log_start_time" \
+              --limit 200 \
+              --query 'events[].{timestamp:timestamp,message:message}' \
+              --output json
+
+            echo "::endgroup::"
+          done
+
+          exit 1

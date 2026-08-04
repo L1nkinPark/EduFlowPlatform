@@ -19,7 +19,10 @@ RUN addgroup -S eduflow && adduser -S eduflow -G eduflow
 
 # Copy JAR from build stage
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
-RUN chown eduflow:eduflow app.jar
+# AppConfig creates upload subdirectories during startup. Prepare the writable
+# root before dropping privileges so the non-root runtime user can start and
+# can persist uploaded files for the lifetime of the Fargate task.
+RUN mkdir -p uploads && chown eduflow:eduflow app.jar uploads
 
 USER eduflow
 
