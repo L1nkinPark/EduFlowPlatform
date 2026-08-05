@@ -29,7 +29,3 @@ description: "Tích hợp hệ sinh thái giám sát và phản ứng sự cố 
 ## Khó khăn và cách xử lý
 
 Hệ thống gồm nhiều service với luồng xác thực khác nhau. Tôi chuẩn hóa token và HTTP status, giới hạn service nội bộ về localhost và dùng secure storage trên thiết bị.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

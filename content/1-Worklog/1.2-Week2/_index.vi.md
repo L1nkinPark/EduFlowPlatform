@@ -29,7 +29,3 @@ description: "Mở rộng template cloud, thực hành EC2 và cải thiện d�
 ## Khó khăn và cách xử lý
 
 Dữ liệu và cấu hình nằm ở nhiều repository nên khó theo dõi. Tôi tách tài liệu theo từng nền tảng cloud, chuẩn hóa cấu trúc thư mục và điều chỉnh chính sách RLS cùng quan hệ thực thể.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

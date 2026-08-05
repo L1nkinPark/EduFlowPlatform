@@ -28,7 +28,3 @@ description: "Build Terraform, a Fly.io environment, and container fixes for Edu
 ## Challenge and resolution
 
 The Java container used the wrong encoding and health checks failed while the backend was still starting. I enforced UTF-8, adjusted timeouts, and corrected cross-service health configuration.
-
-## Mentor feedback
-
-Not available yet; it will be added after mentor feedback is received.

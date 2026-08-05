@@ -30,7 +30,3 @@ description: "Test EduFlow, automate Aegis, and develop SecHub for an OpenAI hac
 ## Challenge and resolution
 
 Payment flows, runtime configuration, and multi-service CI used many different environment variables. I standardized encoding and configuration, added regression tests, and automated image builds.
-
-## Mentor feedback
-
-Not available yet; mentor or organizer feedback will be added later.

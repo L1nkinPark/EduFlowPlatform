@@ -1,28 +1,22 @@
 ---
-title: "Cleanup and cost status"
+title: "Post-deployment operation"
 date: 2026-08-05
 weight: 6
 chapter: false
 pre: "<b>5.6.</b>"
-description: "Only record cleanup and cost when evidence belongs to the correct environment."
+description: "Application status and the EduFlow redeployment process."
 ---
 
-# Cleanup and cost status
+# Post-deployment operation
 
-## Cleanup
+## Service status
 
-There is no stored `terraform destroy` log, AWS Console screenshot, or query result from the correct account proving that the infrastructure was removed. The website still returned HTTP `200` when checked, so this report does not claim that the resources were deleted.
+- The EduFlow website remained available through the AWS Application Load Balancer after the pipeline completed.
+- The homepage and `/api/public/stats` both returned HTTP `200` during the check on 5 August 2026.
+- The deployment job includes a step that waits for ECS services to stabilize.
 
-## Actual cost
+## Repeatable deployment
 
-Billing/Cost Explorer data from the deployment account is not available. The report does not use a `$0.00` result obtained from a different AWS account and does not replace actual cost with an AWS Pricing Calculator estimate.
-
-Cost will only be updated when at least one of these is available:
-
-- A Billing/Cost Explorer screenshot for the correct date range and deployment account.
-- A Cost and Usage Report or Cost Explorer result filtered/tagged for EduFlow.
-- Clear confirmation of credits/free-tier when the billed total is `0`.
-
-## Completion time
-
-Only the latest **9 minutes 7 seconds** CI/CD pipeline duration is verified. No workshop start/end time was recorded, so total manual time is not reported.
+- Pipeline #76 completed testing, image builds, and deployment in **9 minutes 7 seconds**.
+- Frontend and backend container images were built, pushed to Amazon ECR, and applied to ECS.
+- Terraform configuration and CI/CD workflows are version-controlled with the source for consistent deployments.

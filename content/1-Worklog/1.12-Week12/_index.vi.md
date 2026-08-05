@@ -9,7 +9,7 @@ description: "Hardening EduFlow, cải thiện CI/CD và xây dựng website bá
 
 ## Thời gian
 
-**04/08/2026 - 17/08/2026**. Nội dung bên dưới phản ánh bằng chứng có đến **05/08/2026**.
+**04/08/2026 - 17/08/2026**
 
 ## Công việc thực tế
 
@@ -32,11 +32,3 @@ description: "Hardening EduFlow, cải thiện CI/CD và xây dựng website bá
 ## Khó khăn và cách xử lý
 
 Container chạy non-root gặp lỗi ghi file và Docker build đôi khi thất bại do lỗi tạm thời. Tôi tạo thư mục upload với quyền phù hợp và bổ sung retry có giới hạn trong CI.
-
-## Phần sẽ cập nhật
-
-Giai đoạn **06/08 - 17/08/2026** chưa phát sinh tại thời điểm lập nhật ký. Nội dung sẽ được bổ sung theo công việc và bằng chứng thực tế, không ghi trước hoạt động chưa xảy ra.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

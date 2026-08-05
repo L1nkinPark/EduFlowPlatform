@@ -30,10 +30,6 @@ EduFlow là nền tảng quản lý và phân phối khóa học trực tuyến,
 
 {{< profile alt="Ảnh đại diện của Võ Đức Hiếu" >}}
 
-{{% notice info %}}
-Thông tin sinh viên và kỳ thực tập do Võ Đức Hiếu cung cấp. Nội dung kỹ thuật được tổng hợp từ mã nguồn và lịch sử Git của dự án; các sự kiện hoặc kết quả chưa có bằng chứng không được tự bổ sung.
-{{% /notice %}}
-
 ### Nội dung
 
 1. [Nhật ký công việc](1-Worklog/)
@@ -41,5 +37,5 @@ Thông tin sinh viên và kỳ thực tập do Võ Đức Hiếu cung cấp. N�
 3. [Bài viết kỹ thuật](3-BlogsPosted/)
 4. [Hackathon đã tham gia](4-EventParticipated/)
 5. [Workshop triển khai](5-Workshop/)
-6. [Tự đánh giá](6-Self-evaluation/)
-7. [Tổng kết và phản hồi](7-Feedback/)
+6. [Kết quả và năng lực đạt được](6-Self-evaluation/)
+7. [Tổng kết kỳ thực tập](7-Feedback/)

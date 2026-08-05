@@ -30,7 +30,3 @@ description: "Kiểm thử EduFlow, tự động hóa Aegis và phát triển Se
 ## Khó khăn và cách xử lý
 
 Luồng thanh toán, runtime configuration và CI đa service sử dụng nhiều biến môi trường khác nhau. Tôi chuẩn hóa encoding/cấu hình, bổ sung kiểm thử hồi quy và tự động hóa build image.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

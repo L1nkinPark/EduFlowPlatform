@@ -30,7 +30,3 @@ description: "Phát triển KET-Vault cho cuộc thi hackathon trên DoraHacks."
 ## Khó khăn và cách xử lý
 
 Smart contract từng trả về lỗi revert, model AI ngừng hỗ trợ và môi trường Railway gặp lỗi CORS/cổng chạy. Tôi kiểm tra transaction, thay model dự phòng và chuyển cấu hình CORS, `PORT` sang biến môi trường.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

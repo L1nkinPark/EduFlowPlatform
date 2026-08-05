@@ -29,7 +29,3 @@ description: "Expand EduFlow and develop TrueTrace for a Qoder hackathon."
 ## Challenge and resolution
 
 Authorization and production configuration had to be consistent across many applications. I added ownership checks, dashboard authentication, runtime validation, and secure default configuration.
-
-## Mentor feedback
-
-Not available yet; mentor or organizer feedback will be added later.

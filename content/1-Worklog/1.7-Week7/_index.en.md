@@ -29,7 +29,3 @@ description: "Integrate the Aegis monitoring and incident-response ecosystem for
 ## Challenge and resolution
 
 The system contained many services with different authentication flows. I standardized tokens and HTTP status codes, bound internal services to localhost, and used secure storage on mobile.
-
-## Mentor feedback
-
-Not available yet; mentor or organizer feedback will be added later.

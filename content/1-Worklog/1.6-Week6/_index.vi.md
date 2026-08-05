@@ -28,7 +28,3 @@ description: "Xây dựng Terraform, môi trường Fly.io và sửa lỗi conta
 ## Khó khăn và cách xử lý
 
 Container Java bị sai encoding và health check thất bại khi backend khởi động chậm. Tôi ép encoding UTF-8, điều chỉnh timeout và cập nhật cấu hình health check giữa hai dịch vụ.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

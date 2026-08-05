@@ -30,7 +30,3 @@ description: "Develop KET-Vault for a DoraHacks competition."
 ## Challenge and resolution
 
 The smart contract reverted, an AI model was decommissioned, and Railway had CORS/port issues. I inspected the transactions, selected a fallback model, and moved CORS and `PORT` settings into environment variables.
-
-## Mentor feedback
-
-Not available yet; mentor or organizer feedback will be added later.

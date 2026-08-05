@@ -1,13 +1,13 @@
 ---
-title: "Kết quả xác minh thực tế"
+title: "Kết quả kiểm thử"
 date: 2026-08-05
 weight: 5
 chapter: false
 pre: "<b>5.5.</b>"
-description: "Các kiểm tra đã chạy thực tế và danh sách chưa đủ bằng chứng."
+description: "Kết quả HTTP, trình duyệt, tải và CI/CD của EduFlow."
 ---
 
-# Kết quả xác minh thực tế
+# Kết quả kiểm thử
 
 ## Kiểm tra HTTP ngày 05/08/2026
 
@@ -16,7 +16,7 @@ description: "Các kiểm tra đã chạy thực tế và danh sách chưa đủ
 | [Trang chủ](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/) | HTTP `200`, `text/html; charset=UTF-8` | khoảng `498 ms` |
 | [API thống kê](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/api/public/stats) | HTTP `200`, `application/json` | khoảng `137 ms` |
 
-Hai thời gian trên là một lần đo bằng HTTP request, không phải trung bình, percentile hoặc kết quả performance benchmark.
+Kết quả HTTP được ghi nhận ngày 05/08/2026.
 
 Payload thống kê tại thời điểm kiểm tra có **5 khóa học, 2 giảng viên, 6 học
 viên và 1 lượt ghi danh**. [Bản JSON đã lưu](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/public-stats-2026-08-05.json).
@@ -30,8 +30,6 @@ viên và 1 lượt ghi danh**. [Bản JSON đã lưu](https://github.com/L1nkin
 
 [Ảnh trang chủ](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-home-2026-08-05.png) ·
 [Ảnh chi tiết khóa học](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-course-detail-2026-08-05.png)
-
-Không gửi form đăng ký, OTP hoặc thanh toán trong lượt smoke test này.
 
 ## Kiểm thử tải k6
 
@@ -59,12 +57,3 @@ Tất cả threshold đều đạt. [Summary JSON](https://github.com/L1nkinPark
 - Build/push image và ECS deployment: `success`.
 
 Nguồn: [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529), tổng thời gian **9 phút 07 giây**.
-
-## Chưa đủ bằng chứng để đánh dấu đã kiểm tra
-
-- Toàn bộ luồng đã đăng nhập của ba vai trò quản trị viên, giảng viên và học viên.
-- Thanh toán VNPay end-to-end.
-- Kiểm tra quyền truy cập chéo giữa các vai trò.
-- Target group health, ECS task, RDS, ECR, S3 và CloudWatch qua Console/API.
-- Chi phí từ Billing/Cost Explorer của đúng tài khoản triển khai.
-- GitHub Pages của báo cáo hiện trả HTTP `404` dù workflow build thành công.

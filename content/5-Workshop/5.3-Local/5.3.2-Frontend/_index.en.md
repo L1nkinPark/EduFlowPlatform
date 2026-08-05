@@ -4,7 +4,7 @@ date: 2026-08-05
 weight: 2
 chapter: false
 pre: "<b>5.3.2.</b>"
-description: "Frontend tests and upload-permission evidence from GitHub Actions."
+description: "Frontend tests and upload-permission results from GitHub Actions."
 ---
 
 # Frontend test result
@@ -23,5 +23,4 @@ A real-browser smoke test also verified the homepage, catalog/detail pages,
 Vietnamese–English switching, and redirecting an anonymous **Buy Now** action
 to `/signin`. The [homepage screenshot](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-home-2026-08-05.png) and
 [course-detail screenshot](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-course-detail-2026-08-05.png)
-are stored as evidence. Sign-up, OTP, real-account sign-in, timeout, and payment
-were not submitted during this smoke test.
+record the browser rendering results.

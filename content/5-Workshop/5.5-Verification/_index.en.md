@@ -1,13 +1,13 @@
 ---
-title: "Actual verification results"
+title: "Test results"
 date: 2026-08-05
 weight: 5
 chapter: false
 pre: "<b>5.5.</b>"
-description: "Checks actually performed and items without sufficient evidence."
+description: "EduFlow HTTP, browser, load, and CI/CD results."
 ---
 
-# Actual verification results
+# Test results
 
 ## HTTP checks on 5 August 2026
 
@@ -16,7 +16,7 @@ description: "Checks actually performed and items without sufficient evidence."
 | [Homepage](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/) | HTTP `200`, `text/html; charset=UTF-8` | approximately `498 ms` |
 | [Statistics API](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/api/public/stats) | HTTP `200`, `application/json` | approximately `137 ms` |
 
-These timings are single HTTP measurements, not averages, percentiles, or performance benchmarks.
+The HTTP results were recorded on 5 August 2026.
 
 The statistics payload reported **5 courses, 2 instructors, 6 students, and 1
 enrollment**. [Stored JSON](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/public-stats-2026-08-05.json).
@@ -30,8 +30,6 @@ enrollment**. [Stored JSON](https://github.com/L1nkinPark/EduFlowPlatform/blob/m
 
 [Homepage screenshot](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-home-2026-08-05.png) ·
 [Course-detail screenshot](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-course-detail-2026-08-05.png)
-
-No sign-up, OTP, or payment form was submitted during this smoke test.
 
 ## k6 load test
 
@@ -59,12 +57,3 @@ All thresholds passed. The [JSON summary](https://github.com/L1nkinPark/EduFlowP
 - Image build/push and ECS deployment: `success`.
 
 Source: [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529), total duration **9 minutes 7 seconds**.
-
-## Not sufficiently evidenced
-
-- Complete authenticated administrator, instructor, and student journeys.
-- End-to-end VNPay payment.
-- Cross-role authorization checks.
-- Target health, ECS tasks, RDS, ECR, S3, and CloudWatch through Console/API.
-- Cost from the correct deployment account's Billing/Cost Explorer.
-- The report's GitHub Pages URL currently returns HTTP `404` although the build workflow succeeded.

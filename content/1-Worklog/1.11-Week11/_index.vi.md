@@ -29,7 +29,3 @@ description: "Tăng độ ổn định cho TrueTrace của Qoder và hardening E
 ## Khó khăn và cách xử lý
 
 Lỗi tạm thời từ AWS, pipeline cũ và quyết định sai của AI làm luồng end-to-end thiếu ổn định. Tôi giới hạn retry, tăng kiểm thử và bổ sung cách xử lý lỗi rõ ràng.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

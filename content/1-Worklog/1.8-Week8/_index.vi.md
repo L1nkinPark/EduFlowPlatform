@@ -30,8 +30,3 @@ description: "Hardening, phân quyền và hoàn thiện tài liệu Aegis cho h
 ## Khó khăn và cách xử lý
 
 Quyền quản trị cần nhất quán ở nhiều tầng và các rule phải được truyền đúng giữa service. Tôi thực thi kiểm tra ở backend lẫn gateway, sau đó chuẩn hóa tài liệu cấu hình liên repository.
-
-## Nhận xét mentor
-
-Chưa có nhận xét mentor. Kết quả cuộc thi được đối chiếu độc lập từ trang kết
-quả và thông báo chính thức của ban tổ chức AABW.

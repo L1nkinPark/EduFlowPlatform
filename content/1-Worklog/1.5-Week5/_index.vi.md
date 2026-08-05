@@ -26,7 +26,3 @@ description: "Xây dựng Tardis cho hackathon AABW."
 ## Khó khăn và cách xử lý
 
 Môi trường phát triển phụ thuộc PostgreSQL, RabbitMQ và dịch vụ AI. Tôi cấu hình chế độ phát triển với H2, hàng đợi in-memory và phương án dự phòng để có thể chạy, kiểm thử cục bộ khi dịch vụ ngoài chưa sẵn sàng.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

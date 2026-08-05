@@ -28,7 +28,3 @@ description: "Nghiên cứu IAM, role, policy và thực hành cấp quyền Ama
 ## Khó khăn và cách xử lý
 
 Cấu trúc tài liệu ban đầu khó theo dõi và một số sơ đồ Mermaid không hiển thị đúng. Tôi tách nội dung thành từng khái niệm IAM, sửa đường dẫn và kiểm tra lại cú pháp sơ đồ.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

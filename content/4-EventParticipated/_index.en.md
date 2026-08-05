@@ -8,14 +8,14 @@ pre: "<b>4.</b>"
 
 # Hackathons participated in
 
-The competition names and context below were provided by Võ Đức Hiếu. Repositories and commits verify the technical work; the report does not invent awards, rankings, or organizer results without official evidence.
+During the internship, I participated in competitions focused on cloud computing, artificial intelligence, cybersecurity, and data traceability.
 
 - **KET-Vault:** a DoraHacks competition.
 - **Tardis and Aegis:** the AABW hackathon.
 - **SecHub:** an OpenAI hackathon.
 - **TrueTrace:** a Qoder hackathon.
 
-Officially supported results checked for this report:
+Key results:
 
 - **Little Boy's Aegis** won the **Financial Services I — Shinhan Future's Lab
   Vietnam** track at AABW.

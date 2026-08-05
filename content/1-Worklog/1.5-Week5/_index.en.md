@@ -26,7 +26,3 @@ description: "Build Tardis for the AABW hackathon."
 ## Challenge and resolution
 
 Development depended on PostgreSQL, RabbitMQ, and an external AI service. I configured an H2 development profile, an in-memory queue, and fallback processing so the application could be tested locally.
-
-## Mentor feedback
-
-Not available yet; mentor or organizer feedback will be added later.

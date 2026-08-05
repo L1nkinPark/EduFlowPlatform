@@ -29,7 +29,3 @@ description: "Improve stability for the Qoder TrueTrace project and harden EduFl
 ## Challenge and resolution
 
 Transient AWS failures, stale pipelines, and incorrect AI decisions made end-to-end flows unstable. I bounded retries, expanded tests, and added clearer error handling.
-
-## Mentor feedback
-
-Not available yet; mentor or organizer feedback will be added later.

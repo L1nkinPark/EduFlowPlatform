@@ -29,7 +29,3 @@ description: "Mở rộng EduFlow và phát triển TrueTrace cho hackathon Qode
 ## Khó khăn và cách xử lý
 
 Phân quyền và cấu hình production phải nhất quán giữa nhiều ứng dụng. Tôi bổ sung ownership check, xác thực dashboard, kiểm tra runtime và cấu hình mặc định an toàn.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

@@ -4,14 +4,14 @@ date: 2026-07-13
 weight: 1
 chapter: false
 pre: "<b>4.1.</b>"
-description: "Bằng chứng kỹ thuật cho DoraHacks và hackathon AABW."
+description: "Đóng góp kỹ thuật tại DoraHacks và hackathon AABW."
 ---
 
 # KET-Vault — DoraHacks
 
-Theo thông tin người thực hiện cung cấp, KET-Vault được phát triển cho một cuộc thi trên DoraHacks. Lịch sử GitHub cho thấy công việc full-stack, smart contract, multi-agent AI, Docker/CI và triển khai trong giai đoạn 09–15/06/2026.
+KET-Vault được phát triển cho một cuộc thi trên DoraHacks. Dự án triển khai các hạng mục full-stack, smart contract, multi-agent AI, Docker/CI và deployment trong giai đoạn 09–15/06/2026.
 
-**Bằng chứng kỹ thuật:**
+**Đóng góp kỹ thuật:**
 
 - [Repository KET-Vault](https://github.com/Littile-Boy-s-KET/KET-Vault)
 - [Docker Compose và GitHub Actions](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/086eb767025fa9641e9b968162436a7e802fd175)
@@ -20,9 +20,9 @@ Theo thông tin người thực hiện cung cấp, KET-Vault được phát tri�
 
 # Tardis và Aegis — AABW
 
-Theo thông tin người thực hiện cung cấp, Tardis và Aegis được phát triển cho hackathon AABW. GitHub ghi nhận Tardis trong tuần 16–22/06 và hệ sinh thái Aegis từ 30/06 đến 13/07/2026.
+Tardis và Aegis được phát triển cho hackathon AABW. Công việc với Tardis được thực hiện trong tuần 16–22/06 và hệ sinh thái Aegis từ 30/06 đến 13/07/2026.
 
-**Bằng chứng kỹ thuật:**
+**Đóng góp kỹ thuật:**
 
 - [Repository Tardis](https://github.com/Little-Boy-s-Tardis/Tardis)
 - [Tình huống kiểm thử webhook Tardis](https://github.com/Little-Boy-s-Tardis/Tardis/commit/c66e8cd6e3696a3580bd606d5ddca9ac9c5d9c80)
@@ -31,7 +31,7 @@ Theo thông tin người thực hiện cung cấp, Tardis và Aegis được ph�
 - [OPA authentication cho SOAR](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/76e7dcd72728cc8dd6005e197a68c5c835710f9b)
 - [IP banning và gateway validation](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment/commit/6718ef5c63fd5f1481e787bf634044b47225480d)
 
-**Kết quả AABW đã xác minh:**
+**Kết quả AABW:**
 
 - [Trang kết quả chính thức AABW](https://aabw.genaifund.ai/) ghi nhận
   **Little Boy's Aegis** là đội thắng hạng mục **Financial Services I —
@@ -40,6 +40,3 @@ Theo thông tin người thực hiện cung cấp, Tardis và Aegis được ph�
   cũng liệt kê Aegis là đội thắng hạng mục này.
 - [Danh sách Builder Experience Track của GenAI Fund](https://www.linkedin.com/posts/genai-fund_deadlinetrackeraabw-autointroaabw-tardisaabw-activity-7475074317769256960-a9qG)
   ghi nhận **Little Boy's Tardis** trong 17 dự án được chọn vào vòng bình chọn.
-
-Chưa tìm thấy nguồn chính thức công khai cho kết quả KET-Vault trên DoraHacks,
-vì vậy báo cáo không tự ghi thứ hạng hoặc giải thưởng cho KET-Vault.

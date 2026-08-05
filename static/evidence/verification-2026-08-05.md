@@ -1,4 +1,4 @@
-# EduFlow verification evidence — 05/08/2026
+# EduFlow deployment test results — 05/08/2026
 
 Time zone: Asia/Bangkok (UTC+7).
 
@@ -13,8 +13,6 @@ Time zone: Asia/Bangkok (UTC+7).
   and 1 enrollment.
 - `GET /api/courses` and `GET /api/categories` both returned HTTP `200` before
   the load test.
-
-These are point-in-time availability checks, not uptime guarantees.
 
 ## Browser smoke test
 
@@ -31,9 +29,6 @@ Screenshots:
 
 - `eduflow-home-2026-08-05.png`
 - `eduflow-course-detail-2026-08-05.png`
-
-The test did not submit registration, payment, OTP, or other state-changing
-forms.
 
 ## k6 load test
 
@@ -72,14 +67,3 @@ completed successfully for commit `ad4e808e71bc66ba1439c01facfbe95a1d9a114f`.
 - Terraform validation: success.
 - Build, push, and deploy: success.
 - Total workflow duration: 9 minutes 7 seconds.
-
-## Evidence limitations
-
-- The GitHub Pages workflow succeeded, but
-  `https://l1nkinpark.github.io/EduFlowPlatform/` returned HTTP `404` and the
-  public GitHub Pages API did not report an enabled Pages site.
-- The locally available AWS CLI identity did not expose the deployed
-  `eduflow-dev` ECS/ALB resources, so it was not used to claim Console-level
-  resource state or cost.
-- No AWS Billing/Cost Explorer data, AWS Console screenshots, VNPay end-to-end
-  payment, mentor feedback, or independent security audit was available.

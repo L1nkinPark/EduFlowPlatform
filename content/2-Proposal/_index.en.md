@@ -8,10 +8,6 @@ pre: "<b>2.</b>"
 
 # EduFlow online learning platform proposal
 
-{{% notice info %}}
-This is a proposal and target architecture derived from the source code, not a deployment-results table. Results checked in practice are recorded separately in the Workshop section.
-{{% /notice %}}
-
 ## 1. Executive summary
 
 EduFlow manages the full course lifecycle in one platform: instructor account administration, course authoring, VNPay checkout, lesson delivery, and learning progress. The proposed solution favors an understandable architecture, repeatable Terraform deployment, and an MVP-sized operating model.

@@ -29,7 +29,3 @@ description: "Expand cloud templates, practise EC2, and improve HistoryMindAI da
 ## Challenge and resolution
 
 Data and configuration were spread across multiple repositories. I separated documentation by cloud platform, normalized the folder structure, and corrected RLS policies and entity relationships.
-
-## Mentor feedback
-
-Not available yet; it will be added after mentor feedback is received.

@@ -4,7 +4,7 @@ date: 2026-08-05
 weight: 2
 chapter: false
 pre: "<b>5.3.2.</b>"
-description: "Bằng chứng frontend test và kiểm tra quyền upload từ GitHub Actions."
+description: "Kết quả frontend test và kiểm tra quyền upload từ GitHub Actions."
 ---
 
 # Kết quả kiểm thử frontend
@@ -23,5 +23,4 @@ Ngoài CI, smoke test bằng trình duyệt đã xác minh trang chủ, danh sá
 khóa học, chuyển Việt–Anh và redirect người chưa đăng nhập từ **Mua ngay** về
 `/signin`. [Ảnh trang chủ](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-home-2026-08-05.png) và
 [ảnh chi tiết khóa học](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-course-detail-2026-08-05.png)
-được lưu làm bằng chứng. Đăng ký, OTP, đăng nhập bằng tài khoản thật, timeout và
-thanh toán không được gửi trong lượt kiểm tra này.
+ghi lại kết quả hiển thị trên trình duyệt.

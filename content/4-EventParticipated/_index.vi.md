@@ -8,14 +8,14 @@ pre: "<b>4.</b>"
 
 # Hackathon đã tham gia
 
-Tên và bối cảnh cuộc thi dưới đây do Võ Đức Hiếu cung cấp. Repository và commit được dùng để xác minh phần công việc kỹ thuật; báo cáo không tự ghi giải thưởng, thứ hạng hoặc kết quả ban tổ chức khi chưa có bằng chứng chính thức.
+Trong kỳ thực tập, tôi tham gia các cuộc thi tập trung vào điện toán đám mây, trí tuệ nhân tạo, an toàn thông tin và truy xuất dữ liệu.
 
 - **KET-Vault:** cuộc thi trên DoraHacks.
 - **Tardis và Aegis:** hackathon AABW.
 - **SecHub:** hackathon của OpenAI.
 - **TrueTrace:** hackathon của Qoder.
 
-Kết quả có bằng chứng chính thức đã kiểm tra:
+Kết quả nổi bật:
 
 - **Little Boy's Aegis** thắng hạng mục **Financial Services I — Shinhan
   Future's Lab Vietnam** tại AABW.

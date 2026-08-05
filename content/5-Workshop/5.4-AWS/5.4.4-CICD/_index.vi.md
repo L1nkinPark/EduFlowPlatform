@@ -18,6 +18,6 @@ Bằng chứng: [Test and Deploy to Amazon ECS Fargate #76](https://github.com/L
 | Frontend tests | `success` | 07:40:45–07:41:57 |
 | Build, push, and deploy | `success` | 07:42:06–07:49:47 |
 
-GitHub hiển thị tổng thời lượng run là **9 phút 07 giây**. Đây là thời gian pipeline, không phải tổng thời gian thực hiện workshop thủ công.
+GitHub hiển thị tổng thời lượng pipeline là **9 phút 07 giây**.
 
-Job deploy ghi nhận thành công việc đăng nhập ECR, build/push hai image, triển khai ECS và chờ service ổn định. Báo cáo không suy ra thêm trạng thái hiện tại của từng resource nếu không có quyền truy vấn AWS tương ứng.
+Job deploy hoàn thành đăng nhập ECR, build/push hai image, triển khai ECS và chờ service ổn định.

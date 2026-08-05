@@ -28,7 +28,3 @@ description: "Xây dựng bộ template Kubernetes cho hệ thống frontend, ba
 ## Khó khăn và cách xử lý
 
 ConfigMap ban đầu được mount sai đường dẫn nên container không đọc đúng cấu hình. Tôi chuyển sang dùng `subPath`, chuẩn hóa volume mount và bổ sung kiểm tra CI để phát hiện lỗi cấu hình sớm.
-
-## Nhận xét mentor
-
-Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

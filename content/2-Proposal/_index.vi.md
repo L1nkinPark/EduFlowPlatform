@@ -8,10 +8,6 @@ pre: "<b>2.</b>"
 
 # Đề xuất nền tảng học trực tuyến EduFlow
 
-{{% notice info %}}
-Đây là đề xuất và kiến trúc mục tiêu rút ra từ mã nguồn, không phải bảng kết quả triển khai. Kết quả đã kiểm tra thực tế được ghi riêng tại phần Workshop.
-{{% /notice %}}
-
 ## 1. Tóm tắt
 
 EduFlow giải quyết nhu cầu quản lý toàn bộ vòng đời khóa học trên một nền tảng: quản trị tài khoản giảng viên, biên soạn nội dung, bán khóa học qua VNPay, học bài và theo dõi tiến độ. Giải pháp ưu tiên kiến trúc dễ hiểu, có thể triển khai lặp lại bằng Terraform và phù hợp với một sản phẩm MVP.

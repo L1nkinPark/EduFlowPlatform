@@ -28,7 +28,3 @@ description: "Study IAM roles and policies and practise Amazon S3 permissions."
 ## Challenge and resolution
 
 The original documentation was difficult to navigate and some Mermaid diagrams failed to render. I separated the IAM concepts, repaired links, and validated the diagram syntax.
-
-## Mentor feedback
-
-Not available yet; it will be added after mentor feedback is received.

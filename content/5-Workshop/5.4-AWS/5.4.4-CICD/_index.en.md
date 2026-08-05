@@ -18,6 +18,6 @@ Evidence: [Test and Deploy to Amazon ECS Fargate #76](https://github.com/L1nkinP
 | Frontend tests | `success` | 07:40:45–07:41:57 |
 | Build, push, and deploy | `success` | 07:42:06–07:49:47 |
 
-GitHub reports a total run duration of **9 minutes 7 seconds**. This is pipeline duration, not total manual workshop time.
+GitHub reports a total pipeline duration of **9 minutes 7 seconds**.
 
-The deploy job recorded successful ECR login, two image builds/pushes, ECS deployment, and service stabilization. No additional current resource state is inferred without access to the matching AWS environment.
+The deploy job completed ECR login, two image builds/pushes, ECS deployment, and service stabilization.

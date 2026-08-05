@@ -30,10 +30,6 @@ EduFlow is an online course management and delivery platform for **students**, *
 
 {{< profile alt="Portrait of Võ Đức Hiếu" >}}
 
-{{% notice info %}}
-Student and internship information was provided by Võ Đức Hiếu. Technical content is derived from the project source and Git history; events or outcomes without repository evidence are intentionally not invented.
-{{% /notice %}}
-
 ### Report contents
 
 1. [Worklog](1-Worklog/)
@@ -41,5 +37,5 @@ Student and internship information was provided by Võ Đức Hiếu. Technical 
 3. [Technical articles](3-BlogsPosted/)
 4. [Hackathons participated in](4-EventParticipated/)
 5. [Deployment workshop](5-Workshop/)
-6. [Self-assessment](6-Self-evaluation/)
-7. [Retrospective and feedback](7-Feedback/)
+6. [Results and competencies achieved](6-Self-evaluation/)
+7. [Internship summary](7-Feedback/)

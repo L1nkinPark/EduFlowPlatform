@@ -30,8 +30,3 @@ description: "Harden authorization and complete Aegis documentation for AABW."
 ## Challenge and resolution
 
 Administrator privileges and rules had to remain consistent across several layers. I enforced checks in the backend and gateway and then standardized the cross-repository documentation.
-
-## Mentor feedback
-
-No mentor feedback was available. The competition result was independently
-cross-checked against the official AABW result page and organizer announcement.

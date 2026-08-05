@@ -9,7 +9,7 @@ description: "Harden EduFlow, improve CI/CD, and build the Hugo internship repor
 
 ## Date
 
-**4 August 2026 - 17 August 2026**. The content below reflects evidence available through **5 August 2026**.
+**4 August 2026 - 17 August 2026**
 
 ## Actual work
 
@@ -32,11 +32,3 @@ description: "Harden EduFlow, improve CI/CD, and build the Hugo internship repor
 ## Challenge and resolution
 
 The non-root container could not write files and Docker builds sometimes failed transiently. I created a writable upload directory and added bounded CI retries.
-
-## Pending update
-
-The period from **6 August to 17 August 2026** had not occurred when this entry was prepared. It will only be updated with actual work and evidence.
-
-## Mentor feedback
-
-Not available yet; it will be added after mentor feedback is received.

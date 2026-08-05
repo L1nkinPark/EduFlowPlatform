@@ -28,7 +28,3 @@ description: "Build reusable Kubernetes templates for frontend, backend, and Mar
 ## Challenge and resolution
 
 The container initially read the wrong configuration because the ConfigMap was mounted at the wrong path. I changed the mount to use `subPath`, normalized the volume paths, and added CI validation.
-
-## Mentor feedback
-
-Not available yet; it will be added after mentor feedback is received.
