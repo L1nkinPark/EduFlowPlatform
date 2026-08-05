@@ -5,10 +5,34 @@
   --eduflow-ink: #172033;
   --eduflow-muted: #64748b;
   --eduflow-surface: #f8fafc;
+  --eduflow-font-sans: "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   color: var(--eduflow-ink);
+  font-family: var(--eduflow-font-sans);
+  font-weight: 400;
+}
+
+button,
+input,
+select,
+textarea,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+#chapter h1,
+#chapter h3,
+#sidebar #shortcuts h3 {
+  font-family: var(--eduflow-font-sans);
+}
+
+h1,
+#chapter h1 {
+  font-weight: 600;
 }
 
 #header-wrapper {
