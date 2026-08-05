@@ -1,0 +1,9 @@
+{{ $url := .Get 0 }}
+<div class="gh-contributors">
+  {{ range getJSON $url }}
+    <a href="{{ .html_url }}" rel="noopener noreferrer">
+      <img src="{{ .avatar_url }}" width="36" height="36" alt="">
+      <span>@{{ .login }} · {{ .contributions }} commits</span>
+    </a>
+  {{ end }}
+</div>

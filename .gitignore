@@ -23,5 +23,9 @@ terraform.tfvars
 scratch/
 test_results.txt
 
+# Hugo workshop output
+/public/
+/.hugo_build.lock
+
 # Local fallback for instructor-uploaded course media
 FE_EduFlow/uploads/

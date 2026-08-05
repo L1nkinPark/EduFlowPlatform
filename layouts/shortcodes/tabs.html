@@ -1,0 +1,17 @@
+{{ .Page.Scratch.Add "tabset-counter" 1 }}
+{{ $tabSetID := .Get "name" | default (printf "tabset-%s-%d" .Page.RelPermalink (.Page.Scratch.Get "tabset-counter")) | anchorize }}
+{{ $tabs := .Scratch.Get "tabs" }}
+{{ if .Inner }}{{ end }}
+<div id="{{ $tabSetID }}">
+  <ul>
+    {{ range $index, $tab := $tabs }}
+      <li><a href="#{{ printf "%s-%d" $tabSetID $index }}">{{ trim $tab.name " " }}</a></li>
+    {{ end }}
+  </ul>
+  {{ range $index, $tab := $tabs }}
+    <div id="{{ printf "%s-%d" $tabSetID $index }}">
+      {{ with $tab.content }}{{ . }}{{ end }}
+    </div>
+  {{ end }}
+</div>
+<script>$(function () { $("#{{ $tabSetID | safeJS }}").tabs(); });</script>

@@ -1,0 +1,163 @@
+<mxfile host="app.diagrams.net" modified="2026-07-16T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="eduflow-deployment-architecture" name="EduFlow Deployment Architecture">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="EduFlow Deployment Architecture on AWS" style="text;html=1;strokeColor=none;fillColor=none;fontSize=42;fontStyle=1;fontColor=#0B1B3D;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="360" y="20" width="1080" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aws-cloud" value="AWS Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B1B3D;strokeWidth=3;fontSize=24;fontStyle=1;fontColor=#0B1B3D;align=left;verticalAlign=top;spacingLeft=70;spacingTop=18;" vertex="1" parent="1">
+          <mxGeometry x="380" y="90" width="1360" height="660" as="geometry" />
+        </mxCell>
+        <mxCell id="aws-badge" value="aws" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=#232F3E;fontSize=24;fontStyle=1;fontColor=#FFFFFF;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="400" y="100" width="55" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="vpc" value="VPC" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7FFF7;strokeColor=#2E7D32;strokeWidth=3;fontSize=26;fontStyle=1;fontColor=#2E7D32;align=left;verticalAlign=top;spacingLeft=70;spacingTop=22;" vertex="1" parent="1">
+          <mxGeometry x="420" y="165" width="1280" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="vpc-icon" value="VPC" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2E7D32;strokeColor=#2E7D32;fontSize=14;fontStyle=1;fontColor=#FFFFFF;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="442" y="185" width="45" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="public-subnet" value="Public Subnet" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#F1F8E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=22;fontStyle=1;fontColor=#2E7D32;align=center;verticalAlign=top;spacingTop=25;" vertex="1" parent="1">
+          <mxGeometry x="500" y="250" width="290" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="private-subnet" value="Private Subnet" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#F4F8FF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=22;fontStyle=1;fontColor=#1A5DCE;align=left;verticalAlign=top;spacingLeft=70;spacingTop=24;" vertex="1" parent="1">
+          <mxGeometry x="850" y="215" width="790" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="private-lock" value="🔒" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="870" y="225" width="35" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="user" value="Người dùng" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=none;fontSize=20;fontStyle=1;fontColor=#111827;align=center;verticalAlign=bottom;" vertex="1" parent="1">
+          <mxGeometry x="35" y="345" width="130" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="user-icon" value="👥" style="text;html=1;strokeColor=none;fillColor=none;fontSize=58;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="45" y="345" width="110" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="internet" value="Internet" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#111827;strokeWidth=3;fontSize=22;fontStyle=1;fontColor=#111827;align=center;verticalAlign=bottom;spacingBottom=8;" vertex="1" parent="1">
+          <mxGeometry x="220" y="350" width="140" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="alb" value="Application Load Balancer&lt;br&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;(Public Subnet)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;strokeWidth=3;fontSize=20;fontStyle=1;fontColor=#4A148C;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="555" y="345" width="180" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="alb-icon" value="ALB" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;strokeWidth=2;fontSize=22;fontStyle=1;fontColor=#6A1B9A;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="600" y="360" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="public-note" value="Chỉ ALB là điểm truy cập công khai" style="text;html=1;strokeColor=none;fillColor=none;fontSize=16;fontColor=#1A5DCE;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="505" y="610" width="280" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ecs-container" value="Amazon ECS Fargate" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#FFF7ED;strokeColor=#E66A00;strokeWidth=2;fontSize=24;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=18;" vertex="1" parent="1">
+          <mxGeometry x="870" y="295" width="390" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="ecs-icon" value="ECS" style="hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FF9900;strokeColor=#E66A00;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#FFFFFF;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="945" y="315" width="65" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-service" value="FE_EduFlow Service&lt;br&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Container :8080&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E66A00;strokeWidth=2;fontSize=22;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="900" y="390" width="320" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-icon" value="▥" style="text;html=1;strokeColor=none;fillColor=none;fontSize=40;fontColor=#E66A00;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="925" y="405" width="55" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="be-service" value="BE_EduFlow Service&lt;br&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Container :8888&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Health check: /actuator/health&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E66A00;strokeWidth=2;fontSize=22;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="900" y="495" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="be-icon" value="▥" style="text;html=1;strokeColor=none;fillColor=none;fontSize=40;fontColor=#E66A00;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="925" y="515" width="55" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="rds" value="Amazon RDS MySQL&lt;br&gt;&lt;font style=&quot;font-size: 18px;color:#1A5DCE;&quot;&gt;eduflow_db&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=20;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="300" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="rds-icon" value="DB" style="cylinder;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#1A5DCE;strokeColor=#1A5DCE;fontSize=18;fontStyle=1;fontColor=#FFFFFF;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="318" width="55" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="secrets" value="AWS Secrets Manager&lt;br&gt;/ Env Vars" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#D81B60;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="435" width="230" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="secrets-icon" value="🔐" style="text;html=1;strokeColor=none;fillColor=none;fontSize=34;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="450" width="50" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cloudwatch" value="Amazon CloudWatch Logs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#D81B60;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="545" width="230" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cloudwatch-icon" value="☁" style="text;html=1;strokeColor=none;fillColor=none;fontSize=40;fontColor=#D81B60;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="560" width="50" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pipeline-boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="70" y="790" width="1660" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="dev" value="Developer / GitHub" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="95" y="835" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="build" value="Build Docker Images" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="415" y="835" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ecr" value="Amazon ECR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=20;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="755" y="835" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ecr-icon" value="ECR" style="hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FF9900;strokeColor=#E66A00;strokeWidth=2;fontSize=16;fontStyle=1;fontColor=#FFFFFF;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="775" y="845" width="60" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ecs-update" value="ECS Service Update" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1065" y="835" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="running" value="Running Containers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1A5DCE;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#111827;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1395" y="835" width="250" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge-user-internet" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="user" target="internet">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-internet-alb" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="internet" target="alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-alb-fe" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="alb" target="fe-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-alb-be" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="alb" target="be-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-be-rds" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="be-service" target="rds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ecs-secrets" style="endArrow=block;html=1;rounded=0;dashed=1;strokeWidth=3;strokeColor=#D81B60;" edge="1" parent="1" source="ecs-container" target="secrets">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ecs-cloudwatch" style="endArrow=block;html=1;rounded=0;dashed=1;strokeWidth=3;strokeColor=#D81B60;" edge="1" parent="1" source="ecs-container" target="cloudwatch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge-dev-build" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="dev" target="build">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-build-ecr" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="build" target="ecr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ecr-update" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="ecr" target="ecs-update">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-update-running" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;" edge="1" parent="1" source="ecs-update" target="running">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ecr-ecs" style="endArrow=block;html=1;rounded=0;dashed=1;strokeWidth=3;strokeColor=#1A5DCE;" edge="1" parent="1" source="ecr" target="ecs-container">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="865" y="740" />
+              <mxPoint x="1065" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
