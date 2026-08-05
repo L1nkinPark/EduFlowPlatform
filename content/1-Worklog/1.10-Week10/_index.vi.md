@@ -1,27 +1,35 @@
 ---
-title: "Tuần 10 - Container và môi trường thử nghiệm"
-date: 2026-08-05
+title: "Tuần 10 (21/07 - 27/07/2026) - EduFlow và TrueTrace"
+date: 2026-07-27
 weight: 10
 chapter: false
 pre: "<b>1.10.</b>"
-description: "Đóng gói hai ứng dụng, thêm health check và triển khai dev trên Fly.io."
+description: "Mở rộng EduFlow và phát triển TrueTrace cho hackathon Qoder."
 ---
 
-## Mục tiêu
+## Thời gian và bối cảnh
 
-Tạo artifact chạy giống nhau giữa máy phát triển, CI và môi trường cloud.
+**21/07/2026 - 27/07/2026** — EduFlow và dự án **TrueTrace**, hackathon của **Qoder**.
 
-## Công việc
+## Công việc thực tế
 
-- Xây Dockerfile riêng cho frontend/backend bằng Java 17.
-- Cấu hình health endpoint, port, biến môi trường và backend URL.
-- Tạo `fly.toml` cùng hướng dẫn triển khai dev trên Fly.io.
-- Khắc phục encoding khi build và timeout/503 giữa hai dịch vụ.
+- Hoàn thiện dashboard quản trị, dữ liệu thực cho giảng viên/sinh viên và trải nghiệm học tập trên EduFlow.
+- Phát triển TrueTrace với backend, dashboard, web/mobile, agent engine, deployment và Terraform.
+- Bổ sung luồng KYC, AML, STR, kiểm tra deepfake, xác thực và runtime validation.
 
-## Kết quả
+## Kết quả và bằng chứng
 
-Hai ứng dụng chạy dưới dạng container độc lập với cấu hình runtime thay cho giá trị hard-code. Môi trường Fly.io cung cấp bước kiểm chứng trước AWS.
+- Nhiều màn hình EduFlow sử dụng dữ liệu thực thay cho dữ liệu mẫu.
+- TrueTrace hình thành kiến trúc đa tác tử hỗ trợ nghiệp vụ tuân thủ.
+- [Nâng cấp GitHub Actions của EduFlow](https://github.com/L1nkinPark/EduFlowPlatform/commit/856adb4d36cf89310213401a1bfc349de4dbbdc3)
+- [TrueTrace production readiness](https://github.com/Little-Boy-s-TrueTrace/truetrace/commit/dafb9c4dc70bfa801341064d6b320548e09c8f61)
+- [Runtime validation cho agent engine](https://github.com/Little-Boy-s-TrueTrace/truetrace-agent-engine/commit/dc672fefab34311134e11fe5972ff76848c4587c)
+- [Compliance API và STR](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/c86fb61f90cd2fb76b8027e5fee33fa846554014)
 
-## Bài học
+## Khó khăn và cách xử lý
 
-Một image tốt không chứa cấu hình môi trường; cùng image phải chạy được ở local, staging và production bằng cách thay biến runtime.
+Phân quyền và cấu hình production phải nhất quán giữa nhiều ứng dụng. Tôi bổ sung ownership check, xác thực dashboard, kiểm tra runtime và cấu hình mặc định an toàn.
+
+## Nhận xét mentor
+
+Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

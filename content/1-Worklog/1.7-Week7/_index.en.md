@@ -1,27 +1,35 @@
 ---
-title: "Week 7 - Payments and promotions"
-date: 2026-08-05
+title: "Week 7 (30 June-6 July 2026) - Aegis, AABW"
+date: 2026-07-06
 weight: 7
 chapter: false
 pre: "<b>1.7.</b>"
-description: "Stabilize VNPay checkout, callbacks, and VND amount handling."
+description: "Integrate the Aegis monitoring and incident-response ecosystem for AABW."
 ---
 
-## Objective
+## Date and context
 
-Keep amounts, signatures, and order state consistent from checkout through callback.
+**30 June 2026 - 6 July 2026** — **Aegis**, an **AABW** hackathon project.
 
-## Work completed
+## Actual work
 
-- Validated promotions by date, usage limits, and minimum order value.
-- Normalized VNPay amounts to the smallest unit and standardized VND display.
-- Fixed parameter/signature encoding and configured `PAYMENT_RETURN_ORIGIN` behind the load balancer.
-- Replaced generic 500 pages with actionable checkout errors.
+- Developed the simulated bank, monitoring dashboard, SOAR engine, mobile app, and deployment environment.
+- Integrated Kafka event delivery and dashboard threat mapping.
+- Integrated OPA authentication, forged-JWT handling, and secure mobile token storage.
 
-## Outcome
+## Outcomes and evidence
 
-The frontend requests payment through the backend, and the callback verifies the transaction before course ownership is recorded. Dedicated unit tests cover amount conversion cases.
+- The banking and security components could exchange events, authenticate, and display alerts.
+- [Aegis deployment repository](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment)
+- [Kafka and dashboard threat mapping](https://github.com/Little-Boy-s-Aegis/dashboard/commit/645bdc95651fae87f9a9b2ad43e41145c938733a)
+- [SOAR OPA authentication](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/76e7dcd72728cc8dd6005e197a68c5c835710f9b)
+- [Forged-JWT handling](https://github.com/Little-Boy-s-Aegis/aegis-bank-backend/commit/65327897c3d78a51509de81bb563a554af9a5979)
+- [Mobile secure storage](https://github.com/Little-Boy-s-Aegis/aegis-bank-mobile-app/commit/d16229362b918a8f831e3e8426d3e205bc28c4a7)
 
-## Lesson learned
+## Challenge and resolution
 
-Payment integrations need one amount representation and identical parameter canonicalization during signing and verification.
+The system contained many services with different authentication flows. I standardized tokens and HTTP status codes, bound internal services to localhost, and used secure storage on mobile.
+
+## Mentor feedback
+
+Not available yet; mentor or organizer feedback will be added later.

@@ -1,26 +1,34 @@
 ---
-title: "Tuần 1 - Khảo sát và xác định phạm vi"
-date: 2026-08-05
+title: "Tuần 1 (19/05 - 25/05/2026) - DevOps và Kubernetes"
+date: 2026-05-25
 weight: 1
 chapter: false
 pre: "<b>1.1.</b>"
-description: "Khảo sát hệ thống ban đầu, vai trò người dùng và các luồng nghiệp vụ cốt lõi."
+description: "Xây dựng bộ template Kubernetes cho hệ thống frontend, backend và MariaDB."
 ---
 
-## Mục tiêu
+## Thời gian
 
-Hiểu cấu trúc hai ứng dụng Spring Boot và xác định phạm vi MVP cho học viên, giảng viên, quản trị viên.
+**19/05/2026 - 25/05/2026**
 
-## Công việc
+## Công việc thực tế
 
-- Kiểm kê controller, service, entity, template và cấu hình của frontend/backend.
-- Lập bản đồ các luồng đăng ký, đăng nhập, khóa học, thanh toán và học bài.
-- Xác định các điểm còn dùng dữ liệu tĩnh, route hỏng hoặc thiếu phân quyền.
+- Xây dựng bộ template DevOps/Kubernetes có thể tái sử dụng cho frontend, backend và MariaDB.
+- Cấu hình `Deployment`, `Service`, `Ingress`, `ConfigMap`, resource request/limit và Persistent Volume qua NFS.
+- Viết hướng dẫn triển khai full-stack và cấu hình truy cập MariaDB bằng NodePort.
 
-## Kết quả
+## Kết quả và bằng chứng
 
-Phạm vi được chốt quanh ba vai trò và vòng đời khóa học. Kiến trúc tách frontend `:8080` và backend `:8888` được giữ lại để có thể phát triển, kiểm thử và triển khai độc lập.
+- Hoàn thiện cấu trúc triển khai full-stack trên Kubernetes và tài liệu thao tác đi kèm.
+- [Full-stack Deployment, Service và Ingress](https://github.com/L1nkinPark/devops-ci-cd-templates/commit/b59844316c34150bd2124ecbc8034da6c56a75ab)
+- [Hướng dẫn triển khai MariaDB, backend và frontend](https://github.com/L1nkinPark/devops-ci-cd-templates/commit/49d89f34cfe29a632e81cf6688273e0b08c4d546)
+- [Cấu hình resource request và limit](https://github.com/L1nkinPark/devops-ci-cd-templates/commit/257943281d884672a9d4a93c5b602c1b15bdd222)
+- [Sửa ConfigMap volume mount bằng subPath](https://github.com/L1nkinPark/devops-ci-cd-templates/commit/ac40e27457d74d6558b36e96a3dc90c12e98b78f)
 
-## Bài học
+## Khó khăn và cách xử lý
 
-Một bản kiểm kê theo luồng người dùng giúp ưu tiên lỗi ảnh hưởng trực tiếp đến giá trị sản phẩm trước khi tối ưu hạ tầng.
+ConfigMap ban đầu được mount sai đường dẫn nên container không đọc đúng cấu hình. Tôi chuyển sang dùng `subPath`, chuẩn hóa volume mount và bổ sung kiểm tra CI để phát hiện lỗi cấu hình sớm.
+
+## Nhận xét mentor
+
+Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

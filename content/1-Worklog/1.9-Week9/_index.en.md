@@ -1,27 +1,36 @@
 ---
-title: "Week 9 - Testing and performance"
-date: 2026-08-05
+title: "Week 9 (14-20 July 2026) - EduFlow, Aegis, and SecHub"
+date: 2026-07-20
 weight: 9
 chapter: false
 pre: "<b>1.9.</b>"
-description: "Expand unit/security tests and establish a repeatable k6 load scenario."
+description: "Test EduFlow, automate Aegis, and develop SecHub for an OpenAI hackathon."
 ---
 
-## Objective
+## Date and context
 
-Reduce service/controller regressions and create a repeatable performance baseline.
+**14 July 2026 - 20 July 2026** — EduFlow; final Aegis work for AABW; **SecHub for an OpenAI hackathon**.
 
-## Work completed
+## Actual work
 
-- Built 19 backend and 15 frontend test classes for services, controllers, JWT, exceptions, and utilities.
-- Added authorization, payment callback, VNPay amount, and i18n parity regression tests.
-- Configured MySQL in CI and ran independent Maven suites.
-- Added `k6-load-test.js` for the deployed access path.
+- Added EduFlow registration/payment tests, VNPAY fixes, i18n, ECS Terraform, and k6.
+- Added Docker image CI for the Aegis dashboard, SOAR engine, and staging sandbox.
+- Completed Vietnamese/English internationalization for SecHub.
 
-## Outcome
+## Outcomes and evidence
 
-The pipeline blocks delivery when tests or Terraform validation fail. Critical fixes are paired with regression coverage for their root causes.
+- EduFlow gained an ALB load-test scenario and a more stable payment flow.
+- Aegis service image builds were automated.
+- SecHub gained a bilingual user interface for the OpenAI hackathon entry.
+- [EduFlow k6 test through the ALB](https://github.com/L1nkinPark/EduFlowPlatform/commit/5e42f3665fb39a1f9d3424f360774e9747d01d6a)
+- [Aegis dashboard Docker CI](https://github.com/Little-Boy-s-Aegis/dashboard/commit/7217393847bc9b7951692670cff4322bbb5f3e30)
+- [SOAR Docker CI](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/31d4587ac095546cd1a0ea6ac1aa17374890f28d)
+- [SecHub internationalization](https://github.com/Little-Boy-s-SecHub/SecHub/commit/180b1f438edccfde0cf92c686ded3f809a07c06d)
 
-## Lesson learned
+## Challenge and resolution
 
-Test count matters less than boundary coverage: privileges, money, encoding, timeouts, and empty data.
+Payment flows, runtime configuration, and multi-service CI used many different environment variables. I standardized encoding and configuration, added regression tests, and automated image builds.
+
+## Mentor feedback
+
+Not available yet; mentor or organizer feedback will be added later.

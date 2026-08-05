@@ -1,27 +1,37 @@
 ---
-title: "EduFlow Project Report"
+title: "EduFlow Internship Report"
 date: 2026-08-05
 weight: 1
 chapter: false
 ---
 
-# EduFlow Platform
+# Internship Report - EduFlow Platform
 
 EduFlow is an online course management and delivery platform for **students**, **instructors**, and **administrators**. The system separates a Spring Boot/Thymeleaf web application from a Spring Boot REST API and uses MySQL, JWT, VNPay, Docker, Terraform, and Amazon ECS Fargate.
 
-### Report information
+### Student and internship information
 
 | Item | Value |
 |---|---|
+| Full name | Võ Đức Hiếu |
+| Student ID | SE196272 |
+| Phone number | 0915106276 |
+| Email | [voduchieu42@gmail.com](mailto:voduchieu42@gmail.com) |
+| University | FPT University |
+| Major | Software Engineer |
+| Internship company | Amazon Web Services Viet Nam Company Limited |
+| Internship position | Workforce Bootcamp - First Cloud AI Journey |
+| Internship duration | 19 May 2026 - 17 August 2026 |
 | Project | EduFlow Platform |
 | Source owner | L1nkinPark |
-| Recorded period | 11 June 2026 - 5 August 2026 |
 | Primary technologies | Java 17, HTML/Thymeleaf, Terraform |
 | Platform | Spring Boot 3.3.4, MySQL 8, AWS ECS Fargate |
 | Repository | [github.com/L1nkinPark/EduFlowPlatform](https://github.com/L1nkinPark/EduFlowPlatform) |
 
+{{< profile alt="Portrait of Võ Đức Hiếu" >}}
+
 {{% notice info %}}
-This report is derived from the project source and Git history. Personal information, events, or outcomes without repository evidence are intentionally not invented.
+Student and internship information was provided by Võ Đức Hiếu. Technical content is derived from the project source and Git history; events or outcomes without repository evidence are intentionally not invented.
 {{% /notice %}}
 
 ### Report contents
