@@ -12,7 +12,7 @@ description: "Nguồn dữ liệu dùng để xác minh và những nội dung c
 ## Nguồn đã sử dụng
 
 - Mã nguồn và lịch sử commit của [EduFlowPlatform](https://github.com/L1nkinPark/EduFlowPlatform).
-- [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) trên nhánh `main`.
+- [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529) trên nhánh `main`.
 - Kiểm tra HTTP trực tiếp tới DNS ALB ngày 05/08/2026.
 - Cấu hình Terraform trong repository để mô tả kiến trúc mong muốn.
 

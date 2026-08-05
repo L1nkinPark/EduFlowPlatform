@@ -31,4 +31,15 @@ According to the participant-provided context, Tardis and Aegis were developed f
 - [SOAR OPA authentication](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/76e7dcd72728cc8dd6005e197a68c5c835710f9b)
 - [IP banning and gateway validation](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment/commit/6718ef5c63fd5f1481e787bf634044b47225480d)
 
-No official DoraHacks/AABW result link is stored in the repository, so this page only verifies the products and technical activity.
+**Verified AABW results:**
+
+- The [official AABW results page](https://aabw.genaifund.ai/) lists **Little
+  Boy's Aegis** as the winner of **Financial Services I — Shinhan Future's Lab
+  Vietnam**.
+- The [GenAI Fund organizer recap](https://www.linkedin.com/posts/genai-fund_aabw2026-aabwxgaf-activity-7482359686189445120-FEhQ)
+  also names Aegis as that track winner.
+- The [GenAI Fund Builder Experience announcement](https://www.linkedin.com/posts/genai-fund_deadlinetrackeraabw-autointroaabw-tardisaabw-activity-7475074317769256960-a9qG)
+  includes **Little Boy's Tardis** among the 17 shortlisted voting projects.
+
+No public official source for KET-Vault's DoraHacks result was found, so the
+report does not assign it a rank or award.

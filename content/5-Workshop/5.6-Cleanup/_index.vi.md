@@ -25,4 +25,4 @@ Chi phí chỉ được cập nhật khi có ít nhất một trong các bằng 
 
 ## Thời gian hoàn thành
 
-Chỉ xác minh được pipeline CI/CD kéo dài **8 phút 49 giây**. Chưa có giờ bắt đầu/kết thúc buổi workshop nên không ghi tổng thời gian thao tác thủ công.
+Chỉ xác minh được pipeline CI/CD gần nhất kéo dài **9 phút 07 giây**. Chưa có giờ bắt đầu/kết thúc buổi workshop nên không ghi tổng thời gian thao tác thủ công.

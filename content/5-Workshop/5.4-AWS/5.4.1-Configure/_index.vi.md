@@ -20,4 +20,4 @@ description: "Các giá trị không nhạy cảm có bằng chứng từ mã ng
 
 SMTP credential, VNPay credential, JWT secret và database secret không được đưa vào báo cáo. Toàn bộ email, domain và chuỗi secret mẫu của template cũ đã được loại bỏ vì không phải dữ liệu triển khai thực tế.
 
-Terraform validation của cấu hình repository đã thành công trong [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
+Terraform validation của cấu hình repository đã thành công trong [run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529).

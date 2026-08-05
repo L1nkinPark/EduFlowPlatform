@@ -31,4 +31,15 @@ Theo thông tin người thực hiện cung cấp, Tardis và Aegis được ph�
 - [OPA authentication cho SOAR](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/76e7dcd72728cc8dd6005e197a68c5c835710f9b)
 - [IP banning và gateway validation](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment/commit/6718ef5c63fd5f1481e787bf634044b47225480d)
 
-Chưa có liên kết kết quả chính thức của DoraHacks/AABW trong repository, nên phần này chỉ xác nhận sản phẩm và hoạt động kỹ thuật.
+**Kết quả AABW đã xác minh:**
+
+- [Trang kết quả chính thức AABW](https://aabw.genaifund.ai/) ghi nhận
+  **Little Boy's Aegis** là đội thắng hạng mục **Financial Services I —
+  Shinhan Future's Lab Vietnam**.
+- [Thông báo tổng kết của ban tổ chức GenAI Fund](https://www.linkedin.com/posts/genai-fund_aabw2026-aabwxgaf-activity-7482359686189445120-FEhQ)
+  cũng liệt kê Aegis là đội thắng hạng mục này.
+- [Danh sách Builder Experience Track của GenAI Fund](https://www.linkedin.com/posts/genai-fund_deadlinetrackeraabw-autointroaabw-tardisaabw-activity-7475074317769256960-a9qG)
+  ghi nhận **Little Boy's Tardis** trong 17 dự án được chọn vào vòng bình chọn.
+
+Chưa tìm thấy nguồn chính thức công khai cho kết quả KET-Vault trên DoraHacks,
+vì vậy báo cáo không tự ghi thứ hạng hoặc giải thưởng cho KET-Vault.

@@ -15,4 +15,11 @@ The competition names and context below were provided by Võ Đức Hiếu. Repo
 - **SecHub:** an OpenAI hackathon.
 - **TrueTrace:** a Qoder hackathon.
 
+Officially supported results checked for this report:
+
+- **Little Boy's Aegis** won the **Financial Services I — Shinhan Future's Lab
+  Vietnam** track at AABW.
+- **Little Boy's Tardis** was one of the 17 shortlisted Builder Experience
+  Track projects before AABW.
+
 {{% children description="true" /%}}

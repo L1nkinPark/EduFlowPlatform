@@ -9,7 +9,7 @@ description: "Frontend tests and upload-permission evidence from GitHub Actions.
 
 # Frontend test result
 
-In [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), the **Frontend tests** job reported `success`.
+In [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529), the **Frontend tests** job reported `success`.
 
 GitHub recorded these steps as successful:
 
@@ -17,4 +17,11 @@ GitHub recorded these steps as successful:
 - Run frontend tests.
 - Verify frontend runtime upload permissions.
 
-The job ran from **06:55:06 to 06:56:03 UTC on 5 August 2026**. There is no stored evidence of a complete manual pass through sign-up, sign-in, language switching, and timeout scenarios, so those flows are not marked as verified here.
+The job ran from **07:40:45 to 07:41:57 UTC on 5 August 2026**.
+
+A real-browser smoke test also verified the homepage, catalog/detail pages,
+Vietnamese–English switching, and redirecting an anonymous **Buy Now** action
+to `/signin`. The [homepage screenshot](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-home-2026-08-05.png) and
+[course-detail screenshot](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-course-detail-2026-08-05.png)
+are stored as evidence. Sign-up, OTP, real-account sign-in, timeout, and payment
+were not submitted during this smoke test.

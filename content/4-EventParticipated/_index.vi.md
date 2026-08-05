@@ -15,4 +15,11 @@ Tên và bối cảnh cuộc thi dưới đây do Võ Đức Hiếu cung cấp. 
 - **SecHub:** hackathon của OpenAI.
 - **TrueTrace:** hackathon của Qoder.
 
+Kết quả có bằng chứng chính thức đã kiểm tra:
+
+- **Little Boy's Aegis** thắng hạng mục **Financial Services I — Shinhan
+  Future's Lab Vietnam** tại AABW.
+- **Little Boy's Tardis** nằm trong danh sách 17 dự án được chọn vào vòng bình
+  chọn của Builder Experience Track trước AABW.
+
 {{% children description="true" /%}}

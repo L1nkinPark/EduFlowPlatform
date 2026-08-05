@@ -9,7 +9,7 @@ description: "Kết quả backend/frontend có bằng chứng từ GitHub Action
 
 # Kết quả kiểm thử đã ghi nhận
 
-Báo cáo sử dụng kết quả CI công khai thay vì ghi kết quả chạy local không có log lưu trữ. Run được dùng làm bằng chứng là [Test and Deploy to Amazon ECS Fargate #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
+Báo cáo sử dụng kết quả CI công khai thay vì ghi kết quả chạy local không có log lưu trữ. Run được dùng làm bằng chứng là [Test and Deploy to Amazon ECS Fargate #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529).
 
 | Job | Kết quả | Thời gian ghi nhận |
 |---|---|---|

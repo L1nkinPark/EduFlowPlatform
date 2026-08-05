@@ -12,7 +12,7 @@ description: "Sources used for verification and items without sufficient evidenc
 ## Sources used
 
 - The [EduFlowPlatform](https://github.com/L1nkinPark/EduFlowPlatform) source and commit history.
-- [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) on `main`.
+- [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529) on `main`.
 - Direct HTTP probes of the ALB DNS on 5 August 2026.
 - Repository Terraform configuration for the intended architecture.
 

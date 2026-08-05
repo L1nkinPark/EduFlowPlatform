@@ -24,6 +24,8 @@ description: "Harden authorization and complete Aegis documentation for AABW."
 - [IP banning and gateway validation](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment/commit/6718ef5c63fd5f1481e787bf634044b47225480d)
 - [Aegis backend documentation](https://github.com/Little-Boy-s-Aegis/aegis-bank-backend/commit/ee06484a47048d1f371f643377b373a7381564df)
 - [Aegis Terraform documentation](https://github.com/Little-Boy-s-Aegis/aegis-bank-terraform/commit/310c9c9cf12dda2db7da557057a076c29e984ccf)
+- The [official AABW results](https://aabw.genaifund.ai/) list Little Boy's
+  Aegis as the Financial Services I — Shinhan Future's Lab Vietnam winner.
 
 ## Challenge and resolution
 
@@ -31,4 +33,5 @@ Administrator privileges and rules had to remain consistent across several layer
 
 ## Mentor feedback
 
-Not available yet; mentor or organizer feedback will be added later.
+No mentor feedback was available. The competition result was independently
+cross-checked against the official AABW result page and organizer announcement.

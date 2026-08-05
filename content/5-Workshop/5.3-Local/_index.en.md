@@ -9,7 +9,7 @@ description: "Backend and frontend results supported by GitHub Actions evidence.
 
 # Recorded test results
 
-The report uses public CI evidence instead of claiming unrecorded local runs. The supporting run is [Test and Deploy to Amazon ECS Fargate #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
+The report uses public CI evidence instead of claiming unrecorded local runs. The supporting run is [Test and Deploy to Amazon ECS Fargate #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529).
 
 | Job | Result | Recorded time |
 |---|---|---|

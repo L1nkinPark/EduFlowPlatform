@@ -9,7 +9,7 @@ description: "Image build/push results supported by GitHub Actions."
 
 # ECR build and push evidence
 
-In [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), the **Build, push, and deploy** job reported `success` for:
+In [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529), the **Build, push, and deploy** job reported `success` for:
 
 - Configure AWS credentials.
 - Log in to Amazon ECR.

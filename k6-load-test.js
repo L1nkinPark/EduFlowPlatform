@@ -13,10 +13,15 @@ export const options = {
     http_req_duration: ['p(95)<8000'],
     // Error rate must be less than 5%
     http_req_failed: ['rate<0.05'],
+    checks: ['rate>0.99'],
   },
 };
 
-const BASE_URL = 'http://eduflow-dev-alb-1088870685.ap-southeast-1.elb.amazonaws.com';
+// Allow CI or a reviewer to target another environment without editing the
+// script. The fallback is the public EduFlow ALB verified on 5 August 2026.
+const BASE_URL = (__ENV.BASE_URL ||
+  'http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com'
+).replace(/\/$/, '');
 
 export default function () {
   // Scenario 1: Fetch Courses Catalog (Read-heavy endpoint)
@@ -36,22 +41,12 @@ export default function () {
 
   sleep(0.5);
 
-  // Scenario 3: User Authentication (CPU-heavy BCrypt endpoint)
-  const loginPayload = JSON.stringify({
-    username: 'instructor',
-    password: '123',
-  });
-  const loginParams = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-  const loginRes = http.post(`${BASE_URL}/api/auth/login`, loginPayload, loginParams);
-  
-  // Note: We check for either 200 (Success) or 401/404 (Unseeded DB) to prevent the test
-  // from failing if database seeds differ, focusing instead on response times.
-  check(loginRes, {
-    'Auth API responded': (r) => r.status === 200 || r.status === 401 || r.status === 404,
+  // Scenario 3: Fetch the public dashboard counters. Keep the shared load test
+  // read-only so it can be repeated without using or publishing demo passwords.
+  const statsRes = http.get(`${BASE_URL}/api/public/stats`);
+  check(statsRes, {
+    'Public stats API status is 200': (r) => r.status === 200,
+    'Public stats payload is available': (r) => r.json('payload.totalCourses') !== undefined,
   });
 
   sleep(1);

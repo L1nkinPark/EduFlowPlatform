@@ -9,7 +9,7 @@ description: "Bằng chứng frontend test và kiểm tra quyền upload từ Gi
 
 # Kết quả kiểm thử frontend
 
-Trong [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), job **Frontend tests** có kết quả `success`.
+Trong [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529), job **Frontend tests** có kết quả `success`.
 
 Các bước được GitHub ghi nhận thành công:
 
@@ -17,4 +17,11 @@ Các bước được GitHub ghi nhận thành công:
 - Chạy frontend tests.
 - Kiểm tra quyền ghi thư mục upload của frontend runtime.
 
-Job chạy từ **06:55:06 đến 06:56:03 UTC ngày 05/08/2026**. Chưa có bằng chứng lưu trữ cho việc kiểm thử thủ công toàn bộ đăng ký, đăng nhập, chuyển ngôn ngữ và timeout, nên các luồng đó không được đánh dấu là đã xác minh trong Workshop.
+Job chạy từ **07:40:45 đến 07:41:57 UTC ngày 05/08/2026**.
+
+Ngoài CI, smoke test bằng trình duyệt đã xác minh trang chủ, danh sách/chi tiết
+khóa học, chuyển Việt–Anh và redirect người chưa đăng nhập từ **Mua ngay** về
+`/signin`. [Ảnh trang chủ](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-home-2026-08-05.png) và
+[ảnh chi tiết khóa học](https://github.com/L1nkinPark/EduFlowPlatform/blob/main/static/evidence/eduflow-course-detail-2026-08-05.png)
+được lưu làm bằng chứng. Đăng ký, OTP, đăng nhập bằng tài khoản thật, timeout và
+thanh toán không được gửi trong lượt kiểm tra này.

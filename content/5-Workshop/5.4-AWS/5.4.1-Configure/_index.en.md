@@ -20,4 +20,4 @@ description: "Non-sensitive values supported by source code and the working URL.
 
 SMTP credentials, VNPay credentials, JWT secrets, and database secrets are excluded. All sample emails, domains, and secret strings from the old template were removed because they are not actual deployment data.
 
-Terraform validation for the repository configuration succeeded in [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
+Terraform validation for the repository configuration succeeded in [run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529).

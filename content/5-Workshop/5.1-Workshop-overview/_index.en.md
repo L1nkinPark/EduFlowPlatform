@@ -30,11 +30,14 @@ flowchart TB
 
 - The public ALB DNS returned the homepage and statistics API with HTTP `200`.
 - The `main` workflow completed backend tests, frontend tests, Terraform validation, image build/push, and ECS deployment.
+- A browser smoke test verified public pages, Vietnamese–English switching, and
+  redirecting anonymous checkout to the sign-in page.
+- k6 completed 1,758 requests with 50 VUs, a 0.00% failure rate, and 1.84-second p95.
 - The checked URL uses HTTP; there is no evidence of HTTPS or a custom domain.
 
 ## Evidence not available
 
 - Step-by-step AWS Console screenshots.
-- k6 output and actual p95/error-rate metrics.
 - Total manual time from start to completion.
 - Cost from the correct deployment account/environment.
+- Complete authenticated three-role and end-to-end VNPay tests.

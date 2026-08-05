@@ -25,4 +25,4 @@ Cost will only be updated when at least one of these is available:
 
 ## Completion time
 
-Only the **8 minutes 49 seconds** CI/CD pipeline duration is verified. No workshop start/end time was recorded, so total manual time is not reported.
+Only the latest **9 minutes 7 seconds** CI/CD pipeline duration is verified. No workshop start/end time was recorded, so total manual time is not reported.

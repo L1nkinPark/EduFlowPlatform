@@ -9,7 +9,7 @@ description: "Kết quả build/push image có thể kiểm tra từ GitHub Acti
 
 # Bằng chứng build và push ECR
 
-Trong [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), job **Build, push, and deploy** ghi nhận `success` cho các bước:
+Trong [GitHub Actions run #76](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30985947529), job **Build, push, and deploy** ghi nhận `success` cho các bước:
 
 - Configure AWS credentials.
 - Log in to Amazon ECR.
