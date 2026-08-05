@@ -1,40 +1,23 @@
 ---
-title: "Kích hoạt CI/CD"
+title: "Kết quả CI/CD thực tế"
 date: 2026-08-05
 weight: 4
 chapter: false
 pre: "<b>5.4.4.</b>"
-description: "Cấu hình GitHub Actions để test, push ECR và rollout revision mới."
+description: "Các job và thời lượng thực tế của GitHub Actions run #74."
 ---
 
-# Kích hoạt CI/CD
+# Kết quả CI/CD thực tế
 
-Workflow `.github/workflows/deploy.yml` thực hiện bốn cổng:
+Bằng chứng: [Test and Deploy to Amazon ECS Fargate #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), chạy trên nhánh `main` cho merge commit `78ad30b`.
 
-1. Backend test với MySQL 8 service.
-2. Frontend test và kiểm tra quyền ghi `/app/uploads` trong image.
-3. `terraform fmt`, `init -backend=false`, `validate`.
-4. Với push lên `main`: build/push hai image và force ECS deployment.
+| Job | Kết quả | Khoảng thời gian UTC |
+|---|---|---|
+| Terraform validation | `success` | 06:55:05–06:55:19 |
+| Backend tests | `success` | 06:55:05–06:55:56 |
+| Frontend tests | `success` | 06:55:06–06:56:03 |
+| Build, push, and deploy | `success` | 06:56:06–07:03:49 |
 
-## Secret repository cần có
+GitHub hiển thị tổng thời lượng run là **8 phút 49 giây**. Đây là thời gian pipeline, không phải tổng thời gian thực hiện workshop thủ công.
 
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-
-Tài khoản CI chỉ nên có quyền ECR push và ECS update/describe/log diagnostics cần thiết. Giải pháp production nên chuyển sang GitHub OIDC và role ngắn hạn thay cho access key dài hạn.
-
-## Chạy thủ công
-
-Trong GitHub: **Actions → Test and Deploy to Amazon ECS Fargate → Run workflow**.
-
-Theo dõi đến khi:
-
-- Ba job kiểm tra đều xanh.
-- Image có tag commit SHA và `latest` trong ECR.
-- Hai service đạt trạng thái stable.
-
-Workflow dùng concurrency để hủy run cũ, giới hạn retry credential và chỉ retry Docker build tối đa ba lần. Nếu rollout thất bại, job tự thu thập service events, stopped tasks, target health và log gần nhất.
-
-{{% notice tip %}}
-Sau khi xác nhận workflow hoạt động, bảo vệ nhánh `main` và yêu cầu các job test/validate thành công trước khi merge.
-{{% /notice %}}
+Job deploy ghi nhận thành công việc đăng nhập ECR, build/push hai image, triển khai ECS và chờ service ổn định. Báo cáo không suy ra thêm trạng thái hiện tại của từng resource nếu không có quyền truy vấn AWS tương ứng.

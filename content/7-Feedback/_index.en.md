@@ -1,37 +1,37 @@
 ---
-title: "Retrospective and feedback"
+title: "Technical summary"
 date: 2026-08-05
 weight: 7
 chapter: false
 pre: "<b>7.</b>"
 ---
 
-# Retrospective and feedback
+# Technical summary
 
-## What went well
+## Evidence-backed results
 
-EduFlow moved from a UI with substantial static content to a real-data platform for administrators, instructors, and students. Purchase-learning-progress, i18n, uploads, OTP, and VNPay connect to the backend; AWS infrastructure and delivery pipelines are also represented as code.
+- The EduFlow website and `/api/public/stats` returned HTTP `200` when checked on 5 August 2026.
+- [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) recorded successful backend tests, frontend tests, Terraform validation, image build/push, and ECS deployment.
+- The repository contains two Spring Boot applications, Terraform modules, CI/CD workflows, test source, and a bilingual Hugo report.
+- The worklog and hackathon pages link directly to repositories/commits as technical evidence.
 
-The strongest outcome is traceability: a Git revision maps to ECR images, ECS services have distinct logs, Terraform describes resources, and tests preserve important fixes.
+## Not verified
 
-## Remaining friction
+- Complete browser E2E for all three roles and VNPay.
+- Actual k6 output, coverage, and an independent security audit.
+- Detailed ECS/RDS/ALB target/ECR/S3 state from the correct AWS account.
+- Deployment cost, custom domain, AWS Console screenshots, and total manual workshop time.
+- Official hackathon results, rankings, or awards.
 
-- Two Spring Boot services require JWT, URL, and timeout coordination.
-- Local uploads on Fargate last only for the task lifetime; production media should live entirely in object storage.
-- CI still uses access keys and local Terraform state is not team-ready.
-- Unit coverage improved, but does not replace browser-level end-to-end tests.
-- Single-AZ RDS and tasks in public subnets are cost-conscious dev choices, not a production HA design.
+## Mentor feedback
 
-## Process improvements
+No mentor feedback was provided. The report does not generate feedback on the mentor's behalf.
 
-1. Start changes with acceptance criteria and regression tests for important defects.
-2. Review API contracts and the threat model before authorization or payment changes.
-3. Use an immutable staging environment with SHA-tagged images before production updates.
-4. Collect real metrics before increasing capacity or adding AWS services.
-5. Update the workshop with the code so the documentation remains reproducible.
+## Proposed improvements
 
-## Conclusion
+1. Store test reports, coverage, and k6 output as GitHub Actions artifacts.
+2. Add browser E2E and payment-callback tests.
+3. Use GitHub OIDC, remote Terraform state, and SHA-based release controls.
+4. Collect metrics/alerts, backup-restore evidence, and environment-specific cost data.
 
-The project now has a demonstrable, repeatably deployable MVP foundation. The next maturity step is reliability rather than feature volume: migrations, E2E tests, OIDC, durable object storage, remote state, and observability.
-
-Technical feedback and issues can be submitted through [EduFlowPlatform Issues](https://github.com/L1nkinPark/EduFlowPlatform/issues).
+These improvements are future proposals, not completed results. Technical issues can be tracked through [EduFlowPlatform Issues](https://github.com/L1nkinPark/EduFlowPlatform/issues).

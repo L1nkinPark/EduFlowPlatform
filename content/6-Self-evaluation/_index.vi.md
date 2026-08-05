@@ -1,41 +1,31 @@
 ---
-title: "Tự đánh giá"
+title: "Đối chiếu năng lực và bằng chứng"
 date: 2026-08-05
 weight: 6
 chapter: false
 pre: "<b>6.</b>"
 ---
 
-# Tự đánh giá dự án
+# Đối chiếu năng lực và bằng chứng
 
-Đánh giá dưới đây dựa trên artifact có trong repository tại ngày 05/08/2026, không thay thế nhận xét của mentor hoặc tổ chức.
+Không có thang điểm tự đánh giá hoặc nhận xét mentor do người thực hiện cung cấp. Vì vậy phần này bỏ các mức “Tốt/Khá” của template cũ và chỉ liệt kê artifact có thể kiểm tra tại commit hiện tại.
 
-| Tiêu chí | Mức tự đánh giá | Bằng chứng |
+| Lĩnh vực | Bằng chứng hiện có | Giới hạn |
 |---|---|---|
-| Phân tích nghiệp vụ | Tốt | Hoàn thiện luồng ba vai trò và vòng đời khóa học bằng dữ liệu thật |
-| Backend Spring Boot | Tốt | REST API, JPA, Security/JWT, OTP, VNPay, progress và exception handling |
-| Frontend/UX | Khá | Thymeleaf, i18n Việt/Anh, responsive fixes và phản hồi lỗi |
-| Kiểm thử | Khá | 19 lớp test backend, 15 lớp test frontend, test bảo mật/tiền/i18n |
-| Cloud/IaC | Khá | 7 module Terraform cho VPC, ALB, ECS, RDS, S3 và secrets |
-| CI/CD | Khá | Test-gated ECR/ECS delivery, concurrency, bounded retries và diagnostics |
-| Bảo mật | Khá | Role/ownership checks, runtime secrets, cookie hardening và non-root image |
-| Tài liệu | Tốt | Báo cáo song ngữ và workshop có bước xác minh/dọn dẹp |
+| Backend Spring Boot | REST/JPA/Security/JWT/OTP/VNPay trong mã nguồn; 16 file Java test đã commit; backend job trong [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) thành công | Chưa có coverage report và E2E đầy đủ |
+| Frontend Spring Boot/Thymeleaf | Template, i18n Việt/Anh và 15 file Java test đã commit; frontend test và upload-permission check thành công | Chưa có kết quả browser E2E lưu trữ |
+| Cloud/IaC | 7 module Terraform: `vpc`, `security-groups`, `alb`, `ecs`, `rds`, `s3`, `secrets-manager`; Terraform validation thành công | Chưa xác minh trực tiếp từng resource bằng đúng AWS account |
+| CI/CD | Backend, frontend, Terraform và deploy jobs đều `success`; pipeline #74 kéo dài 8 phút 49 giây | Không thay thế kiểm tra trạng thái dài hạn của hệ thống |
+| Bảo mật | Có role/ownership checks, runtime secret configuration, cookie hardening và non-root container trong mã nguồn | Chưa có penetration test hoặc security audit độc lập |
+| Tài liệu | Nội dung Hugo song ngữ, worklog có commit evidence và Workshop tách rõ đã/chưa xác minh | Chưa có ảnh AWS Console và phản hồi mentor |
 
-## Điểm mạnh
+## Việc cần bổ sung, không phải kết quả đã hoàn thành
 
-- Theo đuổi lỗi xuyên lớp đến nguyên nhân gốc: UI, API, container, ALB và runtime secret.
-- Chuyển dữ liệu giả thành luồng có thể kiểm chứng, giúp dashboard và trải nghiệm đáng tin cậy hơn.
-- Biến các lỗi production thành test, validation hoặc diagnostics trong pipeline.
+1. Browser E2E cho ba vai trò, OTP và VNPay callback.
+2. Coverage artifact cho hai Maven suite.
+3. GitHub OIDC thay access key dài hạn.
+4. Remote Terraform state có locking.
+5. Billing/Cost Explorer và ảnh Console từ đúng môi trường.
+6. Metric, alarm, backup/restore test và kết quả k6 được lưu làm artifact.
 
-## Điểm cần cải thiện
-
-1. Chuyển state Terraform sang S3 backend có locking cho làm việc nhóm.
-2. Thay access key CI dài hạn bằng GitHub OIDC và IAM role ngắn hạn.
-3. Bổ sung integration/E2E test tự động cho OTP, VNPay callback và ba vai trò.
-4. Thêm migration có phiên bản (Flyway/Liquibase) thay cho `ddl-auto=update` ở production.
-5. Cải thiện HA: private app subnets/NAT hoặc VPC endpoints, RDS Multi-AZ và autoscaling khi có tải thật.
-6. Bổ sung metric/alarm/SLO và quy trình backup-restore được diễn tập.
-
-## Mục tiêu tiếp theo
-
-Ưu tiên bảo mật chuỗi cung ứng và khả năng phục hồi: OIDC, image scanning gate, migration, test E2E, remote state, alarm và một bài diễn tập khôi phục database.
+Các mục trên là đề xuất tiếp theo, không được tính là chức năng đã triển khai.

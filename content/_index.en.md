@@ -39,7 +39,7 @@ Student and internship information was provided by Võ Đức Hiếu. Technical 
 1. [Worklog](1-Worklog/)
 2. [Solution proposal](2-Proposal/)
 3. [Technical articles](3-BlogsPosted/)
-4. [Technical sessions](4-EventParticipated/)
+4. [Hackathons participated in](4-EventParticipated/)
 5. [Deployment workshop](5-Workshop/)
 6. [Self-assessment](6-Self-evaluation/)
 7. [Retrospective and feedback](7-Feedback/)

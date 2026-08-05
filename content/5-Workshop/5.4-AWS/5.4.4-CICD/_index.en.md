@@ -1,40 +1,23 @@
 ---
-title: "Enable CI/CD"
+title: "Actual CI/CD result"
 date: 2026-08-05
 weight: 4
 chapter: false
 pre: "<b>5.4.4.</b>"
-description: "Configure GitHub Actions to test, push to ECR, and roll out the newest revision."
+description: "Actual jobs and duration from GitHub Actions run #74."
 ---
 
-# Enable CI/CD
+# Actual CI/CD result
 
-`.github/workflows/deploy.yml` implements four gates:
+Evidence: [Test and Deploy to Amazon ECS Fargate #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), run on `main` for merge commit `78ad30b`.
 
-1. Backend tests with a MySQL 8 service.
-2. Frontend tests plus `/app/uploads` write-permission verification in the image.
-3. `terraform fmt`, `init -backend=false`, and `validate`.
-4. On a push to `main`: build/push both images and force ECS deployments.
+| Job | Result | UTC interval |
+|---|---|---|
+| Terraform validation | `success` | 06:55:05–06:55:19 |
+| Backend tests | `success` | 06:55:05–06:55:56 |
+| Frontend tests | `success` | 06:55:06–06:56:03 |
+| Build, push, and deploy | `success` | 06:56:06–07:03:49 |
 
-## Required repository secrets
+GitHub reports a total run duration of **8 minutes 49 seconds**. This is pipeline duration, not total manual workshop time.
 
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-
-The CI principal should have only the ECR push and ECS update/describe/log-diagnostic privileges it requires. A production solution should migrate to GitHub OIDC and a short-lived role instead of long-lived access keys.
-
-## Manual run
-
-In GitHub, open **Actions → Test and Deploy to Amazon ECS Fargate → Run workflow**.
-
-Wait for:
-
-- All three validation jobs to pass.
-- ECR images tagged with the commit SHA and `latest`.
-- Both services to reach stable state.
-
-The workflow cancels stale runs, bounds credential retries, and retries Docker builds at most three times. When rollout fails, it collects service events, stopped tasks, target health, and recent logs.
-
-{{% notice tip %}}
-After confirming the workflow, protect `main` and require test/validation jobs before merge.
-{{% /notice %}}
+The deploy job recorded successful ECR login, two image builds/pushes, ECS deployment, and service stabilization. No additional current resource state is inferred without access to the matching AWS environment.

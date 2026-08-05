@@ -1,63 +1,28 @@
 ---
-title: "Dọn dẹp tài nguyên"
+title: "Tình trạng dọn dẹp và chi phí"
 date: 2026-08-05
 weight: 6
 chapter: false
 pre: "<b>5.6.</b>"
-description: "Hủy hạ tầng lab bằng Terraform và xác minh không còn tài nguyên tính phí."
+description: "Chỉ ghi nhận trạng thái dọn dẹp và chi phí khi có bằng chứng đúng môi trường."
 ---
 
-# Dọn dẹp tài nguyên
+# Tình trạng dọn dẹp và chi phí
 
-{{% notice danger %}}
-Các lệnh trong phần này xóa database, container services và dữ liệu lab. Chỉ chạy khi đúng AWS account, workspace và state của workshop. Không dùng cho môi trường staging/production.
-{{% /notice %}}
+## Dọn dẹp
 
-## 1. Xác minh mục tiêu
+Chưa có log `terraform destroy`, ảnh AWS Console hoặc kết quả truy vấn từ đúng tài khoản để chứng minh hạ tầng đã được dọn. Website vẫn phản hồi HTTP `200` tại thời điểm kiểm tra, nên báo cáo không ghi tài nguyên đã bị xóa.
 
-```powershell
-aws sts get-caller-identity
-Set-Location terraform
-terraform workspace show
-terraform state list
-```
+## Chi phí thực tế
 
-Account phải là sandbox và workspace phải là workspace đã dùng cho workshop.
+Chưa có dữ liệu Billing/Cost Explorer từ đúng tài khoản triển khai. Báo cáo không sử dụng số `$0.00` lấy từ tài khoản AWS khác và không thay bằng AWS Pricing Calculator vì đó chỉ là dự toán.
 
-## 2. Làm rỗng S3 nếu đã tải dữ liệu
+Chi phí chỉ được cập nhật khi có ít nhất một trong các bằng chứng sau:
 
-```powershell
-$taskBucket=(terraform output -raw s3_bucket)
-Write-Output "Bucket cần làm rỗng: $taskBucket"
-```
+- Ảnh Billing/Cost Explorer đúng khoảng ngày và đúng tài khoản triển khai.
+- Cost and Usage Report hoặc kết quả Cost Explorer có bộ lọc/tag xác định EduFlow.
+- Xác nhận rõ credit/free-tier nếu tổng tiền thanh toán bằng `0`.
 
-Vì bucket bật versioning, dùng nút **Empty** trong S3 Console để xóa cả current version, noncurrent version và delete marker của đúng bucket này. Terraform không thể xóa bucket còn object.
+## Thời gian hoàn thành
 
-## 3. Lập và thực thi destroy plan
-
-Đảm bảo các biến `TF_VAR_*` giống lúc apply, sau đó:
-
-```powershell
-terraform plan -destroy -out=eduflow-destroy.tfplan
-terraform show eduflow-destroy.tfplan
-terraform apply eduflow-destroy.tfplan
-```
-
-Review phải chỉ chứa tài nguyên tiền tố `eduflow-dev` và bucket ID vừa xác minh.
-
-## 4. Xác nhận
-
-```powershell
-terraform state list
-aws ecs describe-clusters --clusters eduflow-dev-cluster --region $taskAwsRegion
-aws rds describe-db-instances --region $taskAwsRegion --query "DBInstances[?contains(DBInstanceIdentifier, 'eduflow-dev')]"
-```
-
-`terraform state list` không còn resource. Kiểm tra thêm console Billing/Cost Explorer sau khi AWS hoàn tất xóa RDS, ALB và ENI.
-
-Cuối cùng dừng/xóa MySQL local nếu không dùng nữa:
-
-```powershell
-docker stop eduflow-mysql
-docker rm eduflow-mysql
-```
+Chỉ xác minh được pipeline CI/CD kéo dài **8 phút 49 giây**. Chưa có giờ bắt đầu/kết thúc buổi workshop nên không ghi tổng thời gian thao tác thủ công.

@@ -1,56 +1,36 @@
 ---
-title: "Xác minh và kiểm tra bảo mật"
+title: "Kết quả xác minh thực tế"
 date: 2026-08-05
 weight: 5
 chapter: false
 pre: "<b>5.5.</b>"
-description: "Kiểm tra health, ba vai trò, thanh toán, log và ranh giới mạng."
+description: "Các kiểm tra đã chạy thực tế và danh sách chưa đủ bằng chứng."
 ---
 
-# Xác minh triển khai
+# Kết quả xác minh thực tế
 
-## 1. Hạ tầng
+## Kiểm tra HTTP ngày 05/08/2026
 
-- ALB trả trang chủ và `/api/public/stats`.
-- Hai target group ở trạng thái healthy.
-- ECS có một task RUNNING cho mỗi service.
-- RDS không public và nằm trong private data subnets.
-- S3 public access block bật; ECR scan-on-push bật.
+| Endpoint | Kết quả | Thời gian một lần đo |
+|---|---|---|
+| [Trang chủ](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/) | HTTP `200`, `text/html; charset=UTF-8` | khoảng `446 ms` |
+| [API thống kê](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/api/public/stats) | HTTP `200`, `application/json` | khoảng `235 ms` |
 
-Liệt kê target group:
+Hai thời gian trên là một lần đo bằng HTTP request, không phải trung bình, percentile hoặc kết quả performance benchmark.
 
-```powershell
-aws elbv2 describe-target-groups `
-  --names eduflow-dev-fe-tg eduflow-dev-be-tg `
-  --region $taskAwsRegion `
-  --query 'TargetGroups[].{name:TargetGroupName,arn:TargetGroupArn}'
-```
+## Kiểm tra CI
 
-Dùng từng ARN với `aws elbv2 describe-target-health --target-group-arn <arn>`.
+- Backend tests: `success`.
+- Frontend tests và runtime upload permission check: `success`.
+- Terraform format/init/validate: `success`.
+- Build/push image và ECS deployment: `success`.
 
-## 2. Chức năng
+Nguồn: [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
 
-| Vai trò | Kịch bản bắt buộc |
-|---|---|
-| Quản trị viên | Xem dashboard, tạo giảng viên, khóa/mở tài khoản |
-| Giảng viên | Tạo khóa học, chương, video/tài liệu; xem đơn hàng/học viên |
-| Học viên | OTP, đăng nhập, tìm kiếm, promo, checkout, học và lưu tiến độ |
+## Chưa đủ bằng chứng để đánh dấu đã kiểm tra
 
-Kiểm tra thêm chuyển ngôn ngữ, định dạng VND, lỗi backend timeout và trang 404/403.
-
-## 3. Bảo mật
-
-- Request học viên đến API admin/instructor phải bị từ chối.
-- Giảng viên không chỉnh khóa học của giảng viên khác.
-- Secret không xuất hiện trong task environment plaintext, log hoặc HTML.
-- Cookie session dùng `HttpOnly`, `SameSite=Lax`; URL không chứa `;jsessionid`.
-- Callback VNPay sai chữ ký hoặc sai số tiền không tạo quyền sở hữu khóa học.
-
-## 4. Quan sát
-
-```powershell
-aws logs tail /ecs/eduflow-dev-frontend --since 10m --region $taskAwsRegion
-aws logs tail /ecs/eduflow-dev-backend --since 10m --region $taskAwsRegion
-```
-
-Không đưa password, JWT, VNPay hash secret hoặc OTP vào log khi chụp bằng chứng báo cáo.
+- Toàn bộ luồng ba vai trò quản trị viên, giảng viên và học viên.
+- Thanh toán VNPay end-to-end.
+- Kiểm tra quyền truy cập chéo giữa các vai trò.
+- Target group health, ECS task, RDS, ECR, S3 và CloudWatch qua Console/API.
+- Kết quả tải k6 với 50 virtual users.

@@ -1,60 +1,26 @@
 ---
-title: "Provision infrastructure and ECS services"
+title: "Terraform and infrastructure evidence"
 date: 2026-08-05
 weight: 3
 chapter: false
 pre: "<b>5.4.3.</b>"
-description: "Create a full plan, apply VPC/ALB/RDS/ECS, and verify target health."
+description: "Separate Terraform configuration, validation results, and unverified AWS state."
 ---
 
-# Provision the complete infrastructure
+# Terraform and infrastructure evidence
 
-## 1. Supply image references to Terraform
+## Verified
 
-```powershell
-$env:TF_VAR_fe_image=$taskFeImage
-$env:TF_VAR_be_image=$taskBeImage
-Set-Location terraform
-```
+- The **Terraform validation** job in [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) succeeded.
+- Format check, `terraform init -backend=false`, and `terraform validate` all reported `success`.
+- Terraform source defines the default ALB route to the frontend and `/api/*` to the backend.
+- The actual ALB DNS returned HTTP `200` for the homepage and statistics API.
 
-## 2. Review the plan
+## Not directly verified through AWS API/Console
 
-```powershell
-terraform plan -out=eduflow.tfplan
-terraform show eduflow.tfplan
-```
+- Current ECS running and desired task counts.
+- Target health for each target group.
+- RDS status, class, storage, and public-access configuration.
+- S3 public access block and the ECR image list.
 
-Check these items before applying:
-
-- Region `ap-southeast-1`, environment `dev`.
-- Two public subnets and two private data subnets.
-- Single-AZ `db.t4g.micro` RDS with 20 GB for the lab.
-- Both task definitions use the correct ECR URLs and ports 8080/8888.
-- No plaintext secrets appear in plan output.
-
-## 3. Apply
-
-```powershell
-terraform apply eduflow.tfplan
-```
-
-RDS and ECS may require 10-20 minutes. When complete:
-
-```powershell
-terraform output
-$taskAlbDns=(terraform output -raw alb_dns_name)
-Invoke-WebRequest "http://$taskAlbDns/" -UseBasicParsing
-Invoke-RestMethod "http://$taskAlbDns/api/public/stats"
-```
-
-## 4. Verify ECS
-
-```powershell
-aws ecs describe-services `
-  --cluster eduflow-dev-cluster `
-  --services eduflow-dev-frontend eduflow-dev-backend `
-  --region $taskAwsRegion `
-  --query 'services[].{name:serviceName,running:runningCount,desired:desiredCount,status:status}'
-```
-
-Both services should show `running = desired = 1`. If they do not stabilize, inspect service events and the `/ecs/eduflow-dev-frontend` and `/ecs/eduflow-dev-backend` CloudWatch log groups.
+These items are not marked successful based only on Terraform source or a local state file.

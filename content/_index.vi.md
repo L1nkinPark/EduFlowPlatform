@@ -39,7 +39,7 @@ Thông tin sinh viên và kỳ thực tập do Võ Đức Hiếu cung cấp. N�
 1. [Nhật ký công việc](1-Worklog/)
 2. [Đề xuất giải pháp](2-Proposal/)
 3. [Bài viết kỹ thuật](3-BlogsPosted/)
-4. [Phiên làm việc kỹ thuật](4-EventParticipated/)
+4. [Hackathon đã tham gia](4-EventParticipated/)
 5. [Workshop triển khai](5-Workshop/)
 6. [Tự đánh giá](6-Self-evaluation/)
 7. [Tổng kết và phản hồi](7-Feedback/)

@@ -1,59 +1,40 @@
 ---
-title: "Tổng quan workshop"
+title: "Phạm vi đã xác minh"
 date: 2026-08-05
 weight: 1
 chapter: false
 pre: "<b>5.1.</b>"
-description: "Kiến trúc, mục tiêu học tập và luồng triển khai end-to-end."
+description: "Kiến trúc theo mã Terraform và phạm vi bằng chứng triển khai hiện có."
 ---
 
-# Tổng quan
+# Phạm vi đã xác minh
 
-## Mục tiêu học tập
+## Kiến trúc có trong mã nguồn
 
-Sau workshop, bạn có thể:
-
-- Chạy test Maven và hai ứng dụng EduFlow tại local.
-- Build container Java 17 không chạy bằng tài khoản root.
-- Dùng Terraform tạo VPC, security groups, ALB, ECR/ECS, RDS, S3 và Secrets Manager.
-- Đẩy image lên ECR và chạy hai Fargate service.
-- Kiểm tra target health, log CloudWatch và luồng ứng dụng.
-- Dọn tài nguyên an toàn sau khi hoàn tất.
-
-## Kiến trúc
+Mã Terraform định nghĩa VPC, public/private data subnet, security group, ALB, ECS Fargate, ECR, RDS MySQL, S3, Secrets Manager và CloudWatch Logs tại `ap-southeast-1`. Đây là mô tả từ mã nguồn; không dùng nó để khẳng định từng resource đang hoạt động nếu chưa có kết quả truy vấn AWS tương ứng.
 
 ```mermaid
 flowchart TB
-    Internet["Trình duyệt / Internet"] --> ALB["Application Load Balancer\nHTTP 80 / HTTPS 443"]
-    subgraph VPC["EduFlow VPC - ap-southeast-1"]
-      subgraph Public["Public subnets - 2 AZ"]
-        ALB
-        FE["Frontend Fargate\nJava 17 :8080"]
-        BE["Backend Fargate\nJava 17 :8888"]
-      end
-      subgraph PrivateData["Private data subnets - 2 AZ"]
-        DB[("RDS MySQL 8")]
-      end
-      ALB -->|"default"| FE
-      ALB -->|"/api/*"| BE
-      FE --> BE
-      BE --> DB
-    end
+    Internet["Trình duyệt / Internet"] --> ALB["AWS Application Load Balancer\nHTTP"]
+    ALB -->|"default"| FE["Frontend ECS :8080"]
+    ALB -->|"/api/*"| BE["Backend ECS :8888"]
+    FE --> BE
+    BE --> DB[("RDS MySQL")]
+    ECR["ECR images"] --> FE
+    ECR --> BE
     SM["Secrets Manager"] -.-> FE
     SM -.-> BE
-    ECR["ECR repositories"] --> FE
-    ECR --> BE
-    FE --> CW["CloudWatch Logs"]
-    BE --> CW
 ```
 
-## Luồng thực hiện
+## Phần đã quan sát trực tiếp
 
-1. Chuẩn bị công cụ và AWS account.
-2. Chạy test/backend/frontend ở local.
-3. Cấu hình biến Terraform và secret.
-4. Bootstrap ECR, build và push image.
-5. Apply hạ tầng đầy đủ, kiểm tra dịch vụ.
-6. Kích hoạt CI/CD và dọn tài nguyên khi kết thúc.
+- DNS ALB công khai phản hồi trang chủ và API thống kê bằng HTTP `200`.
+- Workflow trên nhánh `main` hoàn tất backend test, frontend test, Terraform validation, build/push image và ECS deployment.
+- URL đang dùng HTTP; chưa có bằng chứng HTTPS hoặc custom domain.
 
-Thời gian dự kiến: **90-150 phút**, chưa tính thời gian tải Docker image hoặc chờ RDS.
+## Phần chưa có bằng chứng
+
+- Ảnh từng bước trong AWS Console.
+- Log đầu ra k6 và các chỉ số p95/error rate thực tế.
+- Tổng thời gian thao tác thủ công từ lúc bắt đầu đến khi hoàn tất.
+- Chi phí của đúng tài khoản/môi trường triển khai.
