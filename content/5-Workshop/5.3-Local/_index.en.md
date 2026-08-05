@@ -1,14 +1,23 @@
 ---
-title: "Test the application locally"
+title: "Recorded test results"
 date: 2026-08-05
 weight: 3
 chapter: false
 pre: "<b>5.3.</b>"
-description: "Run MySQL, backend, frontend, and establish a baseline before cloud deployment."
+description: "Backend and frontend results supported by GitHub Actions evidence."
 ---
 
-# Local verification
+# Recorded test results
 
-Do not diagnose the application for the first time inside ECS. This section establishes a baseline: the database runs, both Maven suites pass, the health endpoint responds, and the frontend reaches the backend.
+The report uses public CI evidence instead of claiming unrecorded local runs. The supporting run is [Test and Deploy to Amazon ECS Fargate #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
+
+| Job | Result | Recorded time |
+|---|---|---|
+| Backend tests | `success` | 06:55:05–06:55:56 UTC |
+| Frontend tests | `success` | 06:55:06–06:56:03 UTC |
+| Terraform validation | `success` | 06:55:05–06:55:19 UTC |
+| Build, push, and deploy | `success` | 06:56:06–07:03:49 UTC |
+
+The test count is not reported because the current public evidence does not expose a stored test-summary artifact.
 
 {{% children description="true" /%}}

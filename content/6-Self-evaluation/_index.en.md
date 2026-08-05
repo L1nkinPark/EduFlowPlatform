@@ -1,41 +1,31 @@
 ---
-title: "Self-assessment"
+title: "Skills and evidence cross-check"
 date: 2026-08-05
 weight: 6
 chapter: false
 pre: "<b>6.</b>"
 ---
 
-# Project self-assessment
+# Skills and evidence cross-check
 
-This assessment is based on repository artifacts as of 5 August 2026. It does not replace mentor or organization feedback.
+No self-rating scale or mentor assessment was provided by the participant. Therefore, the old template's “Good/Fair” ratings were removed and this section only lists artifacts that can be checked at the current commit.
 
-| Criterion | Self-rating | Evidence |
+| Area | Current evidence | Limitation |
 |---|---|---|
-| Business analysis | Good | Completed three-role and course-lifecycle journeys with real data |
-| Spring Boot backend | Good | REST, JPA, Security/JWT, OTP, VNPay, progress, and exception handling |
-| Frontend/UX | Fair-to-good | Thymeleaf, Vietnamese/English i18n, responsive fixes, and error feedback |
-| Testing | Fair-to-good | 19 backend and 15 frontend test classes plus security/money/i18n coverage |
-| Cloud/IaC | Fair-to-good | Seven Terraform modules covering VPC, ALB, ECS, RDS, S3, and secrets |
-| CI/CD | Fair-to-good | Test-gated ECR/ECS delivery, concurrency, bounded retries, and diagnostics |
-| Security | Fair-to-good | Role/ownership checks, runtime secrets, cookie hardening, and non-root images |
-| Documentation | Good | Bilingual report and reproducible workshop with verification/cleanup |
+| Spring Boot backend | REST/JPA/Security/JWT/OTP/VNPay source; 16 committed Java test files; successful backend job in [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) | No coverage report or complete E2E evidence |
+| Spring Boot/Thymeleaf frontend | Templates, Vietnamese/English i18n, and 15 committed Java test files; successful frontend and upload-permission checks | No stored browser E2E result |
+| Cloud/IaC | Seven Terraform modules: `vpc`, `security-groups`, `alb`, `ecs`, `rds`, `s3`, and `secrets-manager`; successful Terraform validation | Individual resources were not queried through the correct AWS account |
+| CI/CD | Backend, frontend, Terraform, and deploy jobs all reported `success`; run #74 took 8 minutes 49 seconds | Does not replace long-term service-state verification |
+| Security | Role/ownership checks, runtime secret configuration, cookie hardening, and non-root container source | No independent penetration test or security audit |
+| Documentation | Bilingual Hugo content, commit-backed worklog, and Workshop verified/unverified separation | No AWS Console screenshots or mentor feedback |
 
-## Strengths
+## Evidence still needed, not completed results
 
-- Followed cross-layer failures to root causes across UI, API, containers, ALB, and runtime secrets.
-- Replaced mock data with verifiable journeys, improving dashboard and experience credibility.
-- Turned production failures into tests, validation, or pipeline diagnostics.
+1. Browser E2E for all three roles, OTP, and VNPay callbacks.
+2. Coverage artifacts for both Maven suites.
+3. GitHub OIDC instead of long-lived access keys.
+4. Remote Terraform state with locking.
+5. Billing/Cost Explorer and Console screenshots from the correct environment.
+6. Stored metrics, alarms, backup/restore tests, and k6 artifacts.
 
-## Areas for improvement
-
-1. Move Terraform state to an S3 backend with locking for team use.
-2. Replace long-lived CI access keys with GitHub OIDC and a short-lived IAM role.
-3. Add automated integration/E2E tests for OTP, VNPay callbacks, and all three roles.
-4. Add versioned migrations (Flyway/Liquibase) instead of `ddl-auto=update` in production.
-5. Improve HA with private app subnets/NAT or VPC endpoints, Multi-AZ RDS, and scaling after real load evidence.
-6. Add metrics, alarms, SLOs, and a practiced backup/restore procedure.
-
-## Next goal
-
-Prioritize supply-chain security and recovery: OIDC, image scanning gates, migrations, E2E tests, remote state, alarms, and one database recovery exercise.
+These are next-step proposals and are not counted as implemented features.

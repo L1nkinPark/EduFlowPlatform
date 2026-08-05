@@ -1,31 +1,34 @@
 ---
-title: "Review kiến trúc và threat model"
-date: 2026-08-05
+title: "KET-Vault, Tardis và Aegis"
+date: 2026-07-13
 weight: 1
 chapter: false
 pre: "<b>4.1.</b>"
-description: "Phiên review ranh giới mạng, dữ liệu, secret và quyền theo vai trò."
+description: "Bằng chứng kỹ thuật cho DoraHacks và hackathon AABW."
 ---
 
-# Review kiến trúc và threat model
+# KET-Vault — DoraHacks
 
-## Mục tiêu
+Theo thông tin người thực hiện cung cấp, KET-Vault được phát triển cho một cuộc thi trên DoraHacks. Lịch sử GitHub cho thấy công việc full-stack, smart contract, multi-agent AI, Docker/CI và triển khai trong giai đoạn 09–15/06/2026.
 
-Đối chiếu sơ đồ AWS, Terraform và luồng ứng dụng để phát hiện đường truy cập không cần thiết hoặc cấu hình bí mật không nhất quán.
+**Bằng chứng kỹ thuật:**
 
-## Checklist
+- [Repository KET-Vault](https://github.com/Littile-Boy-s-KET/KET-Vault)
+- [Docker Compose và GitHub Actions](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/086eb767025fa9641e9b968162436a7e802fd175)
+- [Sửa giao dịch proposal bị revert](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/f3a83567f20122f01e3c0f3f1a567f09b8fd5770)
+- [Tổng hợp Risk Auditor](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/b4987d6e8d6dc7016f4aeb04d39b3d538940557d)
 
-- Chỉ ALB nhận lưu lượng từ Internet.
-- Frontend/backend chỉ nhận lưu lượng từ security group phù hợp.
-- RDS nằm trong private data subnets và chỉ backend kết nối cổng 3306.
-- JWT, database, SMTP và VNPay được cấp bằng secret/runtime variable.
-- API quản trị/giảng viên kiểm tra cả role và quyền sở hữu.
-- Callback thanh toán không tin trạng thái trình duyệt.
+# Tardis và Aegis — AABW
 
-## Kết quả ghi nhận
+Theo thông tin người thực hiện cung cấp, Tardis và Aegis được phát triển cho hackathon AABW. GitHub ghi nhận Tardis trong tuần 16–22/06 và hệ sinh thái Aegis từ 30/06 đến 13/07/2026.
 
-Review dẫn đến việc ổn định JWT secret trên ECS, siết API khóa học giảng viên, hardening session và bổ sung timeout giữa frontend/backend.
+**Bằng chứng kỹ thuật:**
 
-## Đầu ra
+- [Repository Tardis](https://github.com/Little-Boy-s-Tardis/Tardis)
+- [Tình huống kiểm thử webhook Tardis](https://github.com/Little-Boy-s-Tardis/Tardis/commit/c66e8cd6e3696a3580bd606d5ddca9ac9c5d9c80)
+- [Repository triển khai Aegis](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment)
+- [Kafka và threat mapping](https://github.com/Little-Boy-s-Aegis/dashboard/commit/645bdc95651fae87f9a9b2ad43e41145c938733a)
+- [OPA authentication cho SOAR](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/76e7dcd72728cc8dd6005e197a68c5c835710f9b)
+- [IP banning và gateway validation](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment/commit/6718ef5c63fd5f1481e787bf634044b47225480d)
 
-Một checklist có thể dùng lại trước mỗi thay đổi Terraform, security rule hoặc luồng xác thực.
+Chưa có liên kết kết quả chính thức của DoraHacks/AABW trong repository, nên phần này chỉ xác nhận sản phẩm và hoạt động kỹ thuật.

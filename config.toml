@@ -11,8 +11,8 @@ home = ["HTML", "RSS", "JSON"]
 [params]
   themeVariant = "workshop"
   editURL = "https://github.com/L1nkinPark/EduFlowPlatform/edit/main/"
-  description = "Báo cáo dự án và workshop triển khai EduFlow trên AWS"
-  author = "EduFlow Team"
+  description = "Báo cáo thực tập của Võ Đức Hiếu về dự án EduFlow và workshop triển khai trên AWS"
+  author = "Võ Đức Hiếu"
   showVisitedLinks = true
   disableBreadcrumb = false
   disableNextPrev = false
@@ -20,7 +20,7 @@ home = ["HTML", "RSS", "JSON"]
 
 [Languages]
   [Languages.vi]
-    title = "EduFlow - Báo cáo dự án"
+    title = "EduFlow - Báo cáo thực tập Võ Đức Hiếu"
     weight = 1
     languageName = "Tiếng Việt"
 
@@ -31,7 +31,7 @@ home = ["HTML", "RSS", "JSON"]
       weight = 10
 
   [Languages.en]
-    title = "EduFlow - Project Report"
+    title = "EduFlow - Võ Đức Hiếu Internship Report"
     weight = 2
     languageName = "English"
 

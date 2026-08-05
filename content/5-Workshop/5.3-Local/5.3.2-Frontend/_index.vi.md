@@ -1,48 +1,20 @@
 ---
-title: "Chạy frontend và kiểm tra luồng"
+title: "Kết quả kiểm thử frontend"
 date: 2026-08-05
 weight: 2
 chapter: false
 pre: "<b>5.3.2.</b>"
-description: "Chạy frontend test, kết nối backend và build hai container."
+description: "Bằng chứng frontend test và kiểm tra quyền upload từ GitHub Actions."
 ---
 
-# Chạy frontend
+# Kết quả kiểm thử frontend
 
-Giữ backend hoạt động ở `http://localhost:8888`.
+Trong [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), job **Frontend tests** có kết quả `success`.
 
-## 1. Chạy test frontend
+Các bước được GitHub ghi nhận thành công:
 
-```powershell
-Set-Location FE_EduFlow
-$env:BACKEND_URL='http://localhost:8888'
-$env:JWT_SECRET='replace-with-a-random-local-secret-at-least-32-bytes'
-.\mvnw.cmd test
-```
+- Checkout mã nguồn và thiết lập JDK 17.
+- Chạy frontend tests.
+- Kiểm tra quyền ghi thư mục upload của frontend runtime.
 
-Giá trị `JWT_SECRET` phải giống backend.
-
-## 2. Chạy giao diện
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-Mở `http://localhost:8080` và kiểm tra:
-
-- Trang chủ/danh mục tải được dữ liệu.
-- Đăng ký, đăng nhập và đăng xuất không tạo lỗi 500.
-- Chuyển ngôn ngữ Việt/Anh hoạt động.
-- Backend ngừng chạy sẽ tạo thông báo lỗi có kiểm soát trong khoảng timeout.
-
-## 3. Build container
-
-Từ thư mục gốc repository:
-
-```powershell
-docker build -t eduflow-backend:local .\BE_EduFlow
-docker build -t eduflow-frontend:local .\FE_EduFlow
-docker run --rm --entrypoint sh eduflow-frontend:local -c 'test -d /app/uploads && test -w /app/uploads'
-```
-
-Lệnh cuối phải trả exit code `0`, xác nhận user không phải root vẫn ghi được thư mục upload.
+Job chạy từ **06:55:06 đến 06:56:03 UTC ngày 05/08/2026**. Chưa có bằng chứng lưu trữ cho việc kiểm thử thủ công toàn bộ đăng ký, đăng nhập, chuyển ngôn ngữ và timeout, nên các luồng đó không được đánh dấu là đã xác minh trong Workshop.

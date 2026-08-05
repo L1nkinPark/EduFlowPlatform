@@ -1,27 +1,36 @@
 ---
-title: "Tuần 9 - Kiểm thử và hiệu năng"
-date: 2026-08-05
+title: "Tuần 9 (14/07 - 20/07/2026) - EduFlow, Aegis và SecHub"
+date: 2026-07-20
 weight: 9
 chapter: false
 pre: "<b>1.9.</b>"
-description: "Mở rộng unit test, kiểm tra bảo mật và tạo kịch bản tải k6."
+description: "Kiểm thử EduFlow, tự động hóa Aegis và phát triển SecHub cho hackathon OpenAI."
 ---
 
-## Mục tiêu
+## Thời gian và bối cảnh
 
-Giảm hồi quy ở service/controller và có baseline hiệu năng có thể lặp lại.
+**14/07/2026 - 20/07/2026** — EduFlow; hoàn thiện Aegis cho AABW; phát triển **SecHub cho hackathon của OpenAI**.
 
-## Công việc
+## Công việc thực tế
 
-- Xây 19 lớp test backend và 15 lớp test frontend cho service, controller, JWT, exception và utility.
-- Thêm test phân quyền API khóa học, callback thanh toán, tiền VNPay và i18n parity.
-- Cấu hình MySQL test trong CI và chạy hai Maven suite độc lập.
-- Tạo `k6-load-test.js` cho luồng truy cập triển khai.
+- Bổ sung kiểm thử đăng ký/thanh toán, sửa VNPAY, i18n, Terraform ECS và k6 cho EduFlow.
+- Thiết lập CI tạo Docker image cho dashboard, SOAR và staging sandbox của Aegis.
+- Hoàn thiện i18n Việt/Anh cho SecHub.
 
-## Kết quả
+## Kết quả và bằng chứng
 
-Pipeline chặn triển khai nếu test hoặc Terraform validation thất bại. Các lỗi quan trọng có test hồi quy gắn với nguyên nhân đã sửa.
+- EduFlow có kịch bản kiểm thử tải qua ALB và luồng thanh toán ổn định hơn.
+- Các service Aegis được tự động hóa quá trình build image.
+- SecHub có giao diện song ngữ phục vụ bài thi hackathon OpenAI.
+- [k6 kiểm thử EduFlow qua ALB](https://github.com/L1nkinPark/EduFlowPlatform/commit/5e42f3665fb39a1f9d3424f360774e9747d01d6a)
+- [CI Docker image cho Aegis dashboard](https://github.com/Little-Boy-s-Aegis/dashboard/commit/7217393847bc9b7951692670cff4322bbb5f3e30)
+- [CI Docker image cho SOAR](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/31d4587ac095546cd1a0ea6ac1aa17374890f28d)
+- [Hoàn thiện i18n cho SecHub](https://github.com/Little-Boy-s-SecHub/SecHub/commit/180b1f438edccfde0cf92c686ded3f809a07c06d)
 
-## Bài học
+## Khó khăn và cách xử lý
 
-Số lượng test không quan trọng bằng việc bao phủ ranh giới: quyền, số tiền, encoding, timeout và dữ liệu rỗng.
+Luồng thanh toán, runtime configuration và CI đa service sử dụng nhiều biến môi trường khác nhau. Tôi chuẩn hóa encoding/cấu hình, bổ sung kiểm thử hồi quy và tự động hóa build image.
+
+## Nhận xét mentor
+
+Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

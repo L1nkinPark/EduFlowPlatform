@@ -1,37 +1,37 @@
 ---
-title: "Tổng kết và phản hồi"
+title: "Tổng kết kỹ thuật"
 date: 2026-08-05
 weight: 7
 chapter: false
 pre: "<b>7.</b>"
 ---
 
-# Tổng kết và phản hồi
+# Tổng kết kỹ thuật
 
-## Điều đã làm tốt
+## Kết quả có bằng chứng
 
-EduFlow đã chuyển từ một giao diện chứa nhiều nội dung tĩnh thành nền tảng có dữ liệu thật cho quản trị viên, giảng viên và học viên. Luồng mua-học-tiến độ, i18n, upload, OTP và VNPay được kết nối với backend; hạ tầng AWS và pipeline cũng được lưu dưới dạng mã.
+- Website EduFlow và API `/api/public/stats` trả HTTP `200` khi kiểm tra ngày 05/08/2026.
+- [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) ghi nhận backend test, frontend test, Terraform validation, build/push image và ECS deployment đều `success`.
+- Repository chứa hai ứng dụng Spring Boot, Terraform modules, workflow CI/CD, test source và báo cáo Hugo song ngữ.
+- Worklog và phần hackathon liên kết trực tiếp tới repository/commit làm bằng chứng kỹ thuật.
 
-Điểm có giá trị nhất là khả năng truy vết: một revision Git tương ứng image ECR, ECS service có log riêng, Terraform mô tả tài nguyên và test bảo vệ các lỗi đã sửa.
+## Nội dung chưa xác minh
 
-## Điều còn vướng
+- Luồng browser end-to-end đầy đủ cho ba vai trò và VNPay.
+- Kết quả k6 thực tế, coverage và security audit độc lập.
+- Trạng thái chi tiết ECS/RDS/ALB target/ECR/S3 từ đúng AWS account.
+- Chi phí triển khai, custom domain, ảnh AWS Console và tổng thời gian workshop thủ công.
+- Kết quả, thứ hạng hoặc giải thưởng chính thức của các hackathon.
 
-- Kiến trúc hai Spring Boot service tạo thêm đồng bộ JWT, URL và timeout.
-- Upload local trên Fargate chỉ tồn tại theo vòng đời task; cần chuyển hoàn toàn sang object storage cho production.
-- CI hiện dùng access key; Terraform state local chưa phù hợp nhóm.
-- Mức bao phủ unit test đã tốt hơn nhưng chưa thay thế kiểm thử trình duyệt end-to-end.
-- RDS Single-AZ và task chạy public subnet là lựa chọn tiết kiệm cho dev, chưa phải kiến trúc HA production.
+## Nhận xét mentor
 
-## Đề xuất cải tiến quy trình
+Chưa có nhận xét mentor được cung cấp. Báo cáo không tự tạo nội dung phản hồi thay mentor.
 
-1. Mỗi thay đổi bắt đầu bằng acceptance criteria và test hồi quy cho lỗi quan trọng.
-2. Review API contract và threat model trước khi thay đổi quyền hoặc thanh toán.
-3. Dùng môi trường staging bất biến với image SHA trước khi cập nhật production.
-4. Thu thập metric thực tế trước khi tăng tài nguyên hoặc thêm dịch vụ AWS.
-5. Cập nhật workshop cùng code để tài liệu luôn chạy lại được.
+## Hướng cải tiến đề xuất
 
-## Kết luận
+1. Lưu test report, coverage và k6 output thành GitHub Actions artifact.
+2. Bổ sung browser E2E và kiểm thử callback thanh toán.
+3. Dùng GitHub OIDC, remote Terraform state và kiểm soát release bằng image SHA.
+4. Thu thập metric/alert, bằng chứng backup-restore và chi phí đúng môi trường.
 
-Dự án đã đạt nền tảng MVP có thể trình diễn và triển khai lặp lại. Bước trưởng thành tiếp theo không phải thêm nhiều tính năng, mà là tăng độ tin cậy: migration, E2E, OIDC, object storage bền vững, remote state và observability.
-
-Phản hồi hoặc issue kỹ thuật có thể gửi tại [EduFlowPlatform Issues](https://github.com/L1nkinPark/EduFlowPlatform/issues).
+Các mục cải tiến là đề xuất tương lai, không phải kết quả đã hoàn thành. Issue kỹ thuật có thể theo dõi tại [EduFlowPlatform Issues](https://github.com/L1nkinPark/EduFlowPlatform/issues).

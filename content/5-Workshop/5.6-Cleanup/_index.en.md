@@ -1,63 +1,28 @@
 ---
-title: "Clean up resources"
+title: "Cleanup and cost status"
 date: 2026-08-05
 weight: 6
 chapter: false
 pre: "<b>5.6.</b>"
-description: "Destroy lab infrastructure with Terraform and verify that billable resources are gone."
+description: "Only record cleanup and cost when evidence belongs to the correct environment."
 ---
 
-# Clean up resources
+# Cleanup and cost status
 
-{{% notice danger %}}
-These commands delete the lab database, container services, and data. Run them only against the confirmed AWS account, workspace, and workshop state. Never use them for staging or production.
-{{% /notice %}}
+## Cleanup
 
-## 1. Confirm the target
+There is no stored `terraform destroy` log, AWS Console screenshot, or query result from the correct account proving that the infrastructure was removed. The website still returned HTTP `200` when checked, so this report does not claim that the resources were deleted.
 
-```powershell
-aws sts get-caller-identity
-Set-Location terraform
-terraform workspace show
-terraform state list
-```
+## Actual cost
 
-The account must be the sandbox and the workspace must be the one used for this workshop.
+Billing/Cost Explorer data from the deployment account is not available. The report does not use a `$0.00` result obtained from a different AWS account and does not replace actual cost with an AWS Pricing Calculator estimate.
 
-## 2. Empty S3 if data was uploaded
+Cost will only be updated when at least one of these is available:
 
-```powershell
-$taskBucket=(terraform output -raw s3_bucket)
-Write-Output "Bucket to empty: $taskBucket"
-```
+- A Billing/Cost Explorer screenshot for the correct date range and deployment account.
+- A Cost and Usage Report or Cost Explorer result filtered/tagged for EduFlow.
+- Clear confirmation of credits/free-tier when the billed total is `0`.
 
-Because versioning is enabled, use **Empty** in the S3 Console for this exact bucket to remove current versions, noncurrent versions, and delete markers. Terraform cannot delete a non-empty bucket.
+## Completion time
 
-## 3. Create and apply a destroy plan
-
-Keep the same `TF_VAR_*` values used during apply, then run:
-
-```powershell
-terraform plan -destroy -out=eduflow-destroy.tfplan
-terraform show eduflow-destroy.tfplan
-terraform apply eduflow-destroy.tfplan
-```
-
-The review should contain only `eduflow-dev` resources and the bucket ID you confirmed.
-
-## 4. Confirm removal
-
-```powershell
-terraform state list
-aws ecs describe-clusters --clusters eduflow-dev-cluster --region $taskAwsRegion
-aws rds describe-db-instances --region $taskAwsRegion --query "DBInstances[?contains(DBInstanceIdentifier, 'eduflow-dev')]"
-```
-
-`terraform state list` should contain no resources. Check Billing/Cost Explorer after AWS finishes deleting RDS, ALB, and ENIs.
-
-Finally stop and remove the local MySQL container if it is no longer needed:
-
-```powershell
-docker stop eduflow-mysql
-docker rm eduflow-mysql
-```
+Only the **8 minutes 49 seconds** CI/CD pipeline duration is verified. No workshop start/end time was recorded, so total manual time is not reported.

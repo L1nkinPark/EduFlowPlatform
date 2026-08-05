@@ -1,27 +1,34 @@
 ---
-title: "Week 6 - Student experience"
-date: 2026-08-05
+title: "Week 6 (23-29 June 2026) - EduFlow cloud foundation"
+date: 2026-06-29
 weight: 6
 chapter: false
 pre: "<b>1.6.</b>"
-description: "Connect discovery, purchase, learning, and progress to real data."
+description: "Build Terraform, a Fly.io environment, and container fixes for EduFlow."
 ---
 
-## Objective
+## Date
 
-Create a continuous journey from course discovery to resumed learning.
+**23 June 2026 - 29 June 2026**
 
-## Work completed
+## Actual work
 
-- Made catalog, search, detail, breadcrumbs, instructor, and price data dynamic.
-- Restricted lesson content to accounts that purchased the course.
-- Persisted lesson completion and calculated course progress percentages.
-- Added “Continue learning” for owned courses and real transaction history.
+- Initialized EduFlowPlatform AWS infrastructure with Terraform.
+- Set up a Fly.io test deployment.
+- Fixed UTF-8 build encoding and frontend/backend 503 and health timeout issues.
 
-## Outcome
+## Outcomes and evidence
 
-Student pages no longer depend on mock records. Progress is stored per account and lesson and restored on later visits.
+- Established an Infrastructure-as-Code baseline and a verification environment before AWS deployment.
+- [AWS Terraform IaC](https://github.com/L1nkinPark/EduFlowPlatform/commit/f868bc80f04b2d23142258e1861b1f0b534f32c8)
+- [Fly.io environment](https://github.com/L1nkinPark/EduFlowPlatform/commit/e176301fef4f3feeb548688a307794302d6bb9a9)
+- [UTF-8 build fix](https://github.com/L1nkinPark/EduFlowPlatform/commit/ae76f62ee501c10223ac4b1a0382b65d06ceb4b1)
+- [503 and health timeout fix](https://github.com/L1nkinPark/EduFlowPlatform/commit/cec32b82f7aebc872d246d530eb8d33470b5ff7a)
 
-## Lesson learned
+## Challenge and resolution
 
-Content access must rely on a confirmed backend transaction, not a URL or button state in the frontend.
+The Java container used the wrong encoding and health checks failed while the backend was still starting. I enforced UTF-8, adjusted timeouts, and corrected cross-service health configuration.
+
+## Mentor feedback
+
+Not available yet; it will be added after mentor feedback is received.

@@ -1,52 +1,23 @@
 ---
-title: "Cấu hình AWS và Terraform"
+title: "Cấu hình triển khai đã xác minh"
 date: 2026-08-05
 weight: 1
 chapter: false
 pre: "<b>5.4.1.</b>"
-description: "Xác minh account, truyền secret an toàn và validate mã hạ tầng."
+description: "Các giá trị không nhạy cảm có bằng chứng từ mã nguồn và URL đang hoạt động."
 ---
 
-# Cấu hình AWS và Terraform
+# Cấu hình triển khai đã xác minh
 
-## 1. Xác minh phiên AWS
+| Thuộc tính | Giá trị có bằng chứng |
+|---|---|
+| AWS Region | `ap-southeast-1` |
+| Project/environment trong Terraform | `eduflow` / `dev` |
+| Giao thức public đã kiểm tra | HTTP |
+| Public endpoint | `eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com` |
+| Custom domain | Chưa có bằng chứng |
+| Chứng chỉ ACM/HTTPS | Chưa có bằng chứng |
 
-```powershell
-$taskAwsRegion='ap-southeast-1'
-$env:AWS_REGION=$taskAwsRegion
-$taskAccountId=(aws sts get-caller-identity --query Account --output text)
-aws sts get-caller-identity
-```
+SMTP credential, VNPay credential, JWT secret và database secret không được đưa vào báo cáo. Toàn bộ email, domain và chuỗi secret mẫu của template cũ đã được loại bỏ vì không phải dữ liệu triển khai thực tế.
 
-Đảm bảo account ID đúng sandbox trước khi tiếp tục.
-
-## 2. Truyền giá trị nhạy cảm
-
-```powershell
-$env:TF_VAR_smtp_username='otp-sandbox@example.com'
-$env:TF_VAR_smtp_password='<smtp-app-password>'
-$env:TF_VAR_vnpay_tmn_code='<8-character-code>'
-$env:TF_VAR_vnpay_hash_secret='<sandbox-hash-secret-at-least-16-characters>'
-```
-
-Tùy chọn HTTPS:
-
-```powershell
-$env:TF_VAR_domain_name='eduflow.example.com'
-$env:TF_VAR_acm_certificate_arn=''
-```
-
-Để ARN trống cho workshop HTTP. Chứng chỉ ACM phải nằm cùng region với ALB.
-
-## 3. Khởi tạo và kiểm tra
-
-```powershell
-Set-Location terraform
-terraform fmt -check -recursive
-terraform init -input=false
-terraform validate
-```
-
-{{% notice info %}}
-State local phù hợp cho lab cá nhân. Với môi trường nhóm/production, cấu hình backend S3 và cơ chế locking trước khi apply.
-{{% /notice %}}
+Terraform validation của cấu hình repository đã thành công trong [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).

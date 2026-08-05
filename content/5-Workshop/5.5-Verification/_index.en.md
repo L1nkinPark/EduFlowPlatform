@@ -1,56 +1,36 @@
 ---
-title: "Verification and security checks"
+title: "Actual verification results"
 date: 2026-08-05
 weight: 5
 chapter: false
 pre: "<b>5.5.</b>"
-description: "Verify health, three roles, payments, logs, and network boundaries."
+description: "Checks actually performed and items without sufficient evidence."
 ---
 
-# Verify the deployment
+# Actual verification results
 
-## 1. Infrastructure
+## HTTP checks on 5 August 2026
 
-- The ALB serves the homepage and `/api/public/stats`.
-- Both target groups are healthy.
-- ECS has one RUNNING task per service.
-- RDS is not public and resides in private data subnets.
-- S3 public access block and ECR scan-on-push are enabled.
+| Endpoint | Result | One measured request |
+|---|---|---|
+| [Homepage](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/) | HTTP `200`, `text/html; charset=UTF-8` | approximately `446 ms` |
+| [Statistics API](http://eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com/api/public/stats) | HTTP `200`, `application/json` | approximately `235 ms` |
 
-List target groups:
+These timings are single HTTP measurements, not averages, percentiles, or performance benchmarks.
 
-```powershell
-aws elbv2 describe-target-groups `
-  --names eduflow-dev-fe-tg eduflow-dev-be-tg `
-  --region $taskAwsRegion `
-  --query 'TargetGroups[].{name:TargetGroupName,arn:TargetGroupArn}'
-```
+## CI checks
 
-Use each ARN with `aws elbv2 describe-target-health --target-group-arn <arn>`.
+- Backend tests: `success`.
+- Frontend tests and runtime upload permission check: `success`.
+- Terraform format/init/validate: `success`.
+- Image build/push and ECS deployment: `success`.
 
-## 2. Functionality
+Source: [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
 
-| Role | Required scenario |
-|---|---|
-| Administrator | View dashboard, create instructor, disable/enable account |
-| Instructor | Create course, chapter, video/document; view orders/students |
-| Student | OTP, sign-in, search, promotion, checkout, learning, and progress |
+## Not sufficiently evidenced
 
-Also check language switching, VND formatting, backend timeouts, and 404/403 pages.
-
-## 3. Security
-
-- Student requests to administrator/instructor APIs are denied.
-- An instructor cannot modify another instructor's course.
-- Secrets do not appear in plaintext task environment, logs, or HTML.
-- Session cookies use `HttpOnly` and `SameSite=Lax`; URLs contain no `;jsessionid`.
-- VNPay callbacks with invalid signatures or amounts do not grant course ownership.
-
-## 4. Observability
-
-```powershell
-aws logs tail /ecs/eduflow-dev-frontend --since 10m --region $taskAwsRegion
-aws logs tail /ecs/eduflow-dev-backend --since 10m --region $taskAwsRegion
-```
-
-Do not include passwords, JWTs, VNPay hash secrets, or OTP values in report evidence.
+- Complete administrator, instructor, and student journeys.
+- End-to-end VNPay payment.
+- Cross-role authorization checks.
+- Target health, ECS tasks, RDS, ECR, S3, and CloudWatch through Console/API.
+- A 50-virtual-user k6 result.

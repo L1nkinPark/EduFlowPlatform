@@ -1,62 +1,28 @@
 ---
-title: "Prerequisites"
+title: "Evidence sources and limitations"
 date: 2026-08-05
 weight: 2
 chapter: false
 pre: "<b>5.2.</b>"
-description: "Required tools, AWS privileges, integration values, and security practices."
+description: "Sources used for verification and items without sufficient evidence."
 ---
 
-# Prerequisites
+# Evidence sources and limitations
 
-## Development machine
+## Sources used
 
-| Tool | Version |
-|---|---|
-| Git | 2.x |
-| Java | 17 |
-| Docker | 24+ |
-| Terraform | 1.5+ |
-| AWS CLI | 2.x |
+- The [EduFlowPlatform](https://github.com/L1nkinPark/EduFlowPlatform) source and commit history.
+- [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) on `main`.
+- Direct HTTP probes of the ALB DNS on 5 August 2026.
+- Repository Terraform configuration for the intended architecture.
 
-Verify:
+## Recording rules
 
-```powershell
-git --version
-java -version
-docker --version
-terraform version
-aws --version
-```
+- A CI outcome is recorded as successful only when the public job/step reports `success`.
+- An HTTP result only confirms that the endpoint responded at the measured time.
+- Terraform configuration alone does not prove that an AWS resource is `healthy`.
+- Account IDs, access keys, passwords, JWTs, OTPs, VNPay secrets, and secret values are not published.
 
-The repository includes Maven Wrapper, so a global Maven installation is optional.
+## Current limitation
 
-## AWS account and privileges
-
-Use an authorized sandbox account/role that can create these resources in `ap-southeast-1`:
-
-- VPC, subnets, routes, Internet Gateway, and security groups.
-- ALB, target groups, and listeners.
-- ECS, ECR, ECS IAM roles, and CloudWatch Logs.
-- RDS MySQL, DB subnet group, and Secrets Manager.
-- An S3 bucket with public access blocked.
-
-{{% notice warning %}}
-Do not attach an `Action: "*"` policy to a long-lived user. Use an expiring sandbox role or a least-privilege policy approved by the cloud administrator.
-{{% /notice %}}
-
-Verify identity and region:
-
-```powershell
-aws sts get-caller-identity
-aws configure get region
-```
-
-## Values to prepare
-
-- SMTP username/app password for OTP (a test account is acceptable).
-- VNPay Sandbox terminal code and hash secret.
-- Domain/ACM certificate for HTTPS; the workshop works over HTTP when the ARN is empty.
-- A local JWT secret of at least 32 bytes. In the current ECS configuration, the backend derives a stable signing key from the database secret.
-
-Do not put secrets in `terraform.tfvars`, screenshots, logs, or Git commits. Section 5.4 uses `TF_VAR_*` environment variables.
+The available AWS CLI session cannot verify resources in the deployment environment. Therefore, this report does not claim current ECS task, target group, RDS, ECR, or S3 Console state and does not use cost data from a different AWS account.

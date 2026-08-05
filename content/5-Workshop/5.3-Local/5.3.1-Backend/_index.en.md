@@ -1,51 +1,21 @@
 ---
-title: "Run MySQL and backend"
+title: "Backend test result"
 date: 2026-08-05
 weight: 1
 chapter: false
 pre: "<b>5.3.1.</b>"
-description: "Start the database, run backend tests, and verify Actuator."
+description: "Backend test evidence from GitHub Actions run #74."
 ---
 
-# Run MySQL and backend
+# Backend test result
 
-## 1. Start a test MySQL instance
+In [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), the **Backend tests** job reported `success`.
 
-```powershell
-docker run --name eduflow-mysql `
-  -e MYSQL_ROOT_PASSWORD=local-eduflow-password `
-  -e MYSQL_DATABASE=eduflow_db `
-  -p 3306:3306 `
-  -d mysql:8.0
-```
+GitHub recorded these steps as successful:
 
-Wait until `docker logs eduflow-mysql` reports that MySQL is ready.
+- Initialize the MySQL service container.
+- Check out the source and set up JDK 17.
+- Run backend tests.
+- Stop the service container and complete the job.
 
-## 2. Run backend tests
-
-```powershell
-Set-Location BE_EduFlow
-$env:SPRING_DATASOURCE_URL='jdbc:mysql://127.0.0.1:3306/eduflow_db?allowPublicKeyRetrieval=true&useSSL=false'
-$env:SPRING_DATASOURCE_USERNAME='root'
-$env:SPRING_DATASOURCE_PASSWORD='local-eduflow-password'
-$env:JWT_SECRET='replace-with-a-random-local-secret-at-least-32-bytes'
-.\mvnw.cmd test
-```
-
-## 3. Run the backend
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-In another terminal:
-
-```powershell
-Invoke-RestMethod http://localhost:8888/actuator/health
-```
-
-The expected response contains `status` equal to `UP`.
-
-{{% notice tip %}}
-If another MySQL instance uses port 3306, use that database or change the Docker port and datasource URL together.
-{{% /notice %}}
+The job ran from **06:55:05 to 06:55:56 UTC on 5 August 2026**. Test count and coverage are not reported because no matching summary artifact is available.

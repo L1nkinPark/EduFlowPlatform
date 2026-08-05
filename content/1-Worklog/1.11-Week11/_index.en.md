@@ -1,27 +1,35 @@
 ---
-title: "Week 11 - AWS infrastructure with Terraform"
-date: 2026-08-05
+title: "Week 11 (28 July-3 August 2026) - TrueTrace and EduFlow testing"
+date: 2026-08-03
 weight: 11
 chapter: false
 pre: "<b>1.11.</b>"
-description: "Model VPC, security, ALB, ECS, RDS, S3, and Secrets Manager."
+description: "Improve stability for the Qoder TrueTrace project and harden EduFlow."
 ---
 
-## Objective
+## Date and context
 
-Turn the EduFlow deployment diagram into reproducible, reviewable infrastructure code.
+**28 July 2026 - 3 August 2026** — Continued TrueTrace for Qoder and EduFlow hardening.
 
-## Work completed
+## Actual work
 
-- Split `vpc`, `security-groups`, `alb`, `ecs`, `rds`, `s3`, and `secrets-manager` modules.
-- Placed frontend/backend Fargate services behind an ALB with `/api/*` routed to the backend.
-- Isolated RDS in private data subnets and injected secrets into task definitions.
-- Reduced resources to match the diagram and dev sizing for cost control.
+- Added unit tests for the TrueTrace backend, dashboard, agent rules, and end-to-end flows.
+- Improved handling when an AI agent decided to freeze an account.
+- Hardened EduFlow sign-in, OTP, JWT, checkout, and AWS integration.
 
-## Outcome
+## Outcomes and evidence
 
-Terraform creates networking, database, registries, cluster, and services; outputs expose the ALB DNS, RDS endpoint, bucket, and ECR URLs.
+- TrueTrace gained tests for EventPublisher, the Go dashboard, and the rules engine.
+- EduFlow uses bounded AWS credential retries instead of waiting indefinitely.
+- [EventPublisher tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/25da6dcfa3c7be618641e3e50b70ef305359bef3)
+- [Go dashboard tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-dashboard/commit/050e7230e182c41647cdd87dbbc243735f9ad8da)
+- [Agent rules tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-agent-engine/commit/7673758375988cdc7b61cfdae256ae5b7d5494d7)
+- [Bounded EduFlow AWS credential retries](https://github.com/L1nkinPark/EduFlowPlatform/commit/6853a95657c5edb45884e3a3ba191cd62176add1)
 
-## Lesson learned
+## Challenge and resolution
 
-Modules should follow operational boundaries. Explicit dependencies between RDS, secrets, and ECS prevent cycles and stale credentials.
+Transient AWS failures, stale pipelines, and incorrect AI decisions made end-to-end flows unstable. I bounded retries, expanded tests, and added clearer error handling.
+
+## Mentor feedback
+
+Not available yet; mentor or organizer feedback will be added later.

@@ -1,60 +1,26 @@
 ---
-title: "Tạo hạ tầng và ECS services"
+title: "Bằng chứng Terraform và hạ tầng"
 date: 2026-08-05
 weight: 3
 chapter: false
 pre: "<b>5.4.3.</b>"
-description: "Lập full plan, apply VPC/ALB/RDS/ECS và xác minh target health."
+description: "Phân biệt cấu hình Terraform, kết quả validation và trạng thái AWS chưa xác minh."
 ---
 
-# Tạo hạ tầng đầy đủ
+# Bằng chứng Terraform và hạ tầng
 
-## 1. Gắn image vào Terraform
+## Đã xác minh
 
-```powershell
-$env:TF_VAR_fe_image=$taskFeImage
-$env:TF_VAR_be_image=$taskBeImage
-Set-Location terraform
-```
+- Job **Terraform validation** trong [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477) thành công.
+- Các bước format check, `terraform init -backend=false` và `terraform validate` đều có trạng thái `success`.
+- Mã Terraform định nghĩa ALB route mặc định tới frontend và `/api/*` tới backend.
+- DNS ALB thực tế trả HTTP `200` cho cả trang chủ và API thống kê.
 
-## 2. Review plan
+## Chưa xác minh trực tiếp từ AWS API/Console
 
-```powershell
-terraform plan -out=eduflow.tfplan
-terraform show eduflow.tfplan
-```
+- Số task ECS đang chạy và desired count hiện tại.
+- Target health của từng target group.
+- Trạng thái, class, storage và public-access của RDS.
+- Public access block của S3 và danh sách ECR image.
 
-Kiểm tra các điểm sau trước khi apply:
-
-- Region `ap-southeast-1`, environment `dev`.
-- Hai public subnet và hai private data subnet.
-- RDS `db.t4g.micro`, Single-AZ, 20 GB cho lab.
-- Hai task definition dùng đúng ECR URL và port 8080/8888.
-- Không có secret plaintext trong plan output.
-
-## 3. Apply
-
-```powershell
-terraform apply eduflow.tfplan
-```
-
-RDS và ECS có thể cần 10-20 phút. Khi hoàn thành:
-
-```powershell
-terraform output
-$taskAlbDns=(terraform output -raw alb_dns_name)
-Invoke-WebRequest "http://$taskAlbDns/" -UseBasicParsing
-Invoke-RestMethod "http://$taskAlbDns/api/public/stats"
-```
-
-## 4. Kiểm tra ECS
-
-```powershell
-aws ecs describe-services `
-  --cluster eduflow-dev-cluster `
-  --services eduflow-dev-frontend eduflow-dev-backend `
-  --region $taskAwsRegion `
-  --query 'services[].{name:serviceName,running:runningCount,desired:desiredCount,status:status}'
-```
-
-Cả hai service cần `running = desired = 1`. Nếu chưa ổn định, xem events của service và `/ecs/eduflow-dev-frontend`, `/ecs/eduflow-dev-backend` trong CloudWatch Logs.
+Các mục chưa xác minh không được ghi thành kết quả thành công chỉ dựa trên Terraform source hoặc state local.

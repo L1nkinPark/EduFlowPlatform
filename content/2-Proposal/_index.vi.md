@@ -8,6 +8,10 @@ pre: "<b>2.</b>"
 
 # Đề xuất nền tảng học trực tuyến EduFlow
 
+{{% notice info %}}
+Đây là đề xuất và kiến trúc mục tiêu rút ra từ mã nguồn, không phải bảng kết quả triển khai. Kết quả đã kiểm tra thực tế được ghi riêng tại phần Workshop.
+{{% /notice %}}
+
 ## 1. Tóm tắt
 
 EduFlow giải quyết nhu cầu quản lý toàn bộ vòng đời khóa học trên một nền tảng: quản trị tài khoản giảng viên, biên soạn nội dung, bán khóa học qua VNPay, học bài và theo dõi tiến độ. Giải pháp ưu tiên kiến trúc dễ hiểu, có thể triển khai lặp lại bằng Terraform và phù hợp với một sản phẩm MVP.
@@ -82,6 +86,6 @@ flowchart LR
 | Backend chậm/không sẵn sàng | Frontend treo hoặc trả 500 | Timeout kết nối/đọc, health check ALB và thông báo lỗi rõ ràng |
 | Chi phí AWS tăng | Vượt ngân sách MVP | Single-AZ/dev sizing, desired count nhỏ và dọn tài nguyên sau workshop |
 
-## 9. Tiêu chí thành công
+## 9. Tiêu chí thành công đề xuất
 
-Luồng từ tạo khóa học đến mua, học và ghi nhận tiến độ hoạt động bằng dữ liệu thật; các bài test Maven và Terraform validation thành công; hai container chạy sau ALB và không cần bí mật được commit vào mã nguồn.
+Các tiêu chí được đặt ra gồm: luồng từ tạo khóa học đến mua, học và ghi nhận tiến độ dùng dữ liệu thật; Maven test và Terraform validation thành công; hai container chạy sau ALB; secret không được commit vào mã nguồn. Việc tiêu chí nào đã có bằng chứng được đối chiếu tại phần Workshop, không mặc định xem toàn bộ là đã đạt.

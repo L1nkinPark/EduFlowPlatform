@@ -1,27 +1,42 @@
 ---
-title: "Tuần 12 - CI/CD và hardening sản xuất"
+title: "Tuần 12 (04/08 - 17/08/2026) - Hoàn thiện EduFlow và báo cáo"
 date: 2026-08-05
 weight: 12
 chapter: false
 pre: "<b>1.12.</b>"
-description: "Tự động kiểm thử, build/push image, deploy ECS và xử lý lỗi production."
+description: "Hardening EduFlow, cải thiện CI/CD và xây dựng website báo cáo Hugo."
 ---
 
-## Mục tiêu
+## Thời gian
 
-Tạo đường phát hành an toàn và giảm thời gian hệ thống ở trạng thái lỗi.
+**04/08/2026 - 17/08/2026**. Nội dung bên dưới phản ánh bằng chứng có đến **05/08/2026**.
 
-## Công việc
+## Công việc thực tế
 
-- Thiết lập GitHub Actions chạy backend test, frontend test và Terraform validation song song theo job.
-- Build/push hai image lên ECR bằng commit SHA rồi cập nhật ECS services.
-- Hủy pipeline cũ, giới hạn retry AWS credential và retry lỗi Docker build tạm thời.
-- Hardening session, JWT, API giảng viên, upload, nội dung tiếng Việt và lỗi checkout sản xuất.
+- Sửa luồng tạo bài học và tải media trên EduFlow.
+- Chuẩn hóa hiển thị VND và nội dung tiếng Việt.
+- Xử lý quyền ghi file của container ECS và retry khi Docker build lỗi tạm thời.
+- Xây dựng website báo cáo thực tập song ngữ bằng Hugo.
 
-## Kết quả
+## Kết quả và bằng chứng
 
-Chỉ revision mới nhất vượt qua kiểm thử mới được triển khai. Các sự cố cấu hình sản xuất được chuyển thành kiểm tra tự động hoặc cấu hình có tài liệu.
+- Luồng lesson authoring/upload ổn định hơn; container có thư mục ghi phù hợp.
+- CI có retry giới hạn cho lỗi Docker build tạm thời.
+- Báo cáo Hugo có thông tin cá nhân, nhật ký 12 tuần và bằng chứng GitHub.
+- [Sửa lesson authoring và media upload](https://github.com/L1nkinPark/EduFlowPlatform/commit/85933c0)
+- [Chuẩn hóa VND và nội dung tiếng Việt](https://github.com/L1nkinPark/EduFlowPlatform/commit/aa5893d)
+- [Sửa quyền khởi động frontend trên ECS](https://github.com/L1nkinPark/EduFlowPlatform/commit/affa848)
+- [Retry Docker image build](https://github.com/L1nkinPark/EduFlowPlatform/commit/d19acf2)
+- [Thêm website báo cáo Hugo](https://github.com/L1nkinPark/EduFlowPlatform/commit/8587482e88c9fb1cfa42c8b45a59e5a6efb07d87)
 
-## Bài học
+## Khó khăn và cách xử lý
 
-CI/CD không chỉ tự động hóa lệnh deploy; nó mã hóa thứ tự an toàn, giới hạn thời gian chờ và ngăn revision cũ ghi đè bản sửa mới.
+Container chạy non-root gặp lỗi ghi file và Docker build đôi khi thất bại do lỗi tạm thời. Tôi tạo thư mục upload với quyền phù hợp và bổ sung retry có giới hạn trong CI.
+
+## Phần sẽ cập nhật
+
+Giai đoạn **06/08 - 17/08/2026** chưa phát sinh tại thời điểm lập nhật ký. Nội dung sẽ được bổ sung theo công việc và bằng chứng thực tế, không ghi trước hoạt động chưa xảy ra.
+
+## Nhận xét mentor
+
+Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor.

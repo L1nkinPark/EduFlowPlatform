@@ -1,27 +1,35 @@
 ---
-title: "Week 10 - Containers and dev environment"
-date: 2026-08-05
+title: "Week 10 (21-27 July 2026) - EduFlow and TrueTrace"
+date: 2026-07-27
 weight: 10
 chapter: false
 pre: "<b>1.10.</b>"
-description: "Package both applications, add health checks, and establish Fly.io development deployment."
+description: "Expand EduFlow and develop TrueTrace for a Qoder hackathon."
 ---
 
-## Objective
+## Date and context
 
-Produce artifacts that run consistently on developer machines, in CI, and in cloud environments.
+**21 July 2026 - 27 July 2026** — EduFlow and **TrueTrace**, a **Qoder** hackathon project.
 
-## Work completed
+## Actual work
 
-- Built separate Java 17 Dockerfiles for frontend and backend.
-- Configured health endpoints, ports, environment variables, and backend URL.
-- Added `fly.toml` files and Fly.io development deployment guidance.
-- Fixed build encoding and inter-service 503/timeout issues.
+- Completed EduFlow administration dashboards, real instructor/student data, and learning experiences.
+- Developed TrueTrace backend, dashboard, web/mobile apps, agent engine, deployment, and Terraform.
+- Added KYC, AML, STR, deepfake inspection, authentication, and runtime validation flows.
 
-## Outcome
+## Outcomes and evidence
 
-Both applications run as independent containers with runtime configuration rather than hard-coded environment values. Fly.io provides a verification step before AWS.
+- More EduFlow screens use real rather than mock data.
+- TrueTrace established a multi-agent architecture for compliance workflows.
+- [EduFlow GitHub Actions upgrade](https://github.com/L1nkinPark/EduFlowPlatform/commit/856adb4d36cf89310213401a1bfc349de4dbbdc3)
+- [TrueTrace production readiness](https://github.com/Little-Boy-s-TrueTrace/truetrace/commit/dafb9c4dc70bfa801341064d6b320548e09c8f61)
+- [Agent-engine runtime validation](https://github.com/Little-Boy-s-TrueTrace/truetrace-agent-engine/commit/dc672fefab34311134e11fe5972ff76848c4587c)
+- [Compliance API and STR](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/c86fb61f90cd2fb76b8027e5fee33fa846554014)
 
-## Lesson learned
+## Challenge and resolution
 
-A reusable image contains no environment-specific configuration; the same image should run locally, in staging, and in production through runtime variables.
+Authorization and production configuration had to be consistent across many applications. I added ownership checks, dashboard authentication, runtime validation, and secure default configuration.
+
+## Mentor feedback
+
+Not available yet; mentor or organizer feedback will be added later.

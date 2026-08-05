@@ -1,51 +1,21 @@
 ---
-title: "Chạy MySQL và backend"
+title: "Kết quả kiểm thử backend"
 date: 2026-08-05
 weight: 1
 chapter: false
 pre: "<b>5.3.1.</b>"
-description: "Khởi tạo database, chạy backend test và kiểm tra Actuator."
+description: "Bằng chứng backend test từ GitHub Actions run #74."
 ---
 
-# Chạy MySQL và backend
+# Kết quả kiểm thử backend
 
-## 1. Khởi động MySQL thử nghiệm
+Trong [GitHub Actions run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477), job **Backend tests** có kết quả `success`.
 
-```powershell
-docker run --name eduflow-mysql `
-  -e MYSQL_ROOT_PASSWORD=local-eduflow-password `
-  -e MYSQL_DATABASE=eduflow_db `
-  -p 3306:3306 `
-  -d mysql:8.0
-```
+Các bước được GitHub ghi nhận thành công:
 
-Chờ đến khi `docker logs eduflow-mysql` cho biết MySQL sẵn sàng.
+- Khởi tạo MySQL service container.
+- Checkout mã nguồn và thiết lập JDK 17.
+- Chạy backend tests.
+- Dừng service container và hoàn tất job.
 
-## 2. Chạy test backend
-
-```powershell
-Set-Location BE_EduFlow
-$env:SPRING_DATASOURCE_URL='jdbc:mysql://127.0.0.1:3306/eduflow_db?allowPublicKeyRetrieval=true&useSSL=false'
-$env:SPRING_DATASOURCE_USERNAME='root'
-$env:SPRING_DATASOURCE_PASSWORD='local-eduflow-password'
-$env:JWT_SECRET='replace-with-a-random-local-secret-at-least-32-bytes'
-.\mvnw.cmd test
-```
-
-## 3. Chạy backend
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-Trong terminal khác:
-
-```powershell
-Invoke-RestMethod http://localhost:8888/actuator/health
-```
-
-Kết quả mong đợi có `status` bằng `UP`.
-
-{{% notice tip %}}
-Nếu cổng 3306 đã được MySQL khác sử dụng, dùng database hiện có hoặc đổi port Docker và cập nhật URL datasource.
-{{% /notice %}}
+Job chạy từ **06:55:05 đến 06:55:56 UTC ngày 05/08/2026**. Báo cáo không ghi số lượng test hoặc coverage vì chưa có artifact/log tổng hợp tương ứng.

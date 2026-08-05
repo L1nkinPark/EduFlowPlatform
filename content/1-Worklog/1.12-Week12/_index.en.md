@@ -1,27 +1,42 @@
 ---
-title: "Week 12 - CI/CD and production hardening"
+title: "Week 12 (4-17 August 2026) - EduFlow completion and report"
 date: 2026-08-05
 weight: 12
 chapter: false
 pre: "<b>1.12.</b>"
-description: "Automate tests, image delivery, ECS rollout, and production hardening."
+description: "Harden EduFlow, improve CI/CD, and build the Hugo internship report."
 ---
 
-## Objective
+## Date
 
-Create a safe release path and reduce time spent in a broken production state.
+**4 August 2026 - 17 August 2026**. The content below reflects evidence available through **5 August 2026**.
 
-## Work completed
+## Actual work
 
-- Added GitHub Actions jobs for backend tests, frontend tests, and Terraform validation.
-- Built and pushed both images to ECR by commit SHA before updating ECS services.
-- Cancelled stale pipelines, bounded AWS credential retries, and retried transient Docker builds.
-- Hardened sessions, JWT, instructor APIs, uploads, Vietnamese content, and checkout errors.
+- Fixed EduFlow lesson authoring and media uploads.
+- Standardized VND display and Vietnamese content.
+- Fixed ECS container write permissions and retried transient Docker build failures.
+- Built the bilingual Hugo internship report website.
 
-## Outcome
+## Outcomes and evidence
 
-Only the newest revision that passes all gates is deployed. Production configuration incidents became automated checks or documented runtime configuration.
+- Lesson authoring/uploads are more stable and the container has a writable upload directory.
+- CI uses bounded retries for transient Docker build failures.
+- The Hugo report includes personal information, the 12-week worklog, and GitHub evidence.
+- [Lesson authoring and media upload fix](https://github.com/L1nkinPark/EduFlowPlatform/commit/85933c0)
+- [VND and Vietnamese content normalization](https://github.com/L1nkinPark/EduFlowPlatform/commit/aa5893d)
+- [ECS frontend startup permission fix](https://github.com/L1nkinPark/EduFlowPlatform/commit/affa848)
+- [Docker image build retry](https://github.com/L1nkinPark/EduFlowPlatform/commit/d19acf2)
+- [Hugo report website](https://github.com/L1nkinPark/EduFlowPlatform/commit/8587482e88c9fb1cfa42c8b45a59e5a6efb07d87)
 
-## Lesson learned
+## Challenge and resolution
 
-CI/CD is more than a deploy command: it encodes safe ordering, bounded waits, and protection against an older revision overwriting a newer fix.
+The non-root container could not write files and Docker builds sometimes failed transiently. I created a writable upload directory and added bounded CI retries.
+
+## Pending update
+
+The period from **6 August to 17 August 2026** had not occurred when this entry was prepared. It will only be updated with actual work and evidence.
+
+## Mentor feedback
+
+Not available yet; it will be added after mentor feedback is received.

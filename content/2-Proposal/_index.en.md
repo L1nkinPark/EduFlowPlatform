@@ -8,6 +8,10 @@ pre: "<b>2.</b>"
 
 # EduFlow online learning platform proposal
 
+{{% notice info %}}
+This is a proposal and target architecture derived from the source code, not a deployment-results table. Results checked in practice are recorded separately in the Workshop section.
+{{% /notice %}}
+
 ## 1. Executive summary
 
 EduFlow manages the full course lifecycle in one platform: instructor account administration, course authoring, VNPay checkout, lesson delivery, and learning progress. The proposed solution favors an understandable architecture, repeatable Terraform deployment, and an MVP-sized operating model.
@@ -82,6 +86,6 @@ flowchart LR
 | Slow/unavailable backend | Hung requests or generic 500 errors | Connection/read timeouts, ALB health checks, and clear error messages |
 | AWS cost growth | MVP budget overrun | Small dev sizing, low desired counts, and workshop cleanup |
 
-## 9. Success criteria
+## 9. Proposed success criteria
 
-The end-to-end path from course authoring through purchase, learning, and progress uses real data; both Maven suites and Terraform validation pass; and the frontend/backend containers run behind the ALB without committed secrets.
+The proposed criteria are: the authoring-to-purchase-to-learning path uses real data; Maven tests and Terraform validation pass; both containers run behind the ALB; and secrets are not committed to source control. The Workshop section identifies which criteria have evidence instead of assuming that all criteria were met.

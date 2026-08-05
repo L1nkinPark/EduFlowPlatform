@@ -1,27 +1,35 @@
 ---
-title: "Tuần 11 - Hạ tầng AWS bằng Terraform"
-date: 2026-08-05
+title: "Tuần 11 (28/07 - 03/08/2026) - Kiểm thử TrueTrace và EduFlow"
+date: 2026-08-03
 weight: 11
 chapter: false
 pre: "<b>1.11.</b>"
-description: "Mô hình hóa VPC, bảo mật, ALB, ECS, RDS, S3 và Secrets Manager."
+description: "Tăng độ ổn định cho TrueTrace của Qoder và hardening EduFlow."
 ---
 
-## Mục tiêu
+## Thời gian và bối cảnh
 
-Biến sơ đồ triển khai EduFlow thành hạ tầng có thể tạo lại và review bằng mã.
+**28/07/2026 - 03/08/2026** — Tiếp tục TrueTrace cho hackathon Qoder và hardening EduFlow.
 
-## Công việc
+## Công việc thực tế
 
-- Tách module `vpc`, `security-groups`, `alb`, `ecs`, `rds`, `s3`, `secrets-manager`.
-- Đặt frontend/backend Fargate sau ALB và route `/api/*` đến backend.
-- Cô lập RDS trong private data subnets; truyền bí mật vào task definition.
-- Tối giản tài nguyên theo sơ đồ và kích thước môi trường dev để kiểm soát chi phí.
+- Bổ sung unit test cho TrueTrace backend, dashboard, agent rules và luồng end-to-end.
+- Cải thiện xử lý khi AI agent đưa ra quyết định khóa tài khoản.
+- Hardening đăng nhập, OTP, JWT, checkout và tích hợp AWS trên EduFlow.
 
-## Kết quả
+## Kết quả và bằng chứng
 
-Terraform tạo đầy đủ networking, database, registry, cluster và services; outputs cung cấp ALB DNS, RDS endpoint, bucket và ECR URL.
+- TrueTrace có test cho EventPublisher, dashboard Go và rule engine.
+- EduFlow giới hạn số lần thử lấy AWS credentials để tránh chờ vô hạn.
+- [EventPublisher tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/25da6dcfa3c7be618641e3e50b70ef305359bef3)
+- [Dashboard Go tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-dashboard/commit/050e7230e182c41647cdd87dbbc243735f9ad8da)
+- [Agent rules tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-agent-engine/commit/7673758375988cdc7b61cfdae256ae5b7d5494d7)
+- [Giới hạn AWS credential retries trên EduFlow](https://github.com/L1nkinPark/EduFlowPlatform/commit/6853a95657c5edb45884e3a3ba191cd62176add1)
 
-## Bài học
+## Khó khăn và cách xử lý
 
-Module nên bám theo ranh giới vận hành. Dependency rõ giữa RDS, secret và ECS giúp tránh cấu hình vòng hoặc secret cũ.
+Lỗi tạm thời từ AWS, pipeline cũ và quyết định sai của AI làm luồng end-to-end thiếu ổn định. Tôi giới hạn retry, tăng kiểm thử và bổ sung cách xử lý lỗi rõ ràng.
+
+## Nhận xét mentor
+
+Chưa có dữ liệu; sẽ bổ sung khi nhận được phản hồi của mentor hoặc ban tổ chức.

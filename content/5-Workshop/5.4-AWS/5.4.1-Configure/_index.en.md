@@ -1,52 +1,23 @@
 ---
-title: "Configure AWS and Terraform"
+title: "Verified deployment configuration"
 date: 2026-08-05
 weight: 1
 chapter: false
 pre: "<b>5.4.1.</b>"
-description: "Verify the account, pass secrets safely, and validate infrastructure code."
+description: "Non-sensitive values supported by source code and the working URL."
 ---
 
-# Configure AWS and Terraform
+# Verified deployment configuration
 
-## 1. Verify the AWS session
+| Property | Evidence-backed value |
+|---|---|
+| AWS Region | `ap-southeast-1` |
+| Terraform project/environment | `eduflow` / `dev` |
+| Checked public protocol | HTTP |
+| Public endpoint | `eduflow-dev-alb-560717424.ap-southeast-1.elb.amazonaws.com` |
+| Custom domain | No evidence available |
+| ACM certificate/HTTPS | No evidence available |
 
-```powershell
-$taskAwsRegion='ap-southeast-1'
-$env:AWS_REGION=$taskAwsRegion
-$taskAccountId=(aws sts get-caller-identity --query Account --output text)
-aws sts get-caller-identity
-```
+SMTP credentials, VNPay credentials, JWT secrets, and database secrets are excluded. All sample emails, domains, and secret strings from the old template were removed because they are not actual deployment data.
 
-Confirm that the account ID is the intended sandbox before proceeding.
-
-## 2. Supply sensitive values
-
-```powershell
-$env:TF_VAR_smtp_username='otp-sandbox@example.com'
-$env:TF_VAR_smtp_password='<smtp-app-password>'
-$env:TF_VAR_vnpay_tmn_code='<8-character-code>'
-$env:TF_VAR_vnpay_hash_secret='<sandbox-hash-secret-at-least-16-characters>'
-```
-
-Optional HTTPS configuration:
-
-```powershell
-$env:TF_VAR_domain_name='eduflow.example.com'
-$env:TF_VAR_acm_certificate_arn=''
-```
-
-Keep the ARN empty for the HTTP workshop. An ACM certificate must be in the same region as the ALB.
-
-## 3. Initialize and validate
-
-```powershell
-Set-Location terraform
-terraform fmt -check -recursive
-terraform init -input=false
-terraform validate
-```
-
-{{% notice info %}}
-Local state is acceptable for an individual lab. Configure an S3 backend and locking before a shared or production apply.
-{{% /notice %}}
+Terraform validation for the repository configuration succeeded in [run #74](https://github.com/L1nkinPark/EduFlowPlatform/actions/runs/30983018477).
