@@ -1,0 +1,50 @@
+baseURL = "https://l1nkinpark.github.io/EduFlowPlatform/"
+relativeURLs = false
+canonifyURLs = false
+defaultContentLanguage = "vi"
+defaultContentLanguageInSubdir = false
+theme = "hugo-theme-learn"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[params]
+  themeVariant = "workshop"
+  editURL = "https://github.com/L1nkinPark/EduFlowPlatform/edit/main/"
+  description = "Báo cáo dự án và workshop triển khai EduFlow trên AWS"
+  author = "EduFlow Team"
+  showVisitedLinks = true
+  disableBreadcrumb = false
+  disableNextPrev = false
+  disableSearch = false
+
+[Languages]
+  [Languages.vi]
+    title = "EduFlow - Báo cáo dự án"
+    weight = 1
+    languageName = "Tiếng Việt"
+
+    [[Languages.vi.menu.shortcuts]]
+      name = "<i class='fab fa-github'></i> Mã nguồn EduFlow"
+      identifier = "github-vi"
+      url = "https://github.com/L1nkinPark/EduFlowPlatform"
+      weight = 10
+
+  [Languages.en]
+    title = "EduFlow - Project Report"
+    weight = 2
+    languageName = "English"
+
+    [[Languages.en.menu.shortcuts]]
+      name = "<i class='fab fa-github'></i> EduFlow source code"
+      identifier = "github-en"
+      url = "https://github.com/L1nkinPark/EduFlowPlatform"
+      weight = 10
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+  [markup.highlight]
+    noClasses = false

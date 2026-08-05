@@ -1,0 +1,50 @@
+name: Deploy EduFlow report to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "archetypes/**"
+      - "content/**"
+      - "layouts/**"
+      - "static/**"
+      - "themes/**"
+      - "config.toml"
+      - ".github/workflows/hugo.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eduflow-hugo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.134.3"
+          extended: true
+
+      - name: Build website
+        run: hugo --minify --gc
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
