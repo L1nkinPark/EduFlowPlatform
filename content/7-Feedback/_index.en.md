@@ -1,9 +1,9 @@
 ---
-title: "Internship summary"
+title: "Sharing and Feedback"
 date: 2026-08-05
 weight: 7
 chapter: false
-pre: "<b>7.</b>"
+pre: " <b> 7. </b> "
 ---
 
 # Internship summary

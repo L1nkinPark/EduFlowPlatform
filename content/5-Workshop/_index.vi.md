@@ -1,9 +1,9 @@
 ---
-title: "Workshop triển khai EduFlow"
+title: "Workshop"
 date: 2026-08-05
 weight: 5
 chapter: false
-pre: "<b>5.</b>"
+pre: " <b> 5. </b> "
 ---
 
 # Workshop triển khai EduFlow trên AWS

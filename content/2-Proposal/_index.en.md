@@ -3,7 +3,7 @@ title: "Proposal"
 date: 2026-08-06
 weight: 2
 chapter: false
-pre: "<b>2.</b>"
+pre: " <b> 2. </b> "
 ---
 
 # EduFlow Online Learning Platform

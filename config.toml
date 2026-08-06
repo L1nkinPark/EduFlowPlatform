@@ -25,10 +25,16 @@ home = ["HTML", "RSS", "JSON"]
     languageName = "Tiếng Việt"
 
     [[Languages.vi.menu.shortcuts]]
-      name = "<i class='fab fa-github'></i> Mã nguồn EduFlow"
-      identifier = "github-vi"
-      url = "https://github.com/L1nkinPark/EduFlowPlatform"
-      weight = 10
+      name = "<i class='fab fa-aws'></i> AWS Study Group - Blog"
+      identifier = "aws-study-group-vi"
+      url = "https://awsstudygroup.com"
+      weight = 20
+
+    [[Languages.vi.menu.shortcuts]]
+      name = "<i class='fab fa-facebook'></i> AWS Study Group - Nhóm FB"
+      identifier = "aws-study-group-facebook-vi"
+      url = "https://www.facebook.com/groups/awsstudygroupfcj"
+      weight = 20
 
   [Languages.en]
     title = "EduFlow - Võ Đức Hiếu Internship Report"
@@ -36,10 +42,16 @@ home = ["HTML", "RSS", "JSON"]
     languageName = "English"
 
     [[Languages.en.menu.shortcuts]]
-      name = "<i class='fab fa-github'></i> EduFlow source code"
-      identifier = "github-en"
-      url = "https://github.com/L1nkinPark/EduFlowPlatform"
-      weight = 10
+      name = "<i class='fab fa-aws'></i> AWS Study Group - Blog"
+      identifier = "aws-study-group-en"
+      url = "https://awsstudygroup.com"
+      weight = 20
+
+    [[Languages.en.menu.shortcuts]]
+      name = "<i class='fab fa-facebook'></i> AWS Study Group - FB Group"
+      identifier = "aws-study-group-facebook-en"
+      url = "https://www.facebook.com/groups/awsstudygroupfcj"
+      weight = 20
 
 [markup]
   [markup.goldmark]

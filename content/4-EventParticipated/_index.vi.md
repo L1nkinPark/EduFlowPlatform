@@ -1,9 +1,9 @@
 ---
-title: "Hackathon đã tham gia"
+title: "Các events đã tham gia"
 date: 2026-08-05
 weight: 4
 chapter: false
-pre: "<b>4.</b>"
+pre: " <b> 4. </b> "
 ---
 
 # Hackathon đã tham gia

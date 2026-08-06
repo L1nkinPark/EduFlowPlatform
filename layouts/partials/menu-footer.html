@@ -1,5 +1,10 @@
-<div class="eduflow-menu-footer">
-  <strong>EduFlow Platform</strong>
-  <span>{{ if eq .Site.Language.Lang "vi" }}Cập nhật ngày{{ else }}Updated on{{ end }} {{ now.Format "02-01-2006" }}</span>
-  <a href="https://github.com/L1nkinPark/EduFlowPlatform">GitHub repository</a>
+<div class="workshop-menu-footer">
+  <div>
+    <strong>{{ if eq .Site.Language.Lang "vi" }}Cập nhật lần cuối{{ else }}Last updated{{ end }}</strong><br>
+    <em>{{ now.Format "02-01-2006" }}</em>
+  </div>
+  <div>
+    <strong>{{ if eq .Site.Language.Lang "vi" }}Đơn vị{{ else }}Team{{ end }}</strong><br>
+    <a href="https://www.facebook.com/groups/660548818043427">First Cloud AI Journey</a>
+  </div>
 </div>

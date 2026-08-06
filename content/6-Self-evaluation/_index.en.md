@@ -1,9 +1,9 @@
 ---
-title: "Results and competencies achieved"
+title: "Self-Assessment"
 date: 2026-08-05
 weight: 6
 chapter: false
-pre: "<b>6.</b>"
+pre: " <b> 6. </b> "
 ---
 
 # Results and competencies achieved

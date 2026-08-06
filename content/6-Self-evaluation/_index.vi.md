@@ -1,9 +1,9 @@
 ---
-title: "Kết quả và năng lực đạt được"
+title: "Tự đánh giá"
 date: 2026-08-05
 weight: 6
 chapter: false
-pre: "<b>6.</b>"
+pre: " <b> 6. </b> "
 ---
 
 # Kết quả và năng lực đạt được

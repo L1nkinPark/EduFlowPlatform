@@ -1,9 +1,9 @@
 ---
-title: "Technical Articles"
+title: "Blogs Posted"
 date: 2026-08-05
 weight: 3
 chapter: false
-pre: "<b>3.</b>"
+pre: " <b> 3. </b> "
 ---
 
 # Technical articles

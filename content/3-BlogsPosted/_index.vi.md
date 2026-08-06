@@ -1,9 +1,9 @@
 ---
-title: "Bài viết kỹ thuật"
+title: "Các bài blogs đã đăng"
 date: 2026-08-05
 weight: 3
 chapter: false
-pre: "<b>3.</b>"
+pre: " <b> 3. </b> "
 ---
 
 # Bài viết kỹ thuật

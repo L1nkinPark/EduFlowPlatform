@@ -1,9 +1,9 @@
 ---
-title: "Tổng kết kỳ thực tập"
+title: "Chia sẻ, đóng góp ý kiến"
 date: 2026-08-05
 weight: 7
 chapter: false
-pre: "<b>7.</b>"
+pre: " <b> 7. </b> "
 ---
 
 # Tổng kết kỳ thực tập
