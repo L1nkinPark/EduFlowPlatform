@@ -6,17 +6,8 @@ chapter: false
 pre: " <b> 1. </b> "
 ---
 
-# Nhật ký công việc
+**Trong trang này** bạn sẽ cần giới thiệu worklog của bạn **như thế nào**? Bạn hoàn thành chương trình trong vòng **bao nhiêu tuần**? Bạn **đã làm gì** trong các tuần đó?
 
-Nhật ký ghi lại 12 tuần từ **19/05/2026 đến 17/08/2026**, dựa trên công việc thực tế và lịch sử commit công khai của tài khoản [L1nkinPark](https://github.com/L1nkinPark). Mỗi tuần trình bày công việc, kết quả, liên kết kỹ thuật, khó khăn và cách xử lý.
-
-Ngoài EduFlow và nội dung AWS/DevOps, nhật ký có các dự án hackathon mà người thực hiện đã tham gia:
-
-- **KET-Vault:** cuộc thi trên DoraHacks.
-- **Tardis và Aegis:** hackathon AABW.
-- **TrueTrace:** hackathon của Qoder.
-- **SecHub:** hackathon của OpenAI.
-
-Khoảng thực tập dài hơn đúng 12 tuần lịch, vì vậy Tuần 12 được gộp từ **04/08 đến 17/08**.
+Thông thường và cũng là tiêu chuẩn, một worklog được thực hiện trong khoảng 3 tháng (trong suốt thời gian thực tập) với nội dung các tuần như sau:
 
 {{% children description="true" /%}}

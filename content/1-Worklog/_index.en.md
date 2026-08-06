@@ -6,8 +6,6 @@ chapter: false
 pre: " <b> 1. </b> "
 ---
 
-# Worklog
-
 This worklog covers 12 weeks from **19 May 2026 to 17 August 2026**, based on actual work and the public commit history of [L1nkinPark](https://github.com/L1nkinPark). Each week presents the work, results, technical links, challenges, and resolutions.
 
 In addition to EduFlow and AWS/DevOps learning, the worklog includes these hackathon projects:
