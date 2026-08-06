@@ -74,22 +74,12 @@ graph LR
 
 #### Kiến trúc triển khai
 
-{{< mermaid >}}
-graph LR
-    DEV[Nhánh main trên GitHub] --> GHA[GitHub Actions]
-    GHA --> TEST[Backend và frontend tests]
-    GHA --> TF[Terraform validation]
-    TEST --> BUILD[Docker build]
-    TF --> BUILD
-    BUILD --> ECR[Amazon ECR]
-    ECR --> ECSFE[Frontend ECS service]
-    ECR --> ECSBE[Backend ECS service]
-    ALB[Application Load Balancer] --> ECSFE
-    ALB --> ECSBE
-    SM[Secrets Manager] --> ECSFE
-    SM --> ECSBE
-    ECSBE --> RDS[RDS MySQL]
-{{< /mermaid >}}
+{{< figure
+    src="../images/eduflow-deployment-architecture.png"
+    alt="Kiến trúc triển khai EduFlow trên AWS"
+    title="Kiến trúc triển khai EduFlow trên AWS"
+    class="architecture-diagram"
+>}}
 
 ### 4. Triển khai kỹ thuật
 

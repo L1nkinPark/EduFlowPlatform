@@ -74,22 +74,12 @@ graph LR
 
 #### Deployment Architecture
 
-{{< mermaid >}}
-graph LR
-    DEV[GitHub main branch] --> GHA[GitHub Actions]
-    GHA --> TEST[Backend and frontend tests]
-    GHA --> TF[Terraform validation]
-    TEST --> BUILD[Docker build]
-    TF --> BUILD
-    BUILD --> ECR[Amazon ECR]
-    ECR --> ECSFE[Frontend ECS service]
-    ECR --> ECSBE[Backend ECS service]
-    ALB[Application Load Balancer] --> ECSFE
-    ALB --> ECSBE
-    SM[Secrets Manager] --> ECSFE
-    SM --> ECSBE
-    ECSBE --> RDS[RDS MySQL]
-{{< /mermaid >}}
+{{< figure
+    src="../../images/eduflow-deployment-architecture.png"
+    alt="EduFlow deployment architecture on AWS"
+    title="EduFlow deployment architecture on AWS"
+    class="architecture-diagram"
+>}}
 
 ### 4. Technical Implementation
 

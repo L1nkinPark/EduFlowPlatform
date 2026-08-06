@@ -179,6 +179,27 @@ blockquote {
   overflow-x: auto;
 }
 
+.architecture-diagram {
+  margin: 1.5rem auto 2rem;
+  text-align: center;
+}
+
+.architecture-diagram img {
+  background: #fff;
+  border: 1px solid #d7dee7;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(40, 62, 91, 0.12);
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.architecture-diagram figcaption {
+  color: var(--eduflow-muted);
+  font-size: 0.9rem;
+  margin-top: 0.6rem;
+}
+
 .gh-contributors {
   display: grid;
   gap: 0.6rem;
