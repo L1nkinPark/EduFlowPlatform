@@ -1,29 +1,26 @@
 ---
-title: "SecHub và TrueTrace"
-date: 2026-08-03
+title: "Sự kiện 2"
+date: 2024-01-01
 weight: 2
 chapter: false
-pre: "<b>4.2.</b>"
-description: "Đóng góp kỹ thuật tại hackathon OpenAI và Qoder."
+pre: " <b> 4.2. </b> "
 ---
 
-# SecHub — hackathon OpenAI
+### Tên sự kiện: FCAJ Community Day
 
-SecHub được phát triển cho một hackathon của OpenAI trong giai đoạn 14–20/07/2026.
+**Thời gian:** 09:00 ngày 27/06/2026
 
-**Đóng góp kỹ thuật:**
+**Địa điểm:** Tầng 26, tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh
 
-- [Repository SecHub](https://github.com/Little-Boy-s-SecHub/SecHub)
-- [Hoàn thiện i18n Việt/Anh](https://github.com/Little-Boy-s-SecHub/SecHub/commit/180b1f438edccfde0cf92c686ded3f809a07c06d)
+**Vai trò:** Người tham dự
 
-# TrueTrace — hackathon Qoder
+**Nội dung chính:** Ứng dụng thực tiễn của trí tuệ nhân tạo (AI) trong hạ tầng đám mây thông qua các anh chị đến từ nhiều doanh nghiệp khác nhau.
 
-TrueTrace được phát triển cho hackathon của Qoder từ 21/07 đến 03/08/2026, bao gồm backend, dashboard, agent engine và deployment.
+**Hình ảnh/video chứng minh tham gia:**
 
-**Đóng góp kỹ thuật:**
+{{< event-image src="images/4-EventParticipated/event2-1.jpg" alt="Ảnh sự kiện 1" >}}
+{{< event-image src="images/4-EventParticipated/event2-2.jpg" alt="Ảnh sự kiện 2" >}}
+{{< event-image src="images/4-EventParticipated/event2-3.jpg" alt="Ảnh sự kiện 3" >}}
 
-- [Repository TrueTrace](https://github.com/Little-Boy-s-TrueTrace/truetrace)
-- [Production readiness](https://github.com/Little-Boy-s-TrueTrace/truetrace/commit/dafb9c4dc70bfa801341064d6b320548e09c8f61)
-- [Runtime validation cho agent engine](https://github.com/Little-Boy-s-TrueTrace/truetrace-agent-engine/commit/dc672fefab34311134e11fe5972ff76848c4587c)
-- [Compliance API và STR](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/c86fb61f90cd2fb76b8027e5fee33fa846554014)
-- [Backend EventPublisher tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/25da6dcfa3c7be618641e3e50b70ef305359bef3)
+**Bài học rút ra / đóng góp cá nhân:**
+Biết thêm về hạ tầng đám mây vào ứng dụng thực tiễn.

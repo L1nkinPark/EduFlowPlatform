@@ -1,29 +1,26 @@
 ---
-title: "SecHub and TrueTrace"
-date: 2026-08-03
+title: "Event 2"
+date: 2024-01-01
 weight: 2
 chapter: false
-pre: "<b>4.2.</b>"
-description: "Technical contributions to the OpenAI and Qoder hackathons."
+pre: " <b> 4.2. </b> "
 ---
 
-# SecHub — OpenAI hackathon
+### Event Name: FCAJ Community Day
 
-SecHub was developed for an OpenAI hackathon from 14 to 20 July 2026.
+**Time:** 09:00, 27/06/2026
 
-**Technical contributions:**
+**Location:** 26th Floor, Bitexco Financial Tower, 02 Hai Trieu Street, Sai Gon Ward, Ho Chi Minh City
 
-- [SecHub repository](https://github.com/Little-Boy-s-SecHub/SecHub)
-- [Vietnamese/English internationalization](https://github.com/Little-Boy-s-SecHub/SecHub/commit/180b1f438edccfde0cf92c686ded3f809a07c06d)
+**Role:** Attendee
 
-# TrueTrace — Qoder hackathon
+**Main Content:** Practical applications of Artificial Intelligence (AI) in cloud infrastructure, shared by speakers from various companies.
 
-TrueTrace was developed for a Qoder hackathon from 21 July to 3 August 2026, covering the backend, dashboard, agent engine, and deployment repositories.
+**Proof of participation:**
 
-**Technical contributions:**
+{{< event-image src="images/4-EventParticipated/event2-1.jpg" alt="Event photo 1" >}}
+{{< event-image src="images/4-EventParticipated/event2-2.jpg" alt="Event photo 2" >}}
+{{< event-image src="images/4-EventParticipated/event2-3.jpg" alt="Event photo 3" >}}
 
-- [TrueTrace repository](https://github.com/Little-Boy-s-TrueTrace/truetrace)
-- [Production readiness](https://github.com/Little-Boy-s-TrueTrace/truetrace/commit/dafb9c4dc70bfa801341064d6b320548e09c8f61)
-- [Agent-engine runtime validation](https://github.com/Little-Boy-s-TrueTrace/truetrace-agent-engine/commit/dc672fefab34311134e11fe5972ff76848c4587c)
-- [Compliance API and STR](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/c86fb61f90cd2fb76b8027e5fee33fa846554014)
-- [Backend EventPublisher tests](https://github.com/Little-Boy-s-TrueTrace/truetrace-backend/commit/25da6dcfa3c7be618641e3e50b70ef305359bef3)
+**Lessons learned / personal contribution:**
+Gained a better understanding of how cloud infrastructure is applied in real-world use cases.

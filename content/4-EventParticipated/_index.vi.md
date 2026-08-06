@@ -1,25 +1,36 @@
 ---
 title: "Các events đã tham gia"
-date: 2026-08-05
+date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 4. </b> "
 ---
 
-# Hackathon đã tham gia
+Trong quá trình thực tập, em đã tham gia các sự kiện sau, mỗi sự kiện là một trải nghiệm đáng nhớ với những kiến thức mới và bổ ích.
 
-Trong kỳ thực tập, tôi tham gia các cuộc thi tập trung vào điện toán đám mây, trí tuệ nhân tạo, an toàn thông tin và truy xuất dữ liệu.
+### [Event 1](4.1-Event1/)
+&emsp;**Tên sự kiện:** FCAJ Community Day
 
-- **KET-Vault:** cuộc thi trên DoraHacks.
-- **Tardis và Aegis:** hackathon AABW.
-- **SecHub:** hackathon của OpenAI.
-- **TrueTrace:** hackathon của Qoder.
+&emsp;**Thời gian:** 09:00 ngày 30/05/2026
 
-Kết quả nổi bật:
+&emsp;**Địa điểm:** Tầng 26, tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh
 
-- **Little Boy's Aegis** thắng hạng mục **Financial Services I — Shinhan
-  Future's Lab Vietnam** tại AABW.
-- **Little Boy's Tardis** nằm trong danh sách 17 dự án được chọn vào vòng bình
-  chọn của Builder Experience Track trước AABW.
+&emsp;**Vai trò trong sự kiện:** Người tham dự
 
-{{% children description="true" /%}}
+### [Event 2](4.2-Event2/)
+&emsp;**Tên sự kiện:** FCAJ Community Day
+
+&emsp;**Thời gian:** 09:00 ngày 27/06/2026
+
+&emsp;**Địa điểm:** Tầng 26, tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh
+
+&emsp;**Vai trò trong sự kiện:** Người tham dự
+
+### [Event 3](4.3-Event3/)
+&emsp;**Tên sự kiện:** AI Agentic Build Week
+
+&emsp;**Thời gian:** 09:00 ngày 25/07/2026
+
+&emsp;**Địa điểm:** Tầng 26, tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh
+
+&emsp;**Vai trò trong sự kiện:** Người tham dự

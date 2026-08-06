@@ -1,42 +1,26 @@
 ---
-title: "KET-Vault, Tardis, and Aegis"
-date: 2026-07-13
+title: "Event 1"
+date: 2024-01-01
 weight: 1
 chapter: false
-pre: "<b>4.1.</b>"
-description: "Technical contributions to DoraHacks and the AABW hackathon."
+pre: " <b> 4.1. </b> "
 ---
 
-# KET-Vault — DoraHacks
+### Event Name: FCAJ Community Day
 
-KET-Vault was developed for a DoraHacks competition. The project covered full-stack development, smart contracts, multi-agent AI, Docker/CI, and deployment from 9 to 15 June 2026.
+**Time:** 09:00, 30/05/2026
 
-**Technical contributions:**
+**Location:** 26th Floor, Bitexco Financial Tower, 02 Hai Trieu Street, Sai Gon Ward, Ho Chi Minh City
 
-- [KET-Vault repository](https://github.com/Littile-Boy-s-KET/KET-Vault)
-- [Docker Compose and GitHub Actions](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/086eb767025fa9641e9b968162436a7e802fd175)
-- [Proposal transaction revert fix](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/f3a83567f20122f01e3c0f3f1a567f09b8fd5770)
-- [Risk Auditor synthesis](https://github.com/Littile-Boy-s-KET/KET-Vault/commit/b4987d6e8d6dc7016f4aeb04d39b3d538940557d)
+**Role:** Attendee
 
-# Tardis and Aegis — AABW
+**Main Content:** A wide range of topics were shared, including CloudQuest, Fly.io, Hackathon experiences, and an AI-powered horoscope app ("Tử vi Đại Việt").
 
-Tardis and Aegis were developed for AABW. Tardis work took place from 16–22 June, followed by Aegis ecosystem development from 30 June to 13 July 2026.
+**Proof of participation:**
 
-**Technical contributions:**
+{{< event-image src="images/4-EventParticipated/event1-1.jpg" alt="Event photo 1" >}}
+{{< event-image src="images/4-EventParticipated/event1-2.jpg" alt="Event photo 2" >}}
+{{< event-image src="images/4-EventParticipated/event1-3.jpg" alt="Event photo 3" >}}
 
-- [Tardis repository](https://github.com/Little-Boy-s-Tardis/Tardis)
-- [Tardis webhook test scenarios](https://github.com/Little-Boy-s-Tardis/Tardis/commit/c66e8cd6e3696a3580bd606d5ddca9ac9c5d9c80)
-- [Aegis deployment repository](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment)
-- [Kafka and threat mapping](https://github.com/Little-Boy-s-Aegis/dashboard/commit/645bdc95651fae87f9a9b2ad43e41145c938733a)
-- [SOAR OPA authentication](https://github.com/Little-Boy-s-Aegis/aegis-soar-engine/commit/76e7dcd72728cc8dd6005e197a68c5c835710f9b)
-- [IP banning and gateway validation](https://github.com/Little-Boy-s-Aegis/aegis-bank-deployment/commit/6718ef5c63fd5f1481e787bf634044b47225480d)
-
-**AABW results:**
-
-- The [official AABW results page](https://aabw.genaifund.ai/) lists **Little
-  Boy's Aegis** as the winner of **Financial Services I — Shinhan Future's Lab
-  Vietnam**.
-- The [GenAI Fund organizer recap](https://www.linkedin.com/posts/genai-fund_aabw2026-aabwxgaf-activity-7482359686189445120-FEhQ)
-  also names Aegis as that track winner.
-- The [GenAI Fund Builder Experience announcement](https://www.linkedin.com/posts/genai-fund_deadlinetrackeraabw-autointroaabw-tardisaabw-activity-7475074317769256960-a9qG)
-  includes **Little Boy's Tardis** among the 17 shortlisted voting projects.
+**Lessons learned / personal contribution:**
+Gained a better understanding of cloud infrastructure and how AI can be applied in real-world products.
