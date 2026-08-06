@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface OrderService {
     Order createOrder(Account user, String courseId);
+    Order createOrder(Account user, String courseId, long paidAmountVnd);
     List<Course> getPurchasedCourses(Account user);
     boolean hasPurchasedCourse(Account user, String courseId);
     List<Order> getOrdersByUser(Account user);

@@ -49,3 +49,15 @@ variable "smtp_password" {
   type        = string
   default     = ""
 }
+
+variable "vnpay_tmn_code" {
+  description = "VNPay sandbox merchant terminal code"
+  type        = string
+  sensitive   = true
+}
+
+variable "vnpay_hash_secret" {
+  description = "VNPay sandbox HMAC secret"
+  type        = string
+  sensitive   = true
+}

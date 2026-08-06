@@ -48,15 +48,17 @@ module "security_groups" {
 module "secrets_manager" {
   source = "./modules/secrets-manager"
 
-  name_prefix   = local.name_prefix
-  environment   = var.environment
-  db_host       = module.rds.db_instance_address
-  db_port       = 3306
-  db_username   = "admin"
-  db_name       = var.rds_db_name
-  smtp_username = var.smtp_username
-  smtp_password = var.smtp_password
-  tags          = local.common_tags
+  name_prefix       = local.name_prefix
+  environment       = var.environment
+  db_host           = module.rds.db_instance_address
+  db_port           = 3306
+  db_username       = "admin"
+  db_name           = var.rds_db_name
+  smtp_username     = var.smtp_username
+  smtp_password     = var.smtp_password
+  vnpay_tmn_code    = var.vnpay_tmn_code
+  vnpay_hash_secret = var.vnpay_hash_secret
+  tags              = local.common_tags
 }
 
 # ==============================================================================
@@ -114,22 +116,24 @@ module "alb" {
 module "ecs" {
   source = "./modules/ecs"
 
-  name_prefix          = local.name_prefix
-  vpc_id               = module.vpc.vpc_id
-  public_subnet_ids    = module.vpc.public_subnet_ids
-  fe_security_group_id = module.security_groups.fe_security_group_id
-  be_security_group_id = module.security_groups.be_security_group_id
-  fe_target_group_arn  = module.alb.fe_target_group_arn
-  be_target_group_arn  = module.alb.be_target_group_arn
-  db_host              = module.rds.db_instance_address
-  db_name              = var.rds_db_name
-  db_username          = "admin"
-  db_password_arn      = module.secrets_manager.db_secret_arn
-  db_secret_version_id = module.secrets_manager.db_secret_version_id
-  fe_image             = var.fe_image
-  be_image             = var.be_image
-  fe_desired_count     = var.fe_desired_count
-  be_desired_count     = var.be_desired_count
-  backend_url          = "http://${module.alb.alb_dns_name}"
-  tags                 = local.common_tags
+  name_prefix           = local.name_prefix
+  vpc_id                = module.vpc.vpc_id
+  public_subnet_ids     = module.vpc.public_subnet_ids
+  fe_security_group_id  = module.security_groups.fe_security_group_id
+  be_security_group_id  = module.security_groups.be_security_group_id
+  fe_target_group_arn   = module.alb.fe_target_group_arn
+  be_target_group_arn   = module.alb.be_target_group_arn
+  db_host               = module.rds.db_instance_address
+  db_name               = var.rds_db_name
+  db_username           = "admin"
+  db_password_arn       = module.secrets_manager.db_secret_arn
+  db_secret_version_id  = module.secrets_manager.db_secret_version_id
+  fe_image              = var.fe_image
+  be_image              = var.be_image
+  fe_desired_count      = var.fe_desired_count
+  be_desired_count      = var.be_desired_count
+  backend_url           = "http://${module.alb.alb_dns_name}"
+  payment_return_origin = "${var.acm_certificate_arn != "" ? "https" : "http"}://${module.alb.alb_dns_name}"
+  vnpay_url             = var.vnpay_url
+  tags                  = local.common_tags
 }

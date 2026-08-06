@@ -184,3 +184,35 @@ variable "smtp_password" {
   type        = string
   sensitive   = true
 }
+
+# ==============================================================================
+# VNPay Sandbox
+# ==============================================================================
+
+variable "vnpay_tmn_code" {
+  description = "VNPay sandbox merchant terminal code"
+  type        = string
+  sensitive   = true
+
+  validation {
+    condition     = length(var.vnpay_tmn_code) == 8
+    error_message = "vnpay_tmn_code must contain the 8-character VNPay terminal code."
+  }
+}
+
+variable "vnpay_hash_secret" {
+  description = "VNPay sandbox HMAC secret"
+  type        = string
+  sensitive   = true
+
+  validation {
+    condition     = length(var.vnpay_hash_secret) >= 16
+    error_message = "vnpay_hash_secret must contain the VNPay sandbox hash secret."
+  }
+}
+
+variable "vnpay_url" {
+  description = "VNPay payment gateway URL"
+  type        = string
+  default     = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+}

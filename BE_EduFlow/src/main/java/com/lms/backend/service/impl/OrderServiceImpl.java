@@ -29,22 +29,37 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Account user, String courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
+        return createOrder(user, course, Math.round(course.getPrice()));
+    }
+
+    @Override
+    public Order createOrder(Account user, String courseId, long paidAmountVnd) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
+        return createOrder(user, course, paidAmountVnd);
+    }
+
+    private Order createOrder(Account user, Course course, long paidAmountVnd) {
+        String courseId = course.getCourseId();
         if (hasPurchasedCourse(user, courseId)) {
             throw new ConflictException("Course has already been purchased");
         }
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
+        if (paidAmountVnd <= 0) {
+            throw new IllegalArgumentException("Paid amount must be positive");
+        }
 
         Order order = new Order();
         order.setUser(user);
         order.setOrderDate(new Date());
-        order.setTotalAmount(course.getPrice());
+        order.setTotalAmount(paidAmountVnd);
 
         OrderItem item = new OrderItem();
         item.setOrder(order);
         item.setCourse(course);
         item.setQuantity(1);
-        item.setPrice(course.getPrice());
+        item.setPrice(paidAmountVnd);
 
         List<OrderItem> items = new ArrayList<>();
         items.add(item);

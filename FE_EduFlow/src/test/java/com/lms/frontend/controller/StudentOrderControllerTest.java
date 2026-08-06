@@ -53,4 +53,17 @@ class StudentOrderControllerTest {
 
         assertEquals("redirect:/course/detail?courseId=course-1&error=checkout_failed", result);
     }
+
+    @Test
+    void checkoutUsesConfiguredPublicOriginForTheVnPayReturnUrl() {
+        ReflectionTestUtils.setField(controller, "configuredReturnOrigin", "https://learn.example.test/");
+        ApiResponse<String> response = new ApiResponse<>();
+        response.ok("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?token=test");
+        when(orderService.getVnPayUrl(
+                "course-1", "https://learn.example.test", null)).thenReturn(response);
+
+        String result = controller.checkoutCourse("course-1", null, session, request);
+
+        assertEquals("redirect:https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?token=test", result);
+    }
 }

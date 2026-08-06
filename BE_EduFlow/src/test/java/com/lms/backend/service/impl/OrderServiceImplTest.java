@@ -75,6 +75,18 @@ public class OrderServiceImplTest {
     }
 
     @Test
+    void createOrderStoresTheExactDiscountedAmountPaidAtVnPay() {
+        when(courseRepository.findById("course123")).thenReturn(Optional.of(course));
+        when(orderRepository.save(any(Order.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Order result = orderService.createOrder(user, "course123", 89L);
+
+        assertEquals(89.0, result.getTotalAmount());
+        assertEquals(89.0, result.getOrderItems().get(0).getPrice());
+    }
+
+    @Test
     void testCreateOrder_CourseNotFound() {
         when(courseRepository.findById("invalid")).thenReturn(Optional.empty());
 

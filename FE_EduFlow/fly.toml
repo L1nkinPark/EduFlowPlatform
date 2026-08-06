@@ -10,6 +10,7 @@ primary_region = 'sin'
 
 [env]
   BACKEND_URL = 'https://eduflow-be-dev.fly.dev'
+  PAYMENT_RETURN_ORIGIN = 'https://eduflow-fe-dev.fly.dev'
   SERVER_PORT = '8080'
   SPRING_PROFILES_ACTIVE = 'flyio'
   TZ = 'Asia/Ho_Chi_Minh'

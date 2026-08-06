@@ -88,6 +88,16 @@ variable "backend_url" {
   default     = ""
 }
 
+variable "payment_return_origin" {
+  description = "Public frontend origin used by the VNPay return URL"
+  type        = string
+}
+
+variable "vnpay_url" {
+  description = "VNPay payment gateway URL"
+  type        = string
+}
+
 variable "tags" {
   description = "Common tags for all resources"
   type        = map(string)

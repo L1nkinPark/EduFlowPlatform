@@ -26,13 +26,15 @@ resource "aws_secretsmanager_secret" "db" {
 resource "aws_secretsmanager_secret_version" "db" {
   secret_id = aws_secretsmanager_secret.db.id
   secret_string = jsonencode({
-    host          = var.db_host
-    port          = tostring(var.db_port)
-    username      = var.db_username
-    password      = random_password.db_password.result
-    dbname        = var.db_name
-    engine        = "mysql"
-    smtp_username = var.smtp_username
-    smtp_password = var.smtp_password
+    host              = var.db_host
+    port              = tostring(var.db_port)
+    username          = var.db_username
+    password          = random_password.db_password.result
+    dbname            = var.db_name
+    engine            = "mysql"
+    smtp_username     = var.smtp_username
+    smtp_password     = var.smtp_password
+    vnpay_tmn_code    = var.vnpay_tmn_code
+    vnpay_hash_secret = var.vnpay_hash_secret
   })
 }

@@ -12,6 +12,7 @@ import com.lms.backend.repository.AccountRepository;
 import com.lms.backend.security.CustomUserDetails;
 import com.lms.backend.service.OrderService;
 import com.lms.backend.service.PromoCodeService;
+import com.lms.backend.util.VnPayAmountUtil;
 import com.lms.backend.util.VnPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/api/orders")
 public class OrderController {
 
+    private static final int PAYMENT_EXPIRY_MINUTES = 15;
+    private static final TimeZone VNPAY_TIME_ZONE = TimeZone.getTimeZone("GMT+7");
     private static final Map<String, PendingPayment> pendingPayments = new ConcurrentHashMap<>();
 
     public static class PendingPayment {
@@ -37,13 +40,16 @@ public class OrderController {
         public long accountId;
         public String promoCode;
         public long expectedAmount;
+        public long payableAmountVnd;
         public long timestamp;
 
-        public PendingPayment(String courseId, long accountId, String promoCode, long expectedAmount) {
+        public PendingPayment(String courseId, long accountId, String promoCode,
+                              long expectedAmount, long payableAmountVnd) {
             this.courseId = courseId;
             this.accountId = accountId;
             this.promoCode = promoCode;
             this.expectedAmount = expectedAmount;
+            this.payableAmountVnd = payableAmountVnd;
             this.timestamp = System.currentTimeMillis();
         }
     }
@@ -74,8 +80,9 @@ public class OrderController {
             Course course = courseRepository.findById(courseId)
                     .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + courseId));
 
-            double originalAmount = course.getPrice();
-            double finalAmount = promoCodeService.calculateDiscountedAmount(promoCode, originalAmount);
+            long originalAmount = VnPayAmountUtil.toVnd(course.getPrice());
+            long finalAmount = VnPayAmountUtil.toVnd(
+                    promoCodeService.calculateDiscountedAmount(promoCode, course.getPrice()));
 
             Map<String, Object> data = new HashMap<>();
             data.put("originalAmount", originalAmount);
@@ -120,20 +127,23 @@ public class OrderController {
             if (promoCode != null && !promoCode.isBlank()) {
                 amount = promoCodeService.calculateDiscountedAmount(promoCode, amount);
             }
-            // VNPay yêu cầu số tiền phải >= 5,000 VND theo quy định sandbox.
-            if (amount < 5000) {
-                amount = 5000;
-            }
-            // VNPay expects the amount multiplied by 100 (smallest currency unit).
-            long vnpAmount = Math.round(amount * 100);
+            // Normalize the VND price once, then send exactly that displayed
+            // amount multiplied by 100 as required by VNPay. Never silently
+            // increase a low course price because that would make the sandbox
+            // total differ from the price accepted by the student.
+            long payableAmountVnd = VnPayAmountUtil.toVnd(amount);
+            long vnpAmount = VnPayAmountUtil.toGatewayAmount(payableAmountVnd);
 
             // Clean up old pending payments
             long now = System.currentTimeMillis();
             pendingPayments.entrySet().removeIf(entry -> (now - entry.getValue().timestamp) > 1800000); // 30 mins
 
-            String txnRef = "EP" + System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
+            // VNPay requires an alphanumeric transaction reference. A UUID
+            // without separators is unique and stays within the 100-char limit.
+            String txnRef = "EP" + UUID.randomUUID().toString().replace("-", "");
             pendingPayments.put(txnRef,
-                    new PendingPayment(courseId, account.getAccountId(), promoCode, vnpAmount));
+                    new PendingPayment(courseId, account.getAccountId(), promoCode,
+                            vnpAmount, payableAmountVnd));
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", "2.1.0");
@@ -142,16 +152,18 @@ public class OrderController {
             vnp_Params.put("vnp_Amount", String.valueOf(vnpAmount));
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", txnRef);
-            vnp_Params.put("vnp_OrderInfo", "Thanh toan khoa hoc EduFlow");
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan khoa hoc EduFlow " + txnRef);
             vnp_Params.put("vnp_OrderType", "other");
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", redirectOrigin + "/course/vnpay-callback");
             vnp_Params.put("vnp_IpAddr", "127.0.0.1");
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-            formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-            String vnp_CreateDate = formatter.format(new Date());
-            vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+            formatter.setTimeZone(VNPAY_TIME_ZONE);
+            Calendar calendar = Calendar.getInstance(VNPAY_TIME_ZONE);
+            vnp_Params.put("vnp_CreateDate", formatter.format(calendar.getTime()));
+            calendar.add(Calendar.MINUTE, PAYMENT_EXPIRY_MINUTES);
+            vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
 
             String secureHash = vnPayUtil.hashAllFields(vnp_Params);
 
@@ -218,7 +230,8 @@ public class OrderController {
 
                 Account user = accountRepository.findById(pending.accountId)
                         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-                Order order = orderService.createOrder(user, pending.courseId);
+                Order order = orderService.createOrder(
+                        user, pending.courseId, pending.payableAmountVnd);
 
                 if (pending.promoCode != null && !pending.promoCode.isBlank()) {
                     promoCodeService.markCodeAsUsed(pending.promoCode);

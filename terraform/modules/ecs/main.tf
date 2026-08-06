@@ -161,6 +161,10 @@ resource "aws_ecs_task_definition" "frontend" {
         {
           name  = "BACKEND_URL"
           value = var.backend_url
+        },
+        {
+          name  = "PAYMENT_RETURN_ORIGIN"
+          value = var.payment_return_origin
         }
       ]
       logConfiguration = {
@@ -207,6 +211,10 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name  = "SPRING_DATASOURCE_USERNAME"
           value = var.db_username
+        },
+        {
+          name  = "VNPAY_URL"
+          value = var.vnpay_url
         }
       ]
       secrets = [
@@ -227,6 +235,14 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name      = "SPRING_MAIL_PASSWORD"
           valueFrom = "${var.db_password_arn}:smtp_password::${var.db_secret_version_id}"
+        },
+        {
+          name      = "VNPAY_TMN_CODE"
+          valueFrom = "${var.db_password_arn}:vnpay_tmn_code::${var.db_secret_version_id}"
+        },
+        {
+          name      = "VNPAY_HASH_SECRET"
+          valueFrom = "${var.db_password_arn}:vnpay_hash_secret::${var.db_secret_version_id}"
         }
       ]
       logConfiguration = {

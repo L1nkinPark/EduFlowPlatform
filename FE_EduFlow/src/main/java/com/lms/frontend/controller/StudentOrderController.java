@@ -6,6 +6,7 @@ import com.lms.frontend.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,9 @@ public class StudentOrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Value("${payment.return-origin:}")
+    private String configuredReturnOrigin;
 
     @PostMapping("/promo/validate")
     @ResponseBody
@@ -53,10 +57,7 @@ public class StudentOrderController {
             return "redirect:/signin";
         }
 
-        String origin = request.getScheme() + "://" + request.getServerName();
-        if (request.getServerPort() != 80 && request.getServerPort() != 443) {
-            origin += ":" + request.getServerPort();
-        }
+        String origin = resolveReturnOrigin(request);
 
         ApiResponse<String> apiResponse = orderService.getVnPayUrl(courseId, origin, promoCode);
         if (apiResponse != null && "SUCCESS".equals(apiResponse.getStatus()) && apiResponse.getPayload() != null) {
@@ -97,5 +98,17 @@ public class StudentOrderController {
         }
         String message = response.getMessage();
         return message.contains("VNPAY_") && message.contains("not configured");
+    }
+
+    private String resolveReturnOrigin(HttpServletRequest request) {
+        if (configuredReturnOrigin != null && !configuredReturnOrigin.isBlank()) {
+            return configuredReturnOrigin.replaceAll("/+$", "");
+        }
+
+        String origin = request.getScheme() + "://" + request.getServerName();
+        if (request.getServerPort() != 80 && request.getServerPort() != 443) {
+            origin += ":" + request.getServerPort();
+        }
+        return origin;
     }
 }
