@@ -1,10 +1,10 @@
 :root {
-  --eduflow-blue: #2563eb;
-  --eduflow-blue-dark: #1e3a8a;
-  --eduflow-cyan: #06b6d4;
-  --eduflow-ink: #172033;
-  --eduflow-muted: #64748b;
-  --eduflow-surface: #f8fafc;
+  --eduflow-blue: #4881cd;
+  --eduflow-blue-dark: #778ba5;
+  --eduflow-cyan: #33a1ff;
+  --eduflow-ink: #323235;
+  --eduflow-muted: #778ba5;
+  --eduflow-surface: #f7f8fa;
   --eduflow-font-sans: "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -36,25 +36,39 @@ h1,
 }
 
 #header-wrapper {
-  background: linear-gradient(135deg, var(--eduflow-blue-dark), var(--eduflow-blue));
-  border-color: rgba(255, 255, 255, 0.12);
+  background: #283e5b;
+  border-color: #435c7c;
 }
 
 #sidebar {
-  background: #0f172a;
+  background: #1c222a;
+}
+
+#sidebar .searchbox {
+  background: #202c3c;
+  border-color: #4d6584;
+}
+
+#sidebar .searchbox * {
+  color: #4d6584;
+}
+
+#sidebar a {
+  color: #ccc;
 }
 
 #sidebar ul.topics > li.parent,
 #sidebar ul.topics > li.active {
-  background: #172554;
+  background: #0a0c0e;
 }
 
 #sidebar ul li.active > a {
-  color: #67e8f9 !important;
+  background: #fff;
+  color: #777 !important;
 }
 
 #sidebar a:hover {
-  color: #bae6fd !important;
+  color: #e6e6e6 !important;
 }
 
 #body a {
@@ -66,7 +80,7 @@ h1,
 #body h3,
 #body h4 {
   color: var(--eduflow-blue-dark);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 #body .padding {
@@ -85,13 +99,13 @@ table {
 }
 
 th {
-  background: #dbeafe;
-  color: var(--eduflow-blue-dark);
+  background: #eef2f6;
+  color: #435c7c;
 }
 
 th,
 td {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #d7dee7;
   padding: 0.65rem 0.75rem;
   vertical-align: top;
 }
@@ -100,7 +114,7 @@ blockquote {
   background: var(--eduflow-surface);
   border-left: 4px solid var(--eduflow-cyan);
   border-radius: 0 8px 8px 0;
-  color: #334155;
+  color: #43505f;
   padding: 0.75rem 1rem;
 }
 
@@ -117,7 +131,7 @@ blockquote {
   align-items: center;
   background: #fff;
   border-radius: 12px;
-  color: var(--eduflow-blue);
+  color: #283e5b;
   display: inline-flex;
   font-size: 2rem;
   font-weight: 900;
@@ -142,7 +156,27 @@ blockquote {
 }
 
 .eduflow-menu-footer a {
-  color: #67e8f9 !important;
+  color: #33a1ff !important;
+}
+
+#navigation a.nav-prev,
+#navigation a.nav-next {
+  color: #f19e39 !important;
+}
+
+#navigation a.nav-prev:hover,
+#navigation a.nav-next:hover {
+  color: #e07d04 !important;
+}
+
+.proposal-subtitle {
+  font-weight: 400;
+  text-align: center;
+}
+
+#body-inner .mermaid {
+  margin: 1.5rem auto 2rem;
+  overflow-x: auto;
 }
 
 .gh-contributors {

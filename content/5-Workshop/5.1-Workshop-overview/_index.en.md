@@ -14,15 +14,15 @@ description: "EduFlow architecture on AWS and deployment results."
 The EduFlow infrastructure is defined with Terraform and includes a VPC, public/private data subnets, security groups, ALB, ECS Fargate, ECR, RDS MySQL, S3, Secrets Manager, and CloudWatch Logs in `ap-southeast-1`.
 
 ```mermaid
-flowchart TB
-    Internet["Browser / Internet"] --> ALB["AWS Application Load Balancer\nHTTP"]
-    ALB -->|"default"| FE["Frontend ECS :8080"]
-    ALB -->|"/api/*"| BE["Backend ECS :8888"]
+graph TB
+    Internet[Browser and Internet] --> ALB[AWS Application Load Balancer HTTP]
+    ALB -->|Default| FE[Frontend ECS 8080]
+    ALB -->|API route| BE[Backend ECS 8888]
     FE --> BE
-    BE --> DB[("RDS MySQL")]
-    ECR["ECR images"] --> FE
+    BE --> DB[RDS MySQL]
+    ECR[ECR images] --> FE
     ECR --> BE
-    SM["Secrets Manager"] -.-> FE
+    SM[Secrets Manager] -.-> FE
     SM -.-> BE
 ```
 

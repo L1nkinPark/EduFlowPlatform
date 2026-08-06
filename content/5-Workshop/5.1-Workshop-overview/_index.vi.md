@@ -14,15 +14,15 @@ description: "Kiến trúc EduFlow trên AWS và kết quả triển khai."
 Hạ tầng EduFlow được định nghĩa bằng Terraform, gồm VPC, public/private data subnet, security group, ALB, ECS Fargate, ECR, RDS MySQL, S3, Secrets Manager và CloudWatch Logs tại `ap-southeast-1`.
 
 ```mermaid
-flowchart TB
-    Internet["Trình duyệt / Internet"] --> ALB["AWS Application Load Balancer\nHTTP"]
-    ALB -->|"default"| FE["Frontend ECS :8080"]
-    ALB -->|"/api/*"| BE["Backend ECS :8888"]
+graph TB
+    Internet[Trình duyệt và Internet] --> ALB[AWS Application Load Balancer HTTP]
+    ALB -->|Mặc định| FE[Frontend ECS 8080]
+    ALB -->|Route API| BE[Backend ECS 8888]
     FE --> BE
-    BE --> DB[("RDS MySQL")]
-    ECR["ECR images"] --> FE
+    BE --> DB[RDS MySQL]
+    ECR[ECR images] --> FE
     ECR --> BE
-    SM["Secrets Manager"] -.-> FE
+    SM[Secrets Manager] -.-> FE
     SM -.-> BE
 ```
 
