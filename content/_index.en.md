@@ -5,37 +5,40 @@ weight: 1
 chapter: false
 ---
 
-# Internship Report - EduFlow Platform
+# Internship Report
 
-EduFlow is an online course management and delivery platform for **students**, **instructors**, and **administrators**. The system separates a Spring Boot/Thymeleaf web application from a Spring Boot REST API and uses MySQL, JWT, VNPay, Docker, Terraform, and Amazon ECS Fargate.
+### Student Information:
 
-### Student and internship information
+  **Full Name:** Võ Đức Hiếu
 
-| Item | Value |
-|---|---|
-| Full name | Võ Đức Hiếu |
-| Student ID | SE196272 |
-| Phone number | 0915106276 |
-| Email | [voduchieu42@gmail.com](mailto:voduchieu42@gmail.com) |
-| University | FPT University |
-| Major | Software Engineer |
-| Internship company | Amazon Web Services Viet Nam Company Limited |
-| Internship position | Workforce Bootcamp - First Cloud AI Journey |
-| Internship duration | 19 May 2026 - 17 August 2026 |
-| Project | EduFlow Platform |
-| Source owner | L1nkinPark |
-| Primary technologies | Java 17, HTML/Thymeleaf, Terraform |
-| Platform | Spring Boot 3.3.4, MySQL 8, AWS ECS Fargate |
-| Repository | [github.com/L1nkinPark/EduFlowPlatform](https://github.com/L1nkinPark/EduFlowPlatform) |
+  **Student ID:** SE196272
+
+  **Phone Number:** 0915106276
+
+  **Email:** [voduchieu42@gmail.com](mailto:voduchieu42@gmail.com)
+
+  **University:** FPT University
+
+  **Major:** Software Engineer
+
+  **Internship Company:** Amazon Web Services Viet Nam Company Limited
+
+  **Internship Position:** Workforce Bootcamp - First Cloud AI Journey
+
+  **Internship Duration:** From 19 May 2026 to 17 August 2026
+
+  **Project:** EduFlow Platform
+
+  **Repository:** [github.com/L1nkinPark/EduFlowPlatform](https://github.com/L1nkinPark/EduFlowPlatform)
 
 {{< profile alt="Portrait of Võ Đức Hiếu" >}}
 
-### Report contents
+### Report Content
 
 1. [Worklog](1-Worklog/)
-2. [Solution proposal](2-Proposal/)
-3. [Technical articles](3-BlogsPosted/)
-4. [Hackathons participated in](4-EventParticipated/)
-5. [Deployment workshop](5-Workshop/)
-6. [Results and competencies achieved](6-Self-evaluation/)
-7. [Internship summary](7-Feedback/)
+2. [Proposal](2-Proposal/)
+3. [Blogs Posted](3-BlogsPosted/)
+4. [Events Participated](4-EventParticipated/)
+5. [Workshop](5-Workshop/)
+6. [Self-Assessment](6-Self-evaluation/)
+7. [Sharing and Feedback](7-Feedback/)

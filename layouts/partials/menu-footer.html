@@ -1,10 +1,10 @@
-<div class="workshop-menu-footer">
-  <div>
-    <strong>{{ if eq .Site.Language.Lang "vi" }}Cập nhật lần cuối{{ else }}Last updated{{ end }}</strong><br>
-    <em>{{ now.Format "02-01-2006" }}</em>
-  </div>
-  <div>
-    <strong>{{ if eq .Site.Language.Lang "vi" }}Đơn vị{{ else }}Team{{ end }}</strong><br>
-    <a href="https://www.facebook.com/groups/660548818043427">First Cloud AI Journey</a>
-  </div>
-</div>
+<left>
+  <br><br>
+  <b>{{ if eq .Site.Language.Lang "vi" }}Cập nhật lần cuối{{ else }}Last Updated{{ end }}</b><br>
+  <i><font color="orange">{{ now.Format "02-01-2006" }}</font></i>
+</left>
+<left>
+  <br><br>
+  <b>{{ if eq .Site.Language.Lang "vi" }}Đơn vị{{ else }}Team{{ end }}</b><br>
+  <i><a href="https://www.facebook.com/groups/660548818043427" style="color:orange">First Cloud AI Journey</a></i>
+</left>
