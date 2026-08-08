@@ -1,0 +1,12 @@
+{
+  "status": "SUCCESS",
+  "message": "OK",
+  "payload": {
+    "totalCourses": 5,
+    "totalInstructors": 2,
+    "totalStudents": 6,
+    "totalEnrollments": 1
+  },
+  "error": null,
+  "metadata": null
+}
